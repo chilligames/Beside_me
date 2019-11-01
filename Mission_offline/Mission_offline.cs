@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class Mission_offline : MonoBehaviour
 {
+    [Header("entity_game")]
     public Color Color_player;
     public Color Color_enemy;
     public GameObject Raw_Place;
@@ -22,8 +23,8 @@ public class Mission_offline : MonoBehaviour
 
     Vector2 Start_pos_fild = new Vector2(-2, 2.5f);
     public GameObject[,] Places;
-    GameObject[] Place_blocks;
-    GameObject[] Place_white; //rebuild after player enemy pick 
+    public GameObject[] Place_blocks;
+    GameObject[] Place_white;
     GameObject Place_player;
     GameObject Place_Enemy;
 
@@ -302,6 +303,7 @@ public class Mission_offline : MonoBehaviour
 
     public class Raw_Place_script : MonoBehaviour
     {
+        //entity places
         public Type_place Type;
         public Place_for Place_for_;
         public Color Color_player;
@@ -317,9 +319,25 @@ public class Mission_offline : MonoBehaviour
             }
         }
 
+        Button BTN_place
+        {
+            get
+            {
+                return GetComponentInChildren<Button>();
+            }
+        }
+
+        //place setting
         public int Count;
         int Lock_block_player = 0;
         int Lock_block_enemy = 0;
+
+
+        //anim entity
+        public int Anim_boomb;
+
+
+
         public void Change_Value(Type_place Type_block, Place_for place_For, Color Color_player, Color Color_enemy, GameObject Pointer_player, GameObject pointer_enemy)
         {
             this.Color_player = Color_player;
@@ -332,6 +350,17 @@ public class Mission_offline : MonoBehaviour
             {
                 case Type_place.Place:
                     GetComponentInChildren<RawImage>().gameObject.SetActive(false);
+                    BTN_place.onClick.AddListener(() =>
+                    {
+                        print("cancel");
+                        print("buld  show here");
+                        foreach (var item in GetComponentInParent<Mission_offline>().Place_blocks)
+                        {
+                            item.GetComponentInChildren<Raw_Place_script>().Anim_boomb = 3;
+
+                        }
+                        
+                    });
                     Type = Type_block;
                     break;
                 case Type_place.Enemy:
@@ -347,6 +376,22 @@ public class Mission_offline : MonoBehaviour
                 case Type_place.Block:
                     GetComponentInChildren<RawImage>().gameObject.SetActive(false);
                     Type = Type_block;
+                    BTN_place.onClick.AddListener(() =>
+                    {
+                        if (Anim_boomb == 1 || Anim_boomb == 2)
+                        {
+                            print("convert to place");
+                            Type = Type_place.Place;
+                            Place_for_ = Place_for.Empity;
+
+                            foreach (var item in GetComponentInParent<Mission_offline>().Place_blocks)
+                            {
+                                item.GetComponentInParent<Raw_Place_script>().Anim_boomb = 3;
+                            }
+                            Anim_boomb = 3;
+                        }
+                    });
+
                     break;
             }
 
@@ -429,7 +474,7 @@ public class Mission_offline : MonoBehaviour
                                 if ((Count - Pointer_Player.GetComponent<Pointer_player>().Count) >= 0)
                                 {
                                     Count -= Pointer_Player.GetComponent<Pointer_player>().Count;
-                                    if (Count==0)
+                                    if (Count == 0)
                                     {
                                         Count = 1;
                                         Place_for_ = Place_for.Player;
@@ -489,7 +534,7 @@ public class Mission_offline : MonoBehaviour
                             if (Count - Pointer_Enemey.GetComponent<Pointer_Enemy>().Count >= 0)
                             {
                                 Count -= Pointer_Enemey.GetComponent<Pointer_Enemy>().Count;
-                                if (Count==0)
+                                if (Count == 0)
                                 {
                                     Count = 1;
                                     Place_for_ = Place_for.Enemy;
@@ -548,6 +593,37 @@ public class Mission_offline : MonoBehaviour
                     print("losse");
                 }
             }
+
+            //anim controll
+            if (Anim_boomb == 1)
+            {
+                if (gameObject.transform.localScale != new Vector3(3.5f, 3.5f, 0))
+                {
+                    gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3.5f, 3.5f, 0), 0.05f);
+
+                }
+                else
+                {
+                    Anim_boomb = 2;
+                }
+
+            }
+            else if (Anim_boomb == 2)
+            {
+                if (gameObject.transform.localScale != new Vector3(3, 3, 0))
+                {
+                    gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3, 3, 0), 0.05f);
+                }
+                else
+                {
+                    Anim_boomb = 1;
+                }
+            }
+            else if (Anim_boomb == 3)
+            {
+                gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3, 3, 0), 0.05f);
+            }
+
         }
 
 
@@ -782,7 +858,7 @@ public class Mission_offline : MonoBehaviour
                         }
                     }
 
-                    if (Last_postion.transform.position==gameObject.transform.position && count_last_postion==3)
+                    if (Last_postion.transform.position == gameObject.transform.position && count_last_postion == 3)
                     {
                         var rand_pos = Random.Range(0, Place_Can_move_bot.Length);
                         Distiny_pointer = Place_Can_move_bot[rand_pos];
