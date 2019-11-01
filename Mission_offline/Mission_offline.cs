@@ -306,11 +306,12 @@ public class Mission_offline : MonoBehaviour
         //entity places
         public Type_place Type;
         public Place_for Place_for_;
+        public Type_Build Type_Build;
         public Color Color_player;
         public Color Color_enemy;
         GameObject Pointer_Enemey;
         GameObject Pointer_Player;
-
+        
         TextMeshProUGUI Text_place
         {
             get
@@ -335,7 +336,7 @@ public class Mission_offline : MonoBehaviour
 
         //anim entity
         public int Anim_boomb;
-
+        public int Anim_builds;
 
 
         public void Change_Value(Type_place Type_block, Place_for place_For, Color Color_player, Color Color_enemy, GameObject Pointer_player, GameObject pointer_enemy)
@@ -352,15 +353,23 @@ public class Mission_offline : MonoBehaviour
                     GetComponentInChildren<RawImage>().gameObject.SetActive(false);
                     BTN_place.onClick.AddListener(() =>
                     {
-                        print("cancel");
                         //cancell bomb action
                         foreach (var item in GetComponentInParent<Mission_offline>().Place_blocks)
                         {
                             item.GetComponentInChildren<Raw_Place_script>().Anim_boomb = 3;
 
                         }
+
                         // build menu
-                        GetComponentInParent<UI_mission_offline>().Anim_build = 1;
+                        GetComponentInParent<UI_mission_offline>().Anim_build = 3;
+                        switch (Type_Build)
+                        {
+                            case Type_Build.Turret:
+                                {
+                                    
+                                }
+                                break;
+                        }
                     });
                     Type = Type_block;
                     break;
@@ -377,6 +386,7 @@ public class Mission_offline : MonoBehaviour
                 case Type_place.Block:
                     GetComponentInChildren<RawImage>().gameObject.SetActive(false);
                     Type = Type_block;
+
                     BTN_place.onClick.AddListener(() =>
                     {
                         GetComponentInParent<UI_mission_offline>().Anim_build = 1;
@@ -390,11 +400,10 @@ public class Mission_offline : MonoBehaviour
                             {
                                 item.GetComponentInParent<Raw_Place_script>().Anim_boomb = 3;
                             }
-                            
+
                             Anim_boomb = 3;
                         }
                     });
-
                     break;
             }
 
@@ -405,7 +414,7 @@ public class Mission_offline : MonoBehaviour
         {
             //spaw turns
             StartCoroutine(Spawn_turn_tobase());
-            StartCoroutine(Spaw_turn_forall_turn());
+            StartCoroutine(Spawn_turn_forall_turn());
 
 
             if (Count > 0)
@@ -597,13 +606,14 @@ public class Mission_offline : MonoBehaviour
                 }
             }
 
+
             //anim controll
+            //anim Bobms
             if (Anim_boomb == 1)
             {
                 if (gameObject.transform.localScale != new Vector3(3.5f, 3.5f, 0))
                 {
                     gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3.5f, 3.5f, 0), 0.05f);
-
                 }
                 else
                 {
@@ -624,9 +634,68 @@ public class Mission_offline : MonoBehaviour
             }
             else if (Anim_boomb == 3)
             {
-                gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3, 3, 0), 0.05f);
+                if (gameObject.transform.localScale != new Vector3(3, 3, 0))
+                {
+
+                    gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3, 3, 0), 0.05f);
+                }
+                else
+                {
+                    Anim_boomb = 0;
+                }
             }
 
+            //anim_builds
+
+            else if (Anim_builds == 1)
+            {
+                if (gameObject.transform.localScale != new Vector3(3.5f, 3.5f, 0))
+                {
+                    gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3.5f, 3.5f, 0), 0.01f);
+
+                }
+                else
+                {
+                    Anim_builds = 2;
+                }
+            }
+            else if (Anim_builds == 2)
+            {
+                if (gameObject.transform.localScale != new Vector3(3, 3, 0))
+                {
+                    gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3, 3, 0), 0.01f);
+                }
+                else
+                {
+                    Anim_builds = 1;
+
+                }
+            }
+            else if (Anim_builds == 3)
+            {
+                if (gameObject.transform.localScale != new Vector3(3, 3, 0))
+                {
+                    gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3, 3, 0), 0.01f);
+                }
+                else
+                {
+                    Anim_builds = 0;
+                    Type_Build =Type_Build.Null;
+                }
+            }
+
+
+            //build setting
+            switch (Type_Build)
+            {
+                case Type_Build.Null:
+                    break;
+                case Type_Build.Turret:
+                    {
+                        
+                    }
+                    break;
+            }
         }
 
 
@@ -643,7 +712,7 @@ public class Mission_offline : MonoBehaviour
             }
         }
 
-        IEnumerator Spaw_turn_forall_turn()
+        IEnumerator Spawn_turn_forall_turn()
         {
             while (true)
             {
@@ -665,6 +734,7 @@ public class Mission_offline : MonoBehaviour
         {
             Empity, Enemy, Player, Block
         }
+
     }
 
 
@@ -775,6 +845,7 @@ public class Mission_offline : MonoBehaviour
         private void Start()
         {
             StartCoroutine(Start_bot());
+            StartCoroutine(Control_build());
         }
 
         private void Update()
@@ -787,6 +858,30 @@ public class Mission_offline : MonoBehaviour
             {
                 Text_Turn.text = "";
             }
+        }
+
+        public void Builder(Type_Build type_build)
+        {
+            switch (type_build)
+            {
+                case Type_Build.Bomb:
+                    {
+
+                        foreach (var item in placess_insid)
+                        {
+                            if (item.GetComponent<Raw_Place_script>().Place_for_ == Raw_Place_script.Place_for.Block && Vector3.Distance(item.transform.position, gameObject.transform.position) <= 1)
+                            {
+                                item.GetComponent<Raw_Place_script>().Place_for_ = Raw_Place_script.Place_for.Empity;
+                                item.GetComponent<Raw_Place_script>().Type = Raw_Place_script.Type_place.Place;
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                case Type_Build.Turret:
+                    break;
+            }
+
         }
 
         IEnumerator Start_bot()
@@ -894,6 +989,26 @@ public class Mission_offline : MonoBehaviour
 
         }
 
+
+        IEnumerator Control_build()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(1);
+                Builder(Type_Build.Bomb);
+                yield return new WaitForSeconds(1);
+                Builder(Type_Build.Turret);
+
+            }
+        }
+
+
     }
 
+
+    public enum Type_Build
+    {
+        Null,Bomb, Turret
+
+    }
 }
