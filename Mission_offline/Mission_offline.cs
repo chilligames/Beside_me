@@ -429,13 +429,21 @@ public class Mission_offline : MonoBehaviour
                                 if ((Count - Pointer_Player.GetComponent<Pointer_player>().Count) >= 0)
                                 {
                                     Count -= Pointer_Player.GetComponent<Pointer_player>().Count;
+                                    if (Count==0)
+                                    {
+                                        Count = 1;
+                                        Place_for_ = Place_for.Player;
+                                    }
 
                                     Pointer_Player.GetComponent<Pointer_player>().Count = 0;
+
                                 }
                                 else
                                 {
+                                    var count = Count;
                                     Count -= Pointer_Player.GetComponent<Pointer_player>().Count;
                                     Count = 1;
+                                    Pointer_Player.GetComponent<Pointer_player>().Count -= count;
                                     Place_for_ = Place_for.Player;
                                 }
                             }
@@ -457,44 +465,53 @@ public class Mission_offline : MonoBehaviour
 
             if (Pointer_Enemey.transform.position == gameObject.transform.position)
             {
-                switch (Place_for_)
+                if (Lock_block_enemy == 0)
                 {
-                    case Place_for.Empity:
-                        if (Pointer_Enemey.GetComponent<Pointer_Enemy>().Count >= 1)
-                        {
-                            Place_for_ = Place_for.Enemy;
-                            Pointer_Enemey.GetComponent<Pointer_Enemy>().Count -= 1;
-                            Count = 1;
-                        }
-                        break;
-                    case Place_for.Enemy:
-                        if (Count > 1)
-                        {
-                            Pointer_Enemey.GetComponent<Pointer_Enemy>().Count += Count;
-                            Count = 1;
-                        }
-                        break;
-                    case Place_for.Player:
-                        Lock_block_enemy = 1;
-                        if (Count - Pointer_Enemey.GetComponent<Pointer_Enemy>().Count >= 0)
-                        {
-                            Count -= Pointer_Enemey.GetComponent<Pointer_Enemy>().Count;
-                            Pointer_Enemey.GetComponent<Pointer_Enemy>().Count = 0;
-                        }
-                        else
-                        {
-                            Count -= Pointer_Enemey.GetComponent<Pointer_Enemy>().Count;
-                            Count = 1;
-                            Place_for_ = Place_for.Enemy;
-                        }
-                        break;
+                    switch (Place_for_)
+                    {
+                        case Place_for.Empity:
+                            if (Pointer_Enemey.GetComponent<Pointer_Enemy>().Count >= 1)
+                            {
+                                Place_for_ = Place_for.Enemy;
+                                Pointer_Enemey.GetComponent<Pointer_Enemy>().Count -= 1;
+                                Count = 1;
+                            }
+                            break;
+                        case Place_for.Enemy:
+                            if (Count > 1)
+                            {
+                                Pointer_Enemey.GetComponent<Pointer_Enemy>().Count += Count;
+                                Count = 1;
+                            }
+                            break;
+                        case Place_for.Player:
+                            Lock_block_enemy = 1;
+                            if (Count - Pointer_Enemey.GetComponent<Pointer_Enemy>().Count >= 0)
+                            {
+                                Count -= Pointer_Enemey.GetComponent<Pointer_Enemy>().Count;
+                                if (Count==0)
+                                {
+                                    Count = 1;
+                                    Place_for_ = Place_for.Enemy;
+                                }
+                                Pointer_Enemey.GetComponent<Pointer_Enemy>().Count = 0;
+                            }
+                            else
+                            {
+                                var count = Count;
+                                Count -= Pointer_Enemey.GetComponent<Pointer_Enemy>().Count;
+                                Count = 1;
+                                Pointer_Enemey.GetComponent<Pointer_Enemy>().Count -= count;
+                                Place_for_ = Place_for.Enemy;
+                            }
+                            break;
+                    }
                 }
             }
             else
             {
                 Lock_block_enemy = 0;
             }
-
 
             //give turn from base
             if (Pointer_Enemey.transform.position == gameObject.transform.position && Type == Type_place.Enemy)
@@ -508,6 +525,29 @@ public class Mission_offline : MonoBehaviour
                 Count = 0;
             }
 
+            //pointer in one place
+            if (Pointer_Player.transform.position == Pointer_Enemey.transform.position)
+            {
+                print("minuse pointers");
+            }
+
+
+            //win losse Controll
+            if (Type == Type_place.Enemy && Pointer_Player.transform.position == gameObject.transform.position)
+            {
+                if ((Count - Pointer_Player.GetComponent<Pointer_player>().Count) < 0)
+                {
+                    print(" game win code here  ");
+                }
+            }
+
+            if (Type == Type_place.Player && Pointer_Enemey.transform.position == gameObject.transform.position)
+            {
+                if ((Count - Pointer_Enemey.GetComponent<Pointer_Enemy>().Count) < 0)
+                {
+                    print("losse");
+                }
+            }
         }
 
 
@@ -578,9 +618,9 @@ public class Mission_offline : MonoBehaviour
     public class Pointer_Enemy : MonoBehaviour
     {
         GameObject[,] placess_insid;
-        GameObject[] Place_Can_move_bot = new GameObject[5];
+        GameObject[] Place_Can_move_bot;
         GameObject Place_player;
-        GameObject Place_enemy;
+        GameObject Place_Enemy;
         TextMeshProUGUI Text_Turn
         {
             get
@@ -588,16 +628,23 @@ public class Mission_offline : MonoBehaviour
                 return GetComponentInChildren<TextMeshProUGUI>();
             }
         }
-        GameObject Distiny;
+        GameObject Distiny_pointer;
+        GameObject Last_postion;
 
         public int Count;
+        int Atack_time;
+        int count_last_postion;
 
         public void Change_value(GameObject[,] placess_inside, GameObject place_player, GameObject Place_enemy)
         {
             //cange values
             Place_player = place_player;
+            Place_Enemy = Place_enemy;
             placess_insid = placess_inside;
+
             //convert to arry place;
+            Place_Can_move_bot = new GameObject[5];
+
             int count = 0;
             foreach (var item in placess_insid)
             {
@@ -635,6 +682,15 @@ public class Mission_offline : MonoBehaviour
 
             Place_Can_move_bot = new_pos;
 
+            //frist distiny_finde
+            foreach (var item in Place_Can_move_bot)
+            {
+                if (item.GetComponent<Raw_Place_script>().Type != Raw_Place_script.Type_place.Enemy)
+                {
+                    Distiny_pointer = item;
+                    break;
+                }
+            }
         }
 
         private void Start()
@@ -659,8 +715,101 @@ public class Mission_offline : MonoBehaviour
 
             while (true)
             {
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.3f);
 
+                if (Count >= 1)
+                {
+                    //find distiny
+                    foreach (var item in Place_Can_move_bot)
+                    {
+                        if (item.GetComponent<Raw_Place_script>().Place_for_ == Raw_Place_script.Place_for.Player)
+                        {
+                            Distiny_pointer = item;
+                            break;
+                        }
+                        else
+                        {
+                            if (Atack_time == 3)
+                            {
+                                Atack_time = 0;
+                                foreach (var place_attack in Place_Can_move_bot)
+                                {
+                                    if (Vector3.Distance(place_attack.transform.position, Place_player.transform.position) <= Vector3.Distance(Distiny_pointer.transform.position, Place_player.transform.position))
+                                    {
+                                        Distiny_pointer = place_attack;
+
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                int rand_step = Random.Range(0, Place_Can_move_bot.Length);
+
+                                Distiny_pointer = Place_Can_move_bot[rand_step];
+                                Atack_time++;
+
+                            }
+                        }
+                    }
+
+                    //move enemy to distiny
+                    while (true)
+                    {
+                        yield return new WaitForSeconds(0.01f);
+
+                        if (gameObject.transform.position != Distiny_pointer.transform.position)
+                        {
+                            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, Distiny_pointer.transform.position, 0.1f);
+                        }
+                        else
+                        {
+                            Change_value(placess_insid, Place_player, Place_Enemy);
+                            break;
+                        }
+
+                    }
+                }
+                else
+                {
+
+                    foreach (var item in Place_Can_move_bot)
+                    {
+                        if (Vector3.Distance(item.transform.position, Place_Enemy.transform.position) <= Vector3.Distance(Distiny_pointer.transform.position, Place_Enemy.transform.position))
+                        {
+                            Distiny_pointer = item;
+                            Last_postion = item;
+
+                        }
+                    }
+
+                    if (Last_postion.transform.position==gameObject.transform.position && count_last_postion==3)
+                    {
+                        var rand_pos = Random.Range(0, Place_Can_move_bot.Length);
+                        Distiny_pointer = Place_Can_move_bot[rand_pos];
+                        count_last_postion = 0;
+                    }
+                    else
+                    {
+                        count_last_postion++;
+                    }
+
+                    //back to home
+                    while (true)
+                    {
+                        yield return new WaitForSeconds(0.01f);
+                        if (gameObject.transform.position != Distiny_pointer.transform.position)
+                        {
+                            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, Distiny_pointer.transform.position, 0.1f);
+                        }
+                        else
+                        {
+                            Change_value(placess_insid, Place_player, Place_Enemy);
+                            break;
+                        }
+
+                    }
+
+                }
 
             }
 
