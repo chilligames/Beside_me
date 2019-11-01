@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class Mission_offline : MonoBehaviour
 {
+    public Color Color_player;
+    public Color Color_enemy;
     public GameObject Raw_Place;
     public Transform Place_fild;
     public GameObject pointer_player;
@@ -24,8 +26,6 @@ public class Mission_offline : MonoBehaviour
     GameObject[] Place_white; //rebuild after player enemy pick 
     GameObject Place_player;
     GameObject Place_Enemy;
-
-    Vector3 Pointer_pos_next;
 
 
     int lock_move = 0;
@@ -60,7 +60,7 @@ public class Mission_offline : MonoBehaviour
                 if (rand == 2)
                 {
                     Places[i, a].GetComponent<SpriteRenderer>().color = Color.black;
-                    Places[i, a].GetComponent<Raw_Place_script>().Change_Value(Raw_Place_script.Type_place.Block);
+                    Places[i, a].GetComponent<Raw_Place_script>().Change_Value(Raw_Place_script.Type_place.Block, Raw_Place_script.Place_for.Block, Color_player, Color_enemy, pointer_player, Pointer_enemy);
                     count_block++;
                 }
             }
@@ -135,7 +135,7 @@ public class Mission_offline : MonoBehaviour
         }
         for (int i = 0; i < new_place_white.Length; i++)
         {
-            new_place_white[i].GetComponent<Raw_Place_script>().Change_Value(Raw_Place_script.Type_place.Place);
+            new_place_white[i].GetComponent<Raw_Place_script>().Change_Value(Raw_Place_script.Type_place.Place, Raw_Place_script.Place_for.Empity, Color_player, Color_enemy, pointer_player, Pointer_enemy);
         }
         Place_white = new GameObject[count_white - 2];
         Place_white = new_place_white;
@@ -144,14 +144,11 @@ public class Mission_offline : MonoBehaviour
         pointer_player.transform.position = Place_player.transform.position;
         Pointer_enemy.transform.position = Place_Enemy.transform.position;
         pointer_player.AddComponent<Pointer_player>();
+        Pointer_enemy.AddComponent<Pointer_Enemy>().Change_value(Places, Place_player, Place_Enemy);
 
 
-        //start turn
-        StartCoroutine(Spawn_turn());
-        //start turn for place 
-        StartCoroutine(Spaw_turn_forall_turn());
 
-        //local method
+        //local methods
         void Place_player_enemy()
         {
             int place_player = Random.Range(0, count_white);
@@ -161,8 +158,8 @@ public class Mission_offline : MonoBehaviour
             {
                 Place_player = Place_white[place_player];
                 Place_Enemy = Place_white[palce_enemy];
-                Place_player.GetComponent<Raw_Place_script>().Change_Value(Raw_Place_script.Type_place.Player);
-                Place_Enemy.GetComponent<Raw_Place_script>().Change_Value(Raw_Place_script.Type_place.Enemy);
+                Place_player.GetComponent<Raw_Place_script>().Change_Value(Raw_Place_script.Type_place.Player, Raw_Place_script.Place_for.Player, Color_player, Color_enemy, pointer_player, Pointer_enemy);
+                Place_Enemy.GetComponent<Raw_Place_script>().Change_Value(Raw_Place_script.Type_place.Enemy, Raw_Place_script.Place_for.Enemy, Color_player, Color_enemy, pointer_player, Pointer_enemy);
             }
             else
             {
@@ -180,18 +177,11 @@ public class Mission_offline : MonoBehaviour
         {
             Vector3 Pos_up = new Vector3(pointer_player.transform.position.x, pointer_player.transform.position.y + 0.5f);
 
-            foreach (var item in Places_side_pointer)
+            foreach (var item in Places_side_pointer_player)
             {
                 if (Pos_up == item.transform.position && item.GetComponent<Raw_Place_script>().Type != Raw_Place_script.Type_place.Block)
                 {
                     StartCoroutine(Move_pointer(Pos_up, pointer_player, item));
-
-                    // give turn to placess
-                    if (pointer_player.GetComponent<Pointer_player>().Count > 0)
-                    {
-                        item.GetComponent<Raw_Place_script>().Pluse_count(1, Raw_Place_script.Type_place.Player);
-                        pointer_player.GetComponent<Pointer_player>().Count -= 1;
-                    }
                 }
             }
 
@@ -200,7 +190,7 @@ public class Mission_offline : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S))
         {
             Vector3 pos_down = new Vector3(pointer_player.transform.position.x, pointer_player.transform.position.y - 0.5f);
-            foreach (var item in Places_side_pointer)
+            foreach (var item in Places_side_pointer_player)
             {
                 if (pos_down == item.transform.position && item.GetComponent<Raw_Place_script>().Type != Raw_Place_script.Type_place.Block)
                 {
@@ -212,7 +202,7 @@ public class Mission_offline : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             Vector3 pos_right = new Vector3(pointer_player.transform.position.x - 0.5f, pointer_player.transform.position.y);
-            foreach (var item in Places_side_pointer)
+            foreach (var item in Places_side_pointer_player)
             {
                 if (item.transform.position == pos_right && item.GetComponent<Raw_Place_script>().Type != Raw_Place_script.Type_place.Block)
                 {
@@ -224,7 +214,7 @@ public class Mission_offline : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D))
         {
             Vector3 pos_left = new Vector3(pointer_player.transform.position.x + 0.5f, pointer_player.transform.position.y);
-            foreach (var item in Places_side_pointer)
+            foreach (var item in Places_side_pointer_player)
             {
                 if (item.transform.position == pos_left && item.GetComponent<Raw_Place_script>().Type != Raw_Place_script.Type_place.Block)
                 {
@@ -232,31 +222,13 @@ public class Mission_offline : MonoBehaviour
                 }
             }
         }
-
-        //give turn in base
-        if (pointer_player.transform.position == Place_player.transform.position)
-        {
-            int turn_base_player = Place_player.GetComponent<Raw_Place_script>().Count;
-            Place_player.GetComponent<Raw_Place_script>().Count = 0;
-            pointer_player.GetComponent<Pointer_player>().Count += turn_base_player;
-        }
-
-        //give turn from place
-        foreach (var item in Places)
-        {
-            if (item.GetComponent<Raw_Place_script>().Count >= 2 && pointer_player.transform.position == item.transform.position && item.GetComponent<Raw_Place_script>().Type != Raw_Place_script.Type_place.Enemy)
-            {
-                var count_place = item.GetComponent<Raw_Place_script>().Count;
-                item.GetComponent<Raw_Place_script>().Count -= 1;
-                pointer_player.GetComponent<Pointer_player>().Count += count_place - 1;
-            }
-        }
-
     }
 
 
-
-    GameObject[] Places_side_pointer
+    /// <summary>
+    /// place inside player pointer
+    /// </summary>
+    GameObject[] Places_side_pointer_player
     {
         get
         {
@@ -299,6 +271,8 @@ public class Mission_offline : MonoBehaviour
     }
 
 
+
+
     //move pointer to postion
     IEnumerator Move_pointer(Vector3 postion, GameObject pointer, GameObject place)
     {
@@ -324,35 +298,16 @@ public class Mission_offline : MonoBehaviour
         }
     }
 
-    IEnumerator Spawn_turn()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(4f);
-            Place_player.GetComponent<Raw_Place_script>().Count++;
-            Place_Enemy.GetComponent<Raw_Place_script>().Count++;
-        }
-    }
 
-    IEnumerator Spaw_turn_forall_turn()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(10);
-            foreach (var item in Places)
-            {
-                if (item.GetComponent<Raw_Place_script>().Place_for_ ==Raw_Place_script.Place_for.Player )
-                {
-                    item.GetComponent<Raw_Place_script>().Count += 1;
-                }
-            }
-        }
-    }
 
     public class Raw_Place_script : MonoBehaviour
     {
         public Type_place Type;
         public Place_for Place_for_;
+        public Color Color_player;
+        public Color Color_enemy;
+        GameObject Pointer_Enemey;
+        GameObject Pointer_Player;
 
         TextMeshProUGUI Text_place
         {
@@ -363,9 +318,16 @@ public class Mission_offline : MonoBehaviour
         }
 
         public int Count;
-
-        public void Change_Value(Type_place Type_block)
+        int Lock_block_player = 0;
+        int Lock_block_enemy = 0;
+        public void Change_Value(Type_place Type_block, Place_for place_For, Color Color_player, Color Color_enemy, GameObject Pointer_player, GameObject pointer_enemy)
         {
+            this.Color_player = Color_player;
+            this.Color_enemy = Color_enemy;
+            Place_for_ = place_For;
+            Pointer_Player = Pointer_player;
+            Pointer_Enemey = pointer_enemy;
+
             switch (Type_block)
             {
                 case Type_place.Place:
@@ -374,24 +336,30 @@ public class Mission_offline : MonoBehaviour
                     break;
                 case Type_place.Enemy:
                     GetComponentInChildren<RawImage>().gameObject.SetActive(true);
-                    GetComponent<SpriteRenderer>().color = Color.red;
+                    GetComponent<SpriteRenderer>().color = this.Color_enemy;
                     Type = Type_block;
                     break;
                 case Type_place.Player:
-                    GetComponent<SpriteRenderer>().color = Color.blue;
+                    GetComponent<SpriteRenderer>().color = this.Color_player;
                     GetComponentInChildren<RawImage>().gameObject.SetActive(true);
                     Type = Type_block;
                     break;
                 case Type_place.Block:
-                    GetComponentInChildren<TextMeshProUGUI>().text = "B";
                     GetComponentInChildren<RawImage>().gameObject.SetActive(false);
                     Type = Type_block;
                     break;
             }
+
+
         }
 
         private void Start()
         {
+            //spaw turns
+            StartCoroutine(Spawn_turn_tobase());
+            StartCoroutine(Spaw_turn_forall_turn());
+
+
             if (Count > 0)
             {
                 Text_place.text = Count.ToString();
@@ -401,9 +369,11 @@ public class Mission_offline : MonoBehaviour
                 Text_place.text = "";
             }
         }
+
 
         private void Update()
         {
+            //text place null if count 0 
             if (Count > 0)
             {
                 Text_place.text = Count.ToString();
@@ -412,24 +382,158 @@ public class Mission_offline : MonoBehaviour
             {
                 Text_place.text = "";
             }
-        }
 
-        public void Pluse_count(int count, Type_place change_for)
-        {
-            Count += count;
-
-            switch (change_for)
+            //color change with place for
+            switch (Place_for_)
             {
-                case Type_place.Player:
-                    GetComponent<SpriteRenderer>().color = Color.blue;
-                    Place_for_ = Place_for.Player;
-                    print("Change color");
+                case Place_for.Empity:
+                    GetComponent<SpriteRenderer>().color = Color.white;
                     break;
-                case Type_place.Enemy:
-                    print("change color");
+                case Place_for.Enemy:
+                    GetComponent<SpriteRenderer>().color = Color_enemy;
+                    break;
+                case Place_for.Player:
+                    GetComponent<SpriteRenderer>().color = Color_player;
+                    break;
+                case Place_for.Block:
+                    GetComponent<SpriteRenderer>().color = Color.black;
                     break;
             }
 
+            //change place for with 0
+            if (Count == 0 && Type != Type_place.Block && Type != Type_place.Enemy && Type != Type_place.Player) //change and cheack for player enemy
+            {
+                Place_for_ = Place_for.Empity;
+            }
+
+
+            //control pointer turn
+            if (Pointer_Player.transform.position == gameObject.transform.position && Type != Type_place.Player)
+            {
+                if (Lock_block_player == 0)
+                {
+
+                    switch (Place_for_)
+                    {
+                        case Place_for.Empity:
+                            if (Pointer_Player.GetComponent<Pointer_player>().Count >= 1)
+                            {
+                                Place_for_ = Place_for.Player;
+                                Pointer_Player.GetComponent<Pointer_player>().Count -= 1;
+                                Count = 1;
+                            }
+                            break;
+                        case Place_for.Enemy:
+                            {
+                                Lock_block_player = 1;
+                                if ((Count - Pointer_Player.GetComponent<Pointer_player>().Count) >= 0)
+                                {
+                                    Count -= Pointer_Player.GetComponent<Pointer_player>().Count;
+
+                                    Pointer_Player.GetComponent<Pointer_player>().Count = 0;
+                                }
+                                else
+                                {
+                                    Count -= Pointer_Player.GetComponent<Pointer_player>().Count;
+                                    Count = 1;
+                                    Place_for_ = Place_for.Player;
+                                }
+                            }
+                            break;
+                        case Place_for.Player:
+                            if (Count > 1)
+                            {
+                                Pointer_Player.GetComponent<Pointer_player>().Count += Count;
+                                Count = 1;
+                            }
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                Lock_block_player = 0;
+            }
+
+            if (Pointer_Enemey.transform.position == gameObject.transform.position)
+            {
+                switch (Place_for_)
+                {
+                    case Place_for.Empity:
+                        if (Pointer_Enemey.GetComponent<Pointer_Enemy>().Count >= 1)
+                        {
+                            Place_for_ = Place_for.Enemy;
+                            Pointer_Enemey.GetComponent<Pointer_Enemy>().Count -= 1;
+                            Count = 1;
+                        }
+                        break;
+                    case Place_for.Enemy:
+                        if (Count > 1)
+                        {
+                            Pointer_Enemey.GetComponent<Pointer_Enemy>().Count += Count;
+                            Count = 1;
+                        }
+                        break;
+                    case Place_for.Player:
+                        Lock_block_enemy = 1;
+                        if (Count - Pointer_Enemey.GetComponent<Pointer_Enemy>().Count >= 0)
+                        {
+                            Count -= Pointer_Enemey.GetComponent<Pointer_Enemy>().Count;
+                            Pointer_Enemey.GetComponent<Pointer_Enemy>().Count = 0;
+                        }
+                        else
+                        {
+                            Count -= Pointer_Enemey.GetComponent<Pointer_Enemy>().Count;
+                            Count = 1;
+                            Place_for_ = Place_for.Enemy;
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                Lock_block_enemy = 0;
+            }
+
+
+            //give turn from base
+            if (Pointer_Enemey.transform.position == gameObject.transform.position && Type == Type_place.Enemy)
+            {
+                Pointer_Enemey.GetComponent<Pointer_Enemy>().Count += Count;
+                Count = 0;
+            }
+            else if (Pointer_Player.transform.position == gameObject.transform.position && Type == Type_place.Player)
+            {
+                Pointer_Player.GetComponent<Pointer_player>().Count += Count;
+                Count = 0;
+            }
+
+        }
+
+
+        IEnumerator Spawn_turn_tobase()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(4f);
+                if (Type == Type_place.Player || Type == Type_place.Enemy)
+                {
+                    Count++;
+                }
+
+            }
+        }
+
+        IEnumerator Spaw_turn_forall_turn()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(10);
+                if (Place_for_ == Place_for.Enemy || Place_for_ == Place_for.Player)
+                {
+                    Count++;
+                }
+            }
         }
 
 
@@ -440,7 +544,7 @@ public class Mission_offline : MonoBehaviour
 
         public enum Place_for
         {
-           Empity,Enemy,Player
+            Empity, Enemy, Player, Block
         }
     }
 
@@ -456,6 +560,7 @@ public class Mission_offline : MonoBehaviour
             }
         }
 
+
         private void Update()
         {
             if (Count > 0)
@@ -470,6 +575,97 @@ public class Mission_offline : MonoBehaviour
 
     }
 
+    public class Pointer_Enemy : MonoBehaviour
+    {
+        GameObject[,] placess_insid;
+        GameObject[] Place_Can_move_bot = new GameObject[5];
+        GameObject Place_player;
+        GameObject Place_enemy;
+        TextMeshProUGUI Text_Turn
+        {
+            get
+            {
+                return GetComponentInChildren<TextMeshProUGUI>();
+            }
+        }
+        GameObject Distiny;
 
+        public int Count;
+
+        public void Change_value(GameObject[,] placess_inside, GameObject place_player, GameObject Place_enemy)
+        {
+            //cange values
+            Place_player = place_player;
+            placess_insid = placess_inside;
+            //convert to arry place;
+            int count = 0;
+            foreach (var item in placess_insid)
+            {
+                if (item.GetComponent<Raw_Place_script>().Type != Raw_Place_script.Type_place.Block && Vector3.Distance(gameObject.transform.position, item.transform.position) <= 0.5f)
+                {
+                    for (int i = 0; i < Place_Can_move_bot.Length; i++)
+                    {
+                        if (Place_Can_move_bot[i] == null)
+                        {
+                            Place_Can_move_bot[i] = item;
+                            count++;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            var new_pos = new GameObject[count];
+
+            for (int i = 0; i < Place_Can_move_bot.Length; i++)
+            {
+                if (Place_Can_move_bot[i] != null)
+                {
+                    for (int a = 0; a < new_pos.Length; a++)
+                    {
+                        if (new_pos[a] == null)
+                        {
+                            new_pos[a] = Place_Can_move_bot[i];
+                            break;
+                        }
+                    }
+                }
+
+            }
+
+            Place_Can_move_bot = new_pos;
+
+        }
+
+        private void Start()
+        {
+            StartCoroutine(Start_bot());
+        }
+
+        private void Update()
+        {
+            if (Count >= 1)
+            {
+                Text_Turn.text = Count.ToString();
+            }
+            else
+            {
+                Text_Turn.text = "";
+            }
+        }
+
+        IEnumerator Start_bot()
+        {
+
+            while (true)
+            {
+                yield return new WaitForSeconds(0.1f);
+
+
+            }
+
+        }
+
+    }
 
 }
