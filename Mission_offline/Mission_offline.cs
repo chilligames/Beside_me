@@ -381,15 +381,8 @@ public class Mission_offline : MonoBehaviour
                     GetComponentInChildren<RawImage>().gameObject.SetActive(false);
                     BTN_place.onClick.AddListener(() =>
                     {
-                        //cancell bomb action
-                        foreach (var item in GetComponentInParent<Mission_offline>().Place_blocks)
-                        {
-                            item.GetComponentInChildren<Raw_Place_script>().Anim_boomb = 3;
 
-                        }
 
-                        // build menu
-                        GetComponentInParent<UI_mission_offline>().Anim_build = 3;
                         switch (Type_Build)
                         {
                             case Type_Build.Turret:
@@ -417,10 +410,8 @@ public class Mission_offline : MonoBehaviour
                     break;
                 case Type_place.Block:
                     GetComponentInChildren<RawImage>().gameObject.SetActive(false);
-
                     BTN_place.onClick.AddListener(() =>
                     {
-                        GetComponentInParent<UI_mission_offline>().Anim_build = 1;
                         if (Anim_boomb == 1 || Anim_boomb == 2)
                         {
                             print("convert to place");
@@ -746,19 +737,19 @@ public class Mission_offline : MonoBehaviour
 
         IEnumerator Active_turet()
         {
-            int Magizin=1000;
+            int Magizin = 1000;
 
             while (true)
             {
                 foreach (var item in Place_inside_place)
                 {
-                    if (item.GetComponent<Raw_Place_script  >().Count>=1&&Magizin>=10)
+                    if (item.GetComponent<Raw_Place_script>().Count >= 1 && Magizin >= 10)
                     {
                         Magizin--;
                         item.GetComponent<Raw_Place_script>().Count -= 1;
                         break;
                     }
-                    else if(Magizin<=0)
+                    else if (Magizin <= 0)
                     {
                         print("out off aumo");
                     }
