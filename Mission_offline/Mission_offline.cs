@@ -22,7 +22,7 @@ public class Mission_offline : MonoBehaviour
 
 
     Vector2 Start_pos_fild = new Vector2(-2, 2.5f);
-    public GameObject[,] Places;
+    public GameObject[,] All_place;
     public GameObject[] Place_blocks;
     GameObject[] Place_white;
     GameObject Place_player;
@@ -34,15 +34,15 @@ public class Mission_offline : MonoBehaviour
     void Start()
     {
         //place creator
-        Places = new GameObject[Y_size, X_size];
+        All_place = new GameObject[Y_size, X_size];
         for (int i = 0; i < Y_size; i++)
         {
             for (int a = 0; a < X_size; a++)
             {
-                Places[i, a] = Instantiate(Raw_Place, Place_fild);
-                Places[i, a].name = i.ToString() + a.ToString();
-                Places[i, a].transform.position = Start_pos_fild;
-                Places[i, a].AddComponent<Raw_Place_script>();
+                All_place[i, a] = Instantiate(Raw_Place, Place_fild);
+                All_place[i, a].name = i.ToString() + a.ToString();
+                All_place[i, a].transform.position = Start_pos_fild;
+                All_place[i, a].AddComponent<Raw_Place_script>();
                 Start_pos_fild = new Vector2(Start_pos_fild.x + 0.5f, Start_pos_fild.y);
             }
             Start_pos_fild = new Vector2(-2, Start_pos_fild.y - 0.5f);
@@ -59,8 +59,8 @@ public class Mission_offline : MonoBehaviour
                 int rand = Random.Range(1, Deficullty); //if max value >0 mission hard 
                 if (rand == 2)
                 {
-                    Places[i, a].GetComponent<SpriteRenderer>().color = Color.black;
-                    Places[i, a].GetComponent<Raw_Place_script>().Change_Value_Place_sctipt(new Raw_Place_script.Raw_place_setting { All_place = Places, Color_enemy = Color_enemy, Type_place = Raw_Place_script.Type_place.Block, Place_for = Raw_Place_script.Place_for.Block, Color_player = Color_player, pointer_enemy = Pointer_enemy, pointer_player = pointer_player });
+                    All_place[i, a].GetComponent<SpriteRenderer>().color = Color.black;
+                    All_place[i, a].GetComponent<Raw_Place_script>().Change_Value_Place_sctipt(new Raw_Place_script.Raw_place_setting { All_place = All_place, Color_enemy = Color_enemy, Type_place = Raw_Place_script.Type_place.Block, Place_for = Raw_Place_script.Place_for.Block, Color_player = Color_player, pointer_enemy = Pointer_enemy, pointer_player = pointer_player });
                     count_block++;
                 }
             }
@@ -72,13 +72,13 @@ public class Mission_offline : MonoBehaviour
         {
             for (int a = 0; a < X_size; a++)
             {
-                if (Places[i, a].GetComponent<Raw_Place_script>().Setting_place.Type_place == Raw_Place_script.Type_place.Block)
+                if (All_place[i, a].GetComponent<Raw_Place_script>().Setting_place.Type_place == Raw_Place_script.Type_place.Block)
                 {
                     for (int b = 0; b < count_block; b++)
                     {
                         if (Place_blocks[b] == null)
                         {
-                            Place_blocks[b] = Places[i, a];
+                            Place_blocks[b] = All_place[i, a];
                             break;
                         }
                     }
@@ -89,19 +89,19 @@ public class Mission_offline : MonoBehaviour
 
 
         //pick place null white
-        int count_white = Places.Length - count_block;
+        int count_white = All_place.Length - count_block;
         Place_white = new GameObject[count_white];
         for (int i = 0; i < Y_size; i++)
         {
             for (int a = 0; a < X_size; a++)
             {
-                if (Places[i, a].GetComponent<Raw_Place_script>().Setting_place.Type_place != Raw_Place_script.Type_place.Block)
+                if (All_place[i, a].GetComponent<Raw_Place_script>().Setting_place.Type_place != Raw_Place_script.Type_place.Block)
                 {
                     for (int b = 0; b < count_white; b++)
                     {
                         if (Place_white[b] == null)
                         {
-                            Place_white[b] = Places[i, a];
+                            Place_white[b] = All_place[i, a];
                             break;
                         }
                     }
@@ -135,7 +135,7 @@ public class Mission_offline : MonoBehaviour
         }
         for (int i = 0; i < new_place_white.Length; i++)
         {
-            new_place_white[i].GetComponent<Raw_Place_script>().Change_Value_Place_sctipt(new Raw_Place_script.Raw_place_setting { All_place = Places, Type_place = Raw_Place_script.Type_place.Place, pointer_player = pointer_player, pointer_enemy = Pointer_enemy, Color_player = Color_player, Place_for = Raw_Place_script.Place_for.Empity, Color_enemy = Color_enemy });
+            new_place_white[i].GetComponent<Raw_Place_script>().Change_Value_Place_sctipt(new Raw_Place_script.Raw_place_setting { All_place = All_place, Type_place = Raw_Place_script.Type_place.Place, pointer_player = pointer_player, pointer_enemy = Pointer_enemy, Color_player = Color_player, Place_for = Raw_Place_script.Place_for.Empity, Color_enemy = Color_enemy });
         }
         Place_white = new GameObject[count_white - 2];
         Place_white = new_place_white;
@@ -144,7 +144,7 @@ public class Mission_offline : MonoBehaviour
         pointer_player.transform.position = Place_player.transform.position;
         Pointer_enemy.transform.position = Place_Enemy.transform.position;
         pointer_player.AddComponent<Pointer_player>();
-        Pointer_enemy.AddComponent<Pointer_Enemy>().Change_value(Places, Place_player, Place_Enemy);
+        Pointer_enemy.AddComponent<Pointer_Enemy>().Change_value(All_place, Place_player, Place_Enemy);
 
 
 
@@ -158,8 +158,8 @@ public class Mission_offline : MonoBehaviour
             {
                 Place_player = Place_white[place_player];
                 Place_Enemy = Place_white[palce_enemy];
-                Place_player.GetComponent<Raw_Place_script>().Change_Value_Place_sctipt(new Raw_Place_script.Raw_place_setting { All_place = Places, Type_place = Raw_Place_script.Type_place.Player, Place_for = Raw_Place_script.Place_for.Player, Color_enemy = Color_enemy, Color_player = Color_player, pointer_enemy = Pointer_enemy, pointer_player = pointer_player });
-                Place_Enemy.GetComponent<Raw_Place_script>().Change_Value_Place_sctipt(new Raw_Place_script.Raw_place_setting { All_place = Places, Type_place = Raw_Place_script.Type_place.Enemy, Place_for = Raw_Place_script.Place_for.Enemy, pointer_player = pointer_player, pointer_enemy = Pointer_enemy, Color_player = Color_player, Color_enemy = Color_enemy });
+                Place_player.GetComponent<Raw_Place_script>().Change_Value_Place_sctipt(new Raw_Place_script.Raw_place_setting { All_place = All_place, Type_place = Raw_Place_script.Type_place.Player, Place_for = Raw_Place_script.Place_for.Player, Color_enemy = Color_enemy, Color_player = Color_player, pointer_enemy = Pointer_enemy, pointer_player = pointer_player });
+                Place_Enemy.GetComponent<Raw_Place_script>().Change_Value_Place_sctipt(new Raw_Place_script.Raw_place_setting { All_place = All_place, Type_place = Raw_Place_script.Type_place.Enemy, Place_for = Raw_Place_script.Place_for.Enemy, pointer_player = pointer_player, pointer_enemy = Pointer_enemy, Color_player = Color_player, Color_enemy = Color_enemy });
             }
             else
             {
@@ -234,7 +234,7 @@ public class Mission_offline : MonoBehaviour
         {
             GameObject[] placess = new GameObject[5];
             int count = 0;
-            foreach (var item in Places)
+            foreach (var item in All_place)
             {
                 if (Vector2.Distance(item.transform.position, pointer_player.transform.position) <= 0.5f)
                 {
