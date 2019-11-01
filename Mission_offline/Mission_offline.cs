@@ -304,6 +304,7 @@ public class Mission_offline : MonoBehaviour
     public class Raw_Place_script : MonoBehaviour
     {
         //entity places
+        public Raw_place_setting Setting_place;
         public Type_place Type;
         public Place_for Place_for_;
         public Type_Build Type_Build;
@@ -311,7 +312,7 @@ public class Mission_offline : MonoBehaviour
         public Color Color_enemy;
         GameObject Pointer_Enemey;
         GameObject Pointer_Player;
-        
+
         TextMeshProUGUI Text_place
         {
             get
@@ -339,9 +340,10 @@ public class Mission_offline : MonoBehaviour
         public int Anim_builds;
 
 
-        public void Change_Value(Type_place Type_block, Place_for place_For, Color Color_player, Color Color_enemy, GameObject Pointer_player, GameObject pointer_enemy)
+        public void Change_Value(Raw_place_setting Setting, Type_place Type_block, Place_for place_For, Color Color_player, Color Color_enemy, GameObject Pointer_player, GameObject pointer_enemy)
         {
-            this.Color_player = Color_player;
+            
+            this.Color_player = Setting.Color_player;
             this.Color_enemy = Color_enemy;
             Place_for_ = place_For;
             Pointer_Player = Pointer_player;
@@ -366,7 +368,7 @@ public class Mission_offline : MonoBehaviour
                         {
                             case Type_Build.Turret:
                                 {
-                                    
+
                                 }
                                 break;
                         }
@@ -406,7 +408,6 @@ public class Mission_offline : MonoBehaviour
                     });
                     break;
             }
-
 
         }
 
@@ -680,7 +681,7 @@ public class Mission_offline : MonoBehaviour
                 else
                 {
                     Anim_builds = 0;
-                    Type_Build =Type_Build.Null;
+                    Type_Build = Type_Build.Null;
                 }
             }
 
@@ -692,7 +693,7 @@ public class Mission_offline : MonoBehaviour
                     break;
                 case Type_Build.Turret:
                     {
-                        
+
                     }
                     break;
             }
@@ -733,6 +734,18 @@ public class Mission_offline : MonoBehaviour
         public enum Place_for
         {
             Empity, Enemy, Player, Block
+        }
+
+        public struct Raw_place_setting
+        {
+            public Type_place Type_bloc;
+            public Place_for Place_for;
+            public Color Color_player;
+            public Color Color_enemy;
+            public GameObject pointer_player;
+            public GameObject pointer_enemy;
+
+
         }
 
     }
@@ -1008,7 +1021,7 @@ public class Mission_offline : MonoBehaviour
 
     public enum Type_Build
     {
-        Null,Bomb, Turret
+        Null, Bomb, Turret
 
     }
 }
