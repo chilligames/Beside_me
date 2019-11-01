@@ -340,11 +340,11 @@ public class Mission_offline : MonoBehaviour
         {
             Setting_place = Setting;
 
-            Place_inside_place = new GameObject[5];
+            Place_inside_place = new GameObject[8];
             int count = 0;
             foreach (var item in Setting_place.All_place)
             {
-                if (Vector3.Distance(item.transform.position, gameObject.transform.position) <= 1 && item.GetComponent<Raw_Place_script>().Setting_place.Type_place != Type_place.Block)
+                if (Vector3.Distance(item.transform.position, gameObject.transform.position) <= 0.9)
                 {
                     for (int i = 0; i < Place_inside_place.Length; i++)
                     {
@@ -381,20 +381,11 @@ public class Mission_offline : MonoBehaviour
                     GetComponentInChildren<RawImage>().gameObject.SetActive(false);
                     BTN_place.onClick.AddListener(() =>
                     {
-
-
                         switch (Type_Build)
                         {
                             case Type_Build.Turret:
                                 {
-                                    StartCoroutine(Active_turet());
-                                    print("active_turret");
-                                    print(gameObject.name);
-                                    print("fire in ");
-                                    foreach (var item in Place_inside_place)
-                                    {
-                                        print(item);
-                                    }
+                                    StartCoroutine(Active_turet(Place_for.Enemy));
                                 }
                                 break;
                         }
@@ -414,15 +405,16 @@ public class Mission_offline : MonoBehaviour
                     {
                         if (Anim_boomb == 1 || Anim_boomb == 2)
                         {
-                            print("convert to place");
-                            Setting.Type_place = Type_place.Place;
-                            Setting.Place_for = Place_for.Empity;
 
+                            //disable all animation bomb
                             foreach (var item in GetComponentInParent<Mission_offline>().Place_blocks)
                             {
                                 item.GetComponentInParent<Raw_Place_script>().Anim_boomb = 3;
                             }
 
+                            //work
+                            Setting_place.Type_place = Type_place.Place;
+                            Setting_place.Place_for = Place_for.Empity;
                             Anim_boomb = 3;
                         }
                     });
@@ -476,6 +468,8 @@ public class Mission_offline : MonoBehaviour
                     GetComponent<SpriteRenderer>().color = Color.black;
                     break;
             }
+
+
 
             //change place for with 0
             if (Count == 0 && Setting_place.Type_place != Type_place.Block && Setting_place.Type_place != Type_place.Enemy && Setting_place.Type_place != Type_place.Player) //change and cheack for player enemy
@@ -629,79 +623,88 @@ public class Mission_offline : MonoBehaviour
 
 
             //anim controll
+
             //anim Bobms
-            if (Anim_boomb == 1)
+            if (Setting_place.Type_place == Type_place.Block)
             {
-                if (gameObject.transform.localScale != new Vector3(3.5f, 3.5f, 0))
+
+                if (Anim_boomb == 1)
                 {
-                    gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3.5f, 3.5f, 0), 0.05f);
+                    if (gameObject.transform.localScale != new Vector3(3.5f, 3.5f, 0))
+                    {
+                        gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3.5f, 3.5f, 0), 0.05f);
+                    }
+                    else
+                    {
+                        Anim_boomb = 2;
+                    }
+
                 }
-                else
+                else if (Anim_boomb == 2)
                 {
-                    Anim_boomb = 2;
+                    if (gameObject.transform.localScale != new Vector3(3, 3, 0))
+                    {
+                        gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3, 3, 0), 0.05f);
+                    }
+                    else
+                    {
+                        Anim_boomb = 1;
+                    }
+                }
+                else if (Anim_boomb == 3)
+                {
+                    if (gameObject.transform.localScale != new Vector3(3, 3, 0))
+                    {
+
+                        gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3, 3, 0), 0.05f);
+                    }
+                    else
+                    {
+                        Anim_boomb = 0;
+                        Type_Build = Type_Build.Null;
+                    }
                 }
 
-            }
-            else if (Anim_boomb == 2)
-            {
-                if (gameObject.transform.localScale != new Vector3(3, 3, 0))
-                {
-                    gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3, 3, 0), 0.05f);
-                }
-                else
-                {
-                    Anim_boomb = 1;
-                }
-            }
-            else if (Anim_boomb == 3)
-            {
-                if (gameObject.transform.localScale != new Vector3(3, 3, 0))
-                {
-
-                    gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3, 3, 0), 0.05f);
-                }
-                else
-                {
-                    Anim_boomb = 0;
-                }
             }
 
             //anim_builds
-
-            else if (Anim_builds == 1)
+            if (Setting_place.Type_place == Type_place.Place)
             {
-                if (gameObject.transform.localScale != new Vector3(3.5f, 3.5f, 0))
+                if (Anim_builds == 1)
                 {
-                    gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3.5f, 3.5f, 0), 0.01f);
+                    if (gameObject.transform.localScale != new Vector3(3.5f, 3.5f, 0))
+                    {
+                        gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3.5f, 3.5f, 0), 0.01f);
 
+                    }
+                    else
+                    {
+                        Anim_builds = 2;
+                    }
                 }
-                else
+                else if (Anim_builds == 2)
                 {
-                    Anim_builds = 2;
-                }
-            }
-            else if (Anim_builds == 2)
-            {
-                if (gameObject.transform.localScale != new Vector3(3, 3, 0))
-                {
-                    gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3, 3, 0), 0.01f);
-                }
-                else
-                {
-                    Anim_builds = 1;
+                    if (gameObject.transform.localScale != new Vector3(3, 3, 0))
+                    {
+                        gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3, 3, 0), 0.01f);
+                    }
+                    else
+                    {
+                        Anim_builds = 1;
 
+                    }
                 }
-            }
-            else if (Anim_builds == 3)
-            {
-                if (gameObject.transform.localScale != new Vector3(3, 3, 0))
+                else if (Anim_builds == 3)
                 {
-                    gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3, 3, 0), 0.01f);
-                }
-                else
-                {
-                    Anim_builds = 0;
-                    Type_Build = Type_Build.Null;
+                    if (gameObject.transform.localScale != new Vector3(3, 3, 0))
+                    {
+                        gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3, 3, 0), 0.01f);
+                    }
+                    else
+                    {
+                        Anim_builds = 0;
+                        Type_Build = Type_Build.Null;
+                    }
                 }
             }
 
@@ -735,26 +738,29 @@ public class Mission_offline : MonoBehaviour
             }
         }
 
-        IEnumerator Active_turet()
+
+        IEnumerator Active_turet(Place_for fire_to)
         {
-            int Magizin = 1000;
+            int Magizin = 5;
 
             while (true)
             {
+
                 foreach (var item in Place_inside_place)
                 {
-                    if (item.GetComponent<Raw_Place_script>().Count >= 1 && Magizin >= 10)
+                    if (item.GetComponent<Raw_Place_script>().Count >= 1 && Magizin >= 1 && item.GetComponent<Raw_Place_script>().Setting_place.Place_for == fire_to)
                     {
                         Magizin--;
                         item.GetComponent<Raw_Place_script>().Count -= 1;
+
                         break;
                     }
                     else if (Magizin <= 0)
                     {
-                        print("out off aumo");
+                        StopCoroutine(Active_turet(fire_to));
                     }
                 }
-                yield return new WaitForSeconds(1);
+                yield return new WaitForSeconds(0.1f);
 
             }
         }
