@@ -353,13 +353,14 @@ public class Mission_offline : MonoBehaviour
                     BTN_place.onClick.AddListener(() =>
                     {
                         print("cancel");
-                        print("buld  show here");
+                        //cancell bomb action
                         foreach (var item in GetComponentInParent<Mission_offline>().Place_blocks)
                         {
                             item.GetComponentInChildren<Raw_Place_script>().Anim_boomb = 3;
 
                         }
-                        
+                        // build menu
+                        GetComponentInParent<UI_mission_offline>().Anim_build = 1;
                     });
                     Type = Type_block;
                     break;
@@ -378,6 +379,7 @@ public class Mission_offline : MonoBehaviour
                     Type = Type_block;
                     BTN_place.onClick.AddListener(() =>
                     {
+                        GetComponentInParent<UI_mission_offline>().Anim_build = 1;
                         if (Anim_boomb == 1 || Anim_boomb == 2)
                         {
                             print("convert to place");
@@ -388,6 +390,7 @@ public class Mission_offline : MonoBehaviour
                             {
                                 item.GetComponentInParent<Raw_Place_script>().Anim_boomb = 3;
                             }
+                            
                             Anim_boomb = 3;
                         }
                     });
