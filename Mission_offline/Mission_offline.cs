@@ -15,6 +15,18 @@ public class Mission_offline : MonoBehaviour
     public GameObject pointer_player;
     public GameObject Pointer_enemy;
 
+
+
+    [Header("Defend Object")]
+    public GameObject turret;
+
+    [Header("Attack Object")]
+    public GameObject Bomb;
+
+
+
+
+    [Header("Setting mission")]
     public int Y_size;//dfult 11
     public int X_size;//defult 9
     [Range(3, 10)]
@@ -427,7 +439,7 @@ public class Mission_offline : MonoBehaviour
                         {
                             case Type_Build.Turret:
                                 {
-                                    
+                                    print("turet instantion");
                                 }
                                 break;
                         }
