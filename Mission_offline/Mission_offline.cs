@@ -902,6 +902,7 @@ public class Mission_offline : MonoBehaviour
         public int Count;
         int Atack_time;
         int count_last_postion;
+        int lock_move;
 
         public void Change_value_enemy_pointer(Setting_Enemy setting)
         {
@@ -969,7 +970,7 @@ public class Mission_offline : MonoBehaviour
             StartCoroutine(Start_bot());
             StartCoroutine(Control_build());
             //StartCoroutine(Control_bug_move());
-            StartCoroutine(Control_bug_go_to_distiny());
+            //StartCoroutine(Control_bug_go_to_distiny());
         }
 
         private void Update()
@@ -1037,13 +1038,29 @@ public class Mission_offline : MonoBehaviour
 
                                     }
                                 }
+
                             }
                             else
                             {
-                                int rand_step = Random.Range(0, Place_Can_move_bot.Length);
+                                foreach (var white in Place_Can_move_bot)
+                                {
+                                    if (white.GetComponent<Raw_Place_script>().Setting_place.Place_for == Raw_Place_script.Place_for.Empity)
+                                    {
+                                        Distiny_pointer = item;
+                                        print("white");
+                                    }
+                                    else
+                                    {
+                                        print("rand");
+                                        int rand_step = Random.Range(0, Place_Can_move_bot.Length);
 
-                                Distiny_pointer = Place_Can_move_bot[rand_step];
-                                Atack_time++;
+                                        Distiny_pointer = Place_Can_move_bot[rand_step];
+                                        Atack_time++;
+
+                                    }
+
+
+                                }
 
                             }
                         }
@@ -1053,7 +1070,7 @@ public class Mission_offline : MonoBehaviour
                     while (true)
                     {
                         yield return new WaitForSeconds(0.01f);
-
+                        lock_move = 0;
                         if (gameObject.transform.position != Distiny_pointer.transform.position)
                         {
                             gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, Distiny_pointer.transform.position, 0.1f);
@@ -1061,6 +1078,7 @@ public class Mission_offline : MonoBehaviour
                         else
                         {
                             Change_value_enemy_pointer(Enemy_setting);
+                            lock_move = 1;
                             break;
                         }
 
@@ -1094,13 +1112,16 @@ public class Mission_offline : MonoBehaviour
                     while (true)
                     {
                         yield return new WaitForSeconds(0.01f);
+                        lock_move = 0;
                         if (gameObject.transform.position != Distiny_pointer.transform.position)
                         {
                             gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, Distiny_pointer.transform.position, 0.1f);
+
                         }
                         else
                         {
                             Change_value_enemy_pointer(Enemy_setting);
+                            lock_move = 1;
                             break;
                         }
 
@@ -1136,7 +1157,7 @@ public class Mission_offline : MonoBehaviour
                 var Last_stay = Last_postion;
 
                 yield return new WaitForSeconds(5);
-                
+
 
                 if (Last_stay == Last_postion
                     )
@@ -1169,12 +1190,29 @@ public class Mission_offline : MonoBehaviour
                 var last_postion = Distiny_pointer;
                 yield return new WaitForSeconds(5);
 
-                if (Last_postion == Distiny_pointer)
+                if (lock_move == 1)
                 {
-                    print("bug to distiny");
+
+                    if (last_postion == Distiny_pointer)
+                    {
+                        foreach (var item in Place_Can_move_bot)
+                        {
+                            if (Vector3.Distance(item.transform.position, Enemy_setting.Place_player.transform.position) <= Vector3.Distance(gameObject.transform.position, Enemy_setting.Place_player.transform.position))
+                            {
+                                Distiny_pointer = item;
+                                print(item);
+                                print("find path");
+                            }
+                            else
+                            {
+                                print("not path");
+                            }
+
+                        }
+
+                    }
 
                 }
-
             }
         }
         public struct Setting_Enemy
