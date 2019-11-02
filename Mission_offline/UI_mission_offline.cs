@@ -106,6 +106,7 @@ public class UI_mission_offline : MonoBehaviour
         {
             item.GetComponent<Mission_offline.Raw_Place_script>().Anim_boomb = 3;
             item.GetComponent<Mission_offline.Raw_Place_script>().Anim_builds = 3;
+            item.GetComponent<Mission_offline.Raw_Place_script>().Type_Build = Mission_offline.Type_Build.Null;
         }
     }
 }

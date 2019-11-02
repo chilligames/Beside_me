@@ -18,10 +18,9 @@ public class Mission_offline : MonoBehaviour
 
 
     [Header("Defend Object")]
-    public GameObject turret;
 
     [Header("Attack Object")]
-    public GameObject Bomb;
+    public GameObject Raw_turret;
 
 
 
@@ -87,8 +86,9 @@ public class Mission_offline : MonoBehaviour
 
                         }, new Raw_Place_script.Atack_object
                         {
+                            Raw_Turet = Raw_turret
 
-                        });
+                        }); ;
 
 
                     count_block++;
@@ -172,7 +172,7 @@ public class Mission_offline : MonoBehaviour
 
                 }, new Raw_Place_script.Atack_object
                 {
-
+                    Raw_Turet = Raw_turret
                 }
 
                 );
@@ -203,6 +203,7 @@ public class Mission_offline : MonoBehaviour
                     {
                     }, new Raw_Place_script.Atack_object
                     {
+                        Raw_Turet = Raw_turret
                     });
                 Place_Enemy.GetComponent<Raw_Place_script>().Change_Value_Place_sctipt(new Raw_Place_script.Raw_place_setting { All_place = All_place, Type_place = Raw_Place_script.Type_place.Enemy, Place_for = Raw_Place_script.Place_for.Enemy, pointer_player = pointer_player, pointer_enemy = Pointer_enemy, Color_player = Color_player, Color_enemy = Color_enemy },
                     new Raw_Place_script.Defance_Object
@@ -210,6 +211,7 @@ public class Mission_offline : MonoBehaviour
                     },
                     new Raw_Place_script.Atack_object
                     {
+                        Raw_Turet = Raw_turret
                     });
             }
             else
@@ -393,6 +395,8 @@ public class Mission_offline : MonoBehaviour
         public void Change_Value_Place_sctipt(Raw_place_setting Setting, Defance_Object Defance, Atack_object Atack)
         {
             Setting_place = Setting;
+            Atack_objects = Atack;
+            Defance_object = Defance;
 
             Place_inside_place = new GameObject[8];
             int count = 0;
@@ -439,7 +443,26 @@ public class Mission_offline : MonoBehaviour
                         {
                             case Type_Build.Turret:
                                 {
-                                    print("turet instantion");
+                                    foreach (var item in Setting.All_place)
+                                    {
+                                        if (item.GetComponent<Raw_Place_script>().Setting_place.Type_place == Type_place.Place && item.GetComponent<Raw_Place_script>().Count >= 2)
+                                        {
+                                            Instantiate(Atack_objects.Raw_Turet, transform).GetComponent<Turret>().Change_valus(
+                                                new Turret.Setting_turet
+                                                {
+                                                    fire_on_placess = Place_inside_place,
+                                                    magezin = 10,
+                                                    Fire_to_ = Place_for.Enemy,
+                                                    Place = gameObject
+                                                }
+                                                );
+                                            break;
+                                        }
+                                        else if (item.GetComponent<Raw_Place_script>().Count <= 0)
+                                        {
+                                            print("code err no turen");
+                                        }
+                                    }
                                 }
                                 break;
                         }
@@ -814,7 +837,6 @@ public class Mission_offline : MonoBehaviour
         }
         public struct Defance_Object
         {
-            public GameObject Raw_Bomb;
         }
 
     }
