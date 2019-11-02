@@ -970,7 +970,6 @@ public class Mission_offline : MonoBehaviour
         {
             StartCoroutine(Start_bot());
             StartCoroutine(Control_build());
-            //StartCoroutine(Control_bug_move());
             StartCoroutine(Control_bug_go_to_distiny());
         }
 
@@ -1011,7 +1010,7 @@ public class Mission_offline : MonoBehaviour
 
         IEnumerator Start_bot()
         {
-           
+
 
             while (true)
             {
@@ -1048,13 +1047,11 @@ public class Mission_offline : MonoBehaviour
                                     if (white.GetComponent<Raw_Place_script>().Setting_place.Place_for == Raw_Place_script.Place_for.Empity)
                                     {
                                         Distiny_pointer = white;
-                                        print("white");
                                     }
                                     else
                                     {
-                                        if (Distiny_pointer.GetComponent<Raw_Place_script>().Setting_place.Place_for!=Raw_Place_script.Place_for.Empity)
+                                        if (Distiny_pointer.GetComponent<Raw_Place_script>().Setting_place.Place_for != Raw_Place_script.Place_for.Empity)
                                         {
-                                            print("rand");
                                             int rand_step = Random.Range(0, Place_Can_move_bot.Length);
 
                                             Distiny_pointer = Place_Can_move_bot[rand_step];
@@ -1094,11 +1091,20 @@ public class Mission_offline : MonoBehaviour
 
                     foreach (var item in Place_Can_move_bot)
                     {
-                        if (Vector3.Distance(item.transform.position, Enemy_setting.place_enemy.transform.position) <= Vector3.Distance(Distiny_pointer.transform.position, Enemy_setting.place_enemy.transform.position))
+                        if (
+                            item.GetComponent<Raw_Place_script>().Setting_place.Place_for == Raw_Place_script.Place_for.Enemy
+                            && Vector3.Distance(item.transform.position,Enemy_setting.place_enemy.transform.position)<=Vector3.Distance(Distiny_pointer.transform.position,Enemy_setting.place_enemy.transform.position)
+                            &&Last_postion != item
+                            )
                         {
                             Distiny_pointer = item;
                             Last_postion = item;
-
+                            break;
+                        }
+                        else if (Vector3.Distance(item.transform.position, Enemy_setting.place_enemy.transform.position) <= Vector3.Distance(Distiny_pointer.transform.position, Enemy_setting.place_enemy.transform.position))
+                        {
+                            Distiny_pointer = item;
+                            Last_postion = item;
                         }
                     }
 
@@ -1154,39 +1160,6 @@ public class Mission_offline : MonoBehaviour
         }
 
 
-        IEnumerator Control_bug_back_to_home()
-        {
-            while (true)
-            {
-                var Last_stay = Last_postion;
-
-                yield return new WaitForSeconds(5);
-
-
-                if (Last_stay == Last_postion
-                    )
-                {
-                    Change_value_enemy_pointer(Enemy_setting);
-                    var rand_pos = Random.Range(0, Place_Can_move_bot.Length);
-                    print("bug");
-                    while (true)
-                    {
-                        Last_postion = Place_Can_move_bot[rand_pos];
-                        if (gameObject.transform.position != Place_Can_move_bot[rand_pos].transform.position)
-                        {
-                            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, Place_Can_move_bot[rand_pos].transform.position, 0.1f);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                        yield return new WaitForSeconds(0.1f);
-                    }
-
-                }
-            }
-        }
-
         IEnumerator Control_bug_go_to_distiny()
         {
             while (true)
@@ -1204,16 +1177,18 @@ public class Mission_offline : MonoBehaviour
                             if (Vector3.Distance(item.transform.position, Enemy_setting.Place_player.transform.position) <= Vector3.Distance(gameObject.transform.position, Enemy_setting.Place_player.transform.position))
                             {
                                 Distiny_pointer = item;
-                                print(item);
                                 print("find path");
                             }
                             else
                             {
-                                print("not path");
+                                print("dipos");
+                                if (Enemy_setting.place_enemy.GetComponent<Raw_Place_script>().Count>=2)
+                                {
+                                    Count += 2;
+                                    Enemy_setting.place_enemy.GetComponent<Raw_Place_script>().Count -= 2;
+                                }
                             }
-
                         }
-
                     }
 
                 }
