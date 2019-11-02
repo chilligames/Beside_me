@@ -969,6 +969,7 @@ public class Mission_offline : MonoBehaviour
             StartCoroutine(Start_bot());
             StartCoroutine(Control_build());
             //StartCoroutine(Control_bug_move());
+            StartCoroutine(Control_bug_go_to_distiny());
         }
 
         private void Update()
@@ -1025,7 +1026,7 @@ public class Mission_offline : MonoBehaviour
                         }
                         else
                         {
-                            if (Atack_time >=2)
+                            if (Atack_time >= 2)
                             {
                                 Atack_time = 0;
                                 foreach (var place_attack in Place_Can_move_bot)
@@ -1128,16 +1129,17 @@ public class Mission_offline : MonoBehaviour
         }
 
 
-        IEnumerator Control_bug_move()
+        IEnumerator Control_bug_back_to_home()
         {
             while (true)
             {
                 var Last_stay = Last_postion;
 
                 yield return new WaitForSeconds(5);
-                var secend_stay = Last_postion;
+                
 
-                if (Last_stay == secend_stay)
+                if (Last_stay == Last_postion
+                    )
                 {
                     Change_value_enemy_pointer(Enemy_setting);
                     var rand_pos = Random.Range(0, Place_Can_move_bot.Length);
@@ -1160,6 +1162,21 @@ public class Mission_offline : MonoBehaviour
             }
         }
 
+        IEnumerator Control_bug_go_to_distiny()
+        {
+            while (true)
+            {
+                var last_postion = Distiny_pointer;
+                yield return new WaitForSeconds(5);
+
+                if (Last_postion == Distiny_pointer)
+                {
+                    print("bug to distiny");
+
+                }
+
+            }
+        }
         public struct Setting_Enemy
         {
             public GameObject[,] All_place;
