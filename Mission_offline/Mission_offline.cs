@@ -60,7 +60,25 @@ public class Mission_offline : MonoBehaviour
                 if (rand == 2)
                 {
                     All_place[i, a].GetComponent<SpriteRenderer>().color = Color.black;
-                    All_place[i, a].GetComponent<Raw_Place_script>().Change_Value_Place_sctipt(new Raw_Place_script.Raw_place_setting { All_place = All_place, Color_enemy = Color_enemy, Type_place = Raw_Place_script.Type_place.Block, Place_for = Raw_Place_script.Place_for.Block, Color_player = Color_player, pointer_enemy = Pointer_enemy, pointer_player = pointer_player });
+                    All_place[i, a].GetComponent<Raw_Place_script>().Change_Value_Place_sctipt(
+                        new Raw_Place_script.Raw_place_setting
+                        {
+                            All_place = All_place,
+                            Color_enemy = Color_enemy,
+                            Type_place = Raw_Place_script.Type_place.Block,
+                            Place_for = Raw_Place_script.Place_for.Block,
+                            Color_player = Color_player,
+                            pointer_enemy = Pointer_enemy,
+                            pointer_player = pointer_player
+                        }, new Raw_Place_script.Defance_Object
+                        {
+
+                        }, new Raw_Place_script.Atack_object
+                        {
+
+                        });
+
+
                     count_block++;
                 }
             }
@@ -135,7 +153,17 @@ public class Mission_offline : MonoBehaviour
         }
         for (int i = 0; i < new_place_white.Length; i++)
         {
-            new_place_white[i].GetComponent<Raw_Place_script>().Change_Value_Place_sctipt(new Raw_Place_script.Raw_place_setting { All_place = All_place, Type_place = Raw_Place_script.Type_place.Place, pointer_player = pointer_player, pointer_enemy = Pointer_enemy, Color_player = Color_player, Place_for = Raw_Place_script.Place_for.Empity, Color_enemy = Color_enemy });
+            new_place_white[i].GetComponent<Raw_Place_script>().Change_Value_Place_sctipt(
+                new Raw_Place_script.Raw_place_setting { All_place = All_place, Type_place = Raw_Place_script.Type_place.Place, pointer_player = pointer_player, pointer_enemy = Pointer_enemy, Color_player = Color_player, Place_for = Raw_Place_script.Place_for.Empity, Color_enemy = Color_enemy }
+                , new Raw_Place_script.Defance_Object
+                {
+
+                }, new Raw_Place_script.Atack_object
+                {
+
+                }
+
+                );
         }
         Place_white = new GameObject[count_white - 2];
         Place_white = new_place_white;
@@ -158,8 +186,19 @@ public class Mission_offline : MonoBehaviour
             {
                 Place_player = Place_white[place_player];
                 Place_Enemy = Place_white[palce_enemy];
-                Place_player.GetComponent<Raw_Place_script>().Change_Value_Place_sctipt(new Raw_Place_script.Raw_place_setting { All_place = All_place, Type_place = Raw_Place_script.Type_place.Player, Place_for = Raw_Place_script.Place_for.Player, Color_enemy = Color_enemy, Color_player = Color_player, pointer_enemy = Pointer_enemy, pointer_player = pointer_player });
-                Place_Enemy.GetComponent<Raw_Place_script>().Change_Value_Place_sctipt(new Raw_Place_script.Raw_place_setting { All_place = All_place, Type_place = Raw_Place_script.Type_place.Enemy, Place_for = Raw_Place_script.Place_for.Enemy, pointer_player = pointer_player, pointer_enemy = Pointer_enemy, Color_player = Color_player, Color_enemy = Color_enemy });
+                Place_player.GetComponent<Raw_Place_script>().Change_Value_Place_sctipt(new Raw_Place_script.Raw_place_setting { All_place = All_place, Type_place = Raw_Place_script.Type_place.Player, Place_for = Raw_Place_script.Place_for.Player, Color_enemy = Color_enemy, Color_player = Color_player, pointer_enemy = Pointer_enemy, pointer_player = pointer_player },
+                    new Raw_Place_script.Defance_Object
+                    {
+                    }, new Raw_Place_script.Atack_object
+                    {
+                    });
+                Place_Enemy.GetComponent<Raw_Place_script>().Change_Value_Place_sctipt(new Raw_Place_script.Raw_place_setting { All_place = All_place, Type_place = Raw_Place_script.Type_place.Enemy, Place_for = Raw_Place_script.Place_for.Enemy, pointer_player = pointer_player, pointer_enemy = Pointer_enemy, Color_player = Color_player, Color_enemy = Color_enemy },
+                    new Raw_Place_script.Defance_Object
+                    {
+                    },
+                    new Raw_Place_script.Atack_object
+                    {
+                    });
             }
             else
             {
@@ -304,6 +343,9 @@ public class Mission_offline : MonoBehaviour
     {
         //entity places
         public Raw_place_setting Setting_place;
+        public Atack_object Atack_objects;
+        public Defance_Object Defance_object;
+
         public Type_Build Type_Build;
 
         GameObject[] Place_inside_place;
@@ -336,7 +378,7 @@ public class Mission_offline : MonoBehaviour
         public int Anim_builds;
 
 
-        public void Change_Value_Place_sctipt(Raw_place_setting Setting)
+        public void Change_Value_Place_sctipt(Raw_place_setting Setting, Defance_Object Defance, Atack_object Atack)
         {
             Setting_place = Setting;
 
@@ -385,7 +427,7 @@ public class Mission_offline : MonoBehaviour
                         {
                             case Type_Build.Turret:
                                 {
-                                    StartCoroutine(Active_turet(Place_for.Enemy));
+                                    
                                 }
                                 break;
                         }
@@ -627,7 +669,6 @@ public class Mission_offline : MonoBehaviour
             //anim Bobms
             if (Setting_place.Type_place == Type_place.Block)
             {
-
                 if (Anim_boomb == 1)
                 {
                     if (gameObject.transform.localScale != new Vector3(3.5f, 3.5f, 0))
@@ -664,7 +705,6 @@ public class Mission_offline : MonoBehaviour
                         Type_Build = Type_Build.Null;
                     }
                 }
-
             }
 
             //anim_builds
@@ -707,9 +747,6 @@ public class Mission_offline : MonoBehaviour
                     }
                 }
             }
-
-
-
         }
 
 
@@ -739,32 +776,6 @@ public class Mission_offline : MonoBehaviour
         }
 
 
-        IEnumerator Active_turet(Place_for fire_to)
-        {
-            int Magizin = 5;
-
-            while (true)
-            {
-
-                foreach (var item in Place_inside_place)
-                {
-                    if (item.GetComponent<Raw_Place_script>().Count >= 1 && Magizin >= 1 && item.GetComponent<Raw_Place_script>().Setting_place.Place_for == fire_to)
-                    {
-                        Magizin--;
-                        item.GetComponent<Raw_Place_script>().Count -= 1;
-
-                        break;
-                    }
-                    else if (Magizin <= 0)
-                    {
-                        StopCoroutine(Active_turet(fire_to));
-                    }
-                }
-                yield return new WaitForSeconds(0.1f);
-
-            }
-        }
-
         public enum Type_place
         {
             Place, Player, Block, Enemy
@@ -784,6 +795,14 @@ public class Mission_offline : MonoBehaviour
             public GameObject pointer_player;
             public GameObject pointer_enemy;
             public GameObject[,] All_place;
+        }
+        public struct Atack_object
+        {
+            public GameObject Raw_Turet;
+        }
+        public struct Defance_Object
+        {
+            public GameObject Raw_Bomb;
         }
 
     }
