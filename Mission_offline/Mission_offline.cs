@@ -950,14 +950,18 @@ public class Mission_offline : MonoBehaviour
             Place_Can_move_bot = new_pos;
 
             //frist distiny_finde
-            foreach (var item in Place_Can_move_bot)
+            if (Distiny_pointer == null)
             {
-                if (item.GetComponent<Raw_Place_script>().Setting_place.Type_place != Raw_Place_script.Type_place.Enemy)
+                foreach (var item in Place_Can_move_bot)
                 {
-                    Distiny_pointer = item;
-                    break;
+                    if (item.GetComponent<Raw_Place_script>().Setting_place.Type_place != Raw_Place_script.Type_place.Enemy)
+                    {
+                        Distiny_pointer = item;
+                        break;
+                    }
                 }
             }
+
         }
 
         private void Start()
@@ -1000,7 +1004,6 @@ public class Mission_offline : MonoBehaviour
                 case Type_Build.Turret:
                     break;
             }
-
         }
 
         IEnumerator Start_bot()
@@ -1010,24 +1013,37 @@ public class Mission_offline : MonoBehaviour
             {
                 yield return new WaitForSeconds(0.3f);
 
-                if (Count >= 4)
+                if (Count >= 1)
                 {
+                    //find distiny
                     foreach (var item in Place_Can_move_bot)
                     {
-                        if (Atack_time >= 2 && Vector3.Distance(item.transform.position, Enemy_setting.Place_player.transform.position) <= Vector3.Distance(gameObject.transform.position, Enemy_setting.Place_player.transform.position))
+                        if (item.GetComponent<Raw_Place_script>().Setting_place.Place_for == Raw_Place_script.Place_for.Player)
                         {
-                            Atack_time = 0;
                             Distiny_pointer = item;
-                            print("attack");
                             break;
                         }
                         else
                         {
-                            if (item.GetComponent<Raw_Place_script>().Setting_place.Place_for == Raw_Place_script.Place_for.Player || item.GetComponent<Raw_Place_script>().Setting_place.Type_place == Raw_Place_script.Type_place.Place)
+                            if (Atack_time >=2)
                             {
+                                Atack_time = 0;
+                                foreach (var place_attack in Place_Can_move_bot)
+                                {
+                                    if (Vector3.Distance(place_attack.transform.position, Enemy_setting.Place_player.transform.position) <= Vector3.Distance(Distiny_pointer.transform.position, Enemy_setting.Place_player.transform.position))
+                                    {
+                                        Distiny_pointer = place_attack;
+
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                int rand_step = Random.Range(0, Place_Can_move_bot.Length);
+
+                                Distiny_pointer = Place_Can_move_bot[rand_step];
                                 Atack_time++;
-                                Distiny_pointer = item;
-                                break;
+
                             }
                         }
                     }
@@ -1046,16 +1062,19 @@ public class Mission_offline : MonoBehaviour
                             Change_value_enemy_pointer(Enemy_setting);
                             break;
                         }
+
                     }
                 }
                 else
                 {
+
                     foreach (var item in Place_Can_move_bot)
                     {
                         if (Vector3.Distance(item.transform.position, Enemy_setting.place_enemy.transform.position) <= Vector3.Distance(Distiny_pointer.transform.position, Enemy_setting.place_enemy.transform.position))
                         {
                             Distiny_pointer = item;
                             Last_postion = item;
+
                         }
                     }
 
@@ -1083,8 +1102,11 @@ public class Mission_offline : MonoBehaviour
                             Change_value_enemy_pointer(Enemy_setting);
                             break;
                         }
+
                     }
+
                 }
+
             }
         }
 
@@ -1106,36 +1128,37 @@ public class Mission_offline : MonoBehaviour
         }
 
 
-        //IEnumerator Control_bug_move()
-        //{
-        //    while (true)
-        //    {
-        //        var Last_stay = Last_postion;
+        IEnumerator Control_bug_move()
+        {
+            while (true)
+            {
+                var Last_stay = Last_postion;
 
-        //        yield return new WaitForSeconds(5);
-        //        var secend_stay = Last_postion;
+                yield return new WaitForSeconds(5);
+                var secend_stay = Last_postion;
 
-        //        if (Last_stay == secend_stay)
-        //        {
-        //            Change_value_enemy_pointer(Enemy_setting);
-        //            var rand_pos = Random.Range(0, Place_Can_move_bot.Length);
-        //            while (true)
-        //            {
-        //                Last_postion = Place_Can_move_bot[rand_pos];
-        //                if (gameObject.transform.position != Place_Can_move_bot[rand_pos].transform.position)
-        //                {
-        //                    gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, Place_Can_move_bot[rand_pos].transform.position, 0.1f);
-        //                }
-        //                else
-        //                {
-        //                    break;
-        //                }
-        //                yield return new WaitForSeconds(0.1f);
-        //            }
+                if (Last_stay == secend_stay)
+                {
+                    Change_value_enemy_pointer(Enemy_setting);
+                    var rand_pos = Random.Range(0, Place_Can_move_bot.Length);
+                    print("bug");
+                    while (true)
+                    {
+                        Last_postion = Place_Can_move_bot[rand_pos];
+                        if (gameObject.transform.position != Place_Can_move_bot[rand_pos].transform.position)
+                        {
+                            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, Place_Can_move_bot[rand_pos].transform.position, 0.1f);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                        yield return new WaitForSeconds(0.1f);
+                    }
 
-        //        }
-        //    }
-        //}
+                }
+            }
+        }
 
         public struct Setting_Enemy
         {
