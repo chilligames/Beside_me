@@ -445,7 +445,10 @@ public class Mission_offline : MonoBehaviour
                                 {
                                     foreach (var item in Setting.All_place)
                                     {
-                                        if (item.GetComponent<Raw_Place_script>().Setting_place.Type_place == Type_place.Place && item.GetComponent<Raw_Place_script>().Count >= 2)
+                                        if (
+                                        item.GetComponent<Raw_Place_script>().Setting_place.Type_place == Type_place.Place
+                                        && GetComponentInParent<Mission_offline>().Place_player.GetComponent<Raw_Place_script>().Count >= 2
+                                        )
                                         {
                                             Instantiate(Atack_objects.Raw_Turet, transform).GetComponent<Turret>().Change_valus(
                                                 new Turret.Setting_turet
@@ -456,6 +459,10 @@ public class Mission_offline : MonoBehaviour
                                                     Place = gameObject
                                                 }
                                                 );
+
+                                            //minuse from base
+                                            GetComponentInParent<Mission_offline>().Place_player.GetComponent<Raw_Place_script>().Count -= 2;
+
                                             break;
                                         }
                                         else if (item.GetComponent<Raw_Place_script>().Count <= 0)

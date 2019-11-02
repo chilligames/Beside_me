@@ -39,25 +39,59 @@ public class Turret : MonoBehaviour
     {
         while (true)
         {
-            Change_valus(Setting); //cheak 
+            Change_valus(Setting);
 
             foreach (var placess in Setting.fire_on_placess)
             {
-                if (
-                    placess.GetComponent<Mission_offline.Raw_Place_script>().Count >= 1 && Setting.magezin >= 1
-                    
-                    )
+                switch (Setting.Fire_to_)
                 {
-                    Setting.magezin--;
-                    placess.GetComponent<Mission_offline.Raw_Place_script>().Count -= 1;
-                    break;
-                }
-                else if (Setting.magezin <= 0)
-                {
-                    StopCoroutine(Active_turet());
-                    placess.GetComponent<Mission_offline.Raw_Place_script>().Type_Build = Mission_offline.Type_Build.Null;
-                    placess.GetComponent<Mission_offline.Raw_Place_script>().Setting_place.Place_for = Mission_offline.Raw_Place_script.Place_for.Empity;
-                    Anim_turet = 1;
+                    case Mission_offline.Raw_Place_script.Place_for.Enemy:
+                        {
+                            if (
+                                placess.GetComponent<Mission_offline.Raw_Place_script>().Count >= 1
+                                && Setting.magezin >= 1
+                                && placess.GetComponent<Mission_offline.Raw_Place_script>().Setting_place.Type_place != Mission_offline.Raw_Place_script.Type_place.Enemy
+                               && placess.GetComponent<Mission_offline.Raw_Place_script>().Setting_place.Type_place != Mission_offline.Raw_Place_script.Type_place.Player
+                              && placess.GetComponent<Mission_offline.Raw_Place_script>().Setting_place.Place_for == Mission_offline.Raw_Place_script.Place_for.Enemy
+                              )
+                            {
+                                Setting.magezin--;
+                                placess.GetComponent<Mission_offline.Raw_Place_script>().Count -= 1;
+                                break;
+                            }
+                            else if (Setting.magezin <= 0)
+                            {
+                                StopCoroutine(Active_turet());
+                                placess.GetComponent<Mission_offline.Raw_Place_script>().Type_Build = Mission_offline.Type_Build.Null;
+                                placess.GetComponent<Mission_offline.Raw_Place_script>().Setting_place.Place_for = Mission_offline.Raw_Place_script.Place_for.Empity;
+                                Anim_turet = 1;
+                            }
+
+                        }
+                        break;
+                    case Mission_offline.Raw_Place_script.Place_for.Player:
+                        {
+                            if (
+                              placess.GetComponent<Mission_offline.Raw_Place_script>().Count >= 1
+                              && Setting.magezin >= 1
+                              && placess.GetComponent<Mission_offline.Raw_Place_script>().Setting_place.Type_place != Mission_offline.Raw_Place_script.Type_place.Enemy
+                             && placess.GetComponent<Mission_offline.Raw_Place_script>().Setting_place.Type_place != Mission_offline.Raw_Place_script.Type_place.Player
+                            && placess.GetComponent<Mission_offline.Raw_Place_script>().Setting_place.Place_for == Mission_offline.Raw_Place_script.Place_for.Player
+                             )
+                            {
+                                Setting.magezin--;
+                                placess.GetComponent<Mission_offline.Raw_Place_script>().Count -= 1;
+                                break;
+                            }
+                            else if (Setting.magezin <= 0)
+                            {
+                                StopCoroutine(Active_turet());
+                                placess.GetComponent<Mission_offline.Raw_Place_script>().Type_Build = Mission_offline.Type_Build.Null;
+                                placess.GetComponent<Mission_offline.Raw_Place_script>().Setting_place.Place_for = Mission_offline.Raw_Place_script.Place_for.Empity;
+                                Anim_turet = 1;
+                            }
+                        }
+                        break;
                 }
             }
             yield return new WaitForSeconds(0.1f);
