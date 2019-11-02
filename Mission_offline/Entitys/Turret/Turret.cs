@@ -40,13 +40,16 @@ public class Turret : MonoBehaviour
         while (true)
         {
             Change_valus(Setting);
-
             foreach (var placess in Setting.fire_on_placess)
             {
                 switch (Setting.Fire_to_)
                 {
                     case Mission_offline.Raw_Place_script.Place_for.Enemy:
                         {
+                            //change color turret
+                            gameObject.GetComponent<SpriteRenderer>().color = Setting.Color_Player;
+
+                            //fire to place
                             if (
                                 placess.GetComponent<Mission_offline.Raw_Place_script>().Count >= 1
                                 && Setting.magezin >= 1
@@ -71,6 +74,10 @@ public class Turret : MonoBehaviour
                         break;
                     case Mission_offline.Raw_Place_script.Place_for.Player:
                         {
+                            //change color
+                            gameObject.GetComponent<SpriteRenderer>().color = Setting.Color_Enemy;
+
+                            //fire to place
                             if (
                               placess.GetComponent<Mission_offline.Raw_Place_script>().Count >= 1
                               && Setting.magezin >= 1
@@ -100,7 +107,6 @@ public class Turret : MonoBehaviour
 
     public struct Setting_turet
     {
-
         public int magezin;
 
         /// <summary>
@@ -119,6 +125,8 @@ public class Turret : MonoBehaviour
         public Mission_offline.Raw_Place_script.Place_for Fire_to_;
 
 
+        public Color Color_Player;
+        public Color Color_Enemy;
     }
 
 }

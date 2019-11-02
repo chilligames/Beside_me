@@ -456,7 +456,9 @@ public class Mission_offline : MonoBehaviour
                                                     fire_on_placess = Place_inside_place,
                                                     magezin = 10,
                                                     Fire_to_ = Place_for.Enemy,
-                                                    Place = gameObject
+                                                    Place = gameObject,
+                                                    Color_Enemy = Setting_place.Color_enemy,
+                                                    Color_Player = Setting_place.Color_player
                                                 }
                                                 );
 
@@ -977,7 +979,6 @@ public class Mission_offline : MonoBehaviour
             {
                 case Type_Build.Bomb:
                     {
-
                         foreach (var item in placess_insid)
                         {
                             if (item.GetComponent<Raw_Place_script>().Setting_place.Place_for == Raw_Place_script.Place_for.Block && Vector3.Distance(item.transform.position, gameObject.transform.position) <= 1)
