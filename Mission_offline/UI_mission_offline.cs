@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using static Mission_offline;
 
 public class UI_mission_offline : MonoBehaviour
 {
@@ -14,6 +13,7 @@ public class UI_mission_offline : MonoBehaviour
 
     public Button BTN_Bomb;
     public Button BTN_turret;
+    public Button BTN_Castel;
 
 
 
@@ -65,14 +65,29 @@ public class UI_mission_offline : MonoBehaviour
         {
             foreach (var item in GetComponent<Mission_offline>().All_place)
             {
-                if (item.GetComponent<Mission_offline.Raw_Place_script>().Setting_place.Type_place == Mission_offline.Raw_Place_script.Type_place.Place && item.GetComponent<Mission_offline.Raw_Place_script>().Setting_place.Place_for != Mission_offline.Raw_Place_script.Place_for.Enemy)
+
+                if (item.GetComponent<Raw_Place_script>().Setting_place.Type_place == Raw_Place_script.Type_place.Place && item.GetComponent<Raw_Place_script>().Setting_place.Place_for != Raw_Place_script.Place_for.Enemy)
                 {
-                    item.GetComponent<Mission_offline.Raw_Place_script>().Anim_builds = 1;
-                    item.GetComponent<Mission_offline.Raw_Place_script>().Type_Build = Mission_offline.Type_Build.Turret;
+                    item.GetComponent<Raw_Place_script>().Anim_builds = 1;
+                    item.GetComponent<Raw_Place_script>().Type_Build = Type_Build.Turret;
                 }
             }
 
         });
+
+        BTN_Castel.onClick.AddListener(() =>
+        {
+            foreach (var item in GetComponent<Mission_offline>().All_place)
+            {
+                if (item.GetComponent<Raw_Place_script>().Setting_place.Type_place == Raw_Place_script.Type_place.Place && item.GetComponent<Raw_Place_script>().Setting_place.Place_for == Raw_Place_script.Place_for.Empity)
+                {
+                    item.GetComponent<Raw_Place_script>().Anim_builds = 1;
+                    item.GetComponent<Raw_Place_script>().Type_Build = Type_Build.Castel;
+                }
+            }
+
+        });
+
 
     }
     void Update()
@@ -104,9 +119,9 @@ public class UI_mission_offline : MonoBehaviour
     {
         foreach (var item in GetComponent<Mission_offline>().All_place)
         {
-            item.GetComponent<Mission_offline.Raw_Place_script>().Anim_boomb = 3;
-            item.GetComponent<Mission_offline.Raw_Place_script>().Anim_builds = 3;
-            item.GetComponent<Mission_offline.Raw_Place_script>().Type_Build = Mission_offline.Type_Build.Null;
+            item.GetComponent<Raw_Place_script>().Anim_boomb = 3;
+            item.GetComponent<Raw_Place_script>().Anim_builds = 3;
+            item.GetComponent<Raw_Place_script>().Type_Build = Type_Build.Null;
         }
     }
 }

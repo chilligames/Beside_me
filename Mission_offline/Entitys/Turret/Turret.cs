@@ -1,15 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Raw_place = Mission_offline.Raw_Place_script;
 
 public class Turret : MonoBehaviour
 {
+
     public Color Color_player;
     public Color Color_enemy;
 
     Setting_turet Setting;
     GameObject[,] All_place;
     GameObject[] Can_shot_to;
+    GameObject Place_turret;
 
     int Anim_turet;
 
@@ -57,9 +60,41 @@ public class Turret : MonoBehaviour
 
         Can_shot_to = new_place_shot;
 
+        //find_place turret
+        foreach (var item in All_place)
+        {
+            if (Vector3.Distance(transform.position, item.transform.position) == 0)
+            {
+                Place_turret = item;
+                break;
+            }
+        }
     }
     private void Start()
     {
+        switch (Setting.Fire_to_)
+        {
+            case Raw_place.Place_for.Enemy:
+                {
+                    //change color turret
+                    gameObject.GetComponent<SpriteRenderer>().color = Color_player;
+
+                    //give place for  enemy
+                    Place_turret.GetComponent<Raw_place>().Count += 1;
+                    Place_turret.GetComponent<Raw_place>().Setting_place.Place_for = Raw_place.Place_for.Player;
+                }
+                break;
+            case Raw_place.Place_for.Player:
+                {
+                    //change color
+                    gameObject.GetComponent<SpriteRenderer>().color = Color_enemy;
+
+                    //give place fro player
+                    Place_turret.GetComponent<Raw_place>().Count += 1;
+                    Place_turret.GetComponent<Raw_place>().Setting_place.Place_for = Raw_place.Place_for.Enemy;
+                }
+                break;
+        }
         StartCoroutine(Active_turet());
     }
 
@@ -75,8 +110,19 @@ public class Turret : MonoBehaviour
             if (transform.localScale == Vector3.zero)
             {
                 Destroy(gameObject);
-                
+                if (Place_turret.GetComponent<Raw_place>().Count >= 0)
+                {
+                    Place_turret.GetComponent<Raw_place>().Type_Build = Mission_offline.Type_Build.Null;
+                    Place_turret.GetComponent<Raw_place>().Setting_place.Place_for = Raw_place.Place_for.Empity;
+                    Place_turret.GetComponent<Raw_place>().Count = 0;
+                }
+
             }
+        }
+
+        if (Place_turret.GetComponent<Raw_place>().Count <= 0)
+        {
+            Anim_turet = 1;
         }
     }
 
@@ -84,62 +130,52 @@ public class Turret : MonoBehaviour
     {
         while (true)
         {
-            Change_valus_turret(Setting);//cheack
+            Change_valus_turret(Setting);
             foreach (var placess in Can_shot_to)
             {
                 switch (Setting.Fire_to_)
                 {
-                    case Mission_offline.Raw_Place_script.Place_for.Enemy:
-                        {
-                            //change color turret
-                            gameObject.GetComponent<SpriteRenderer>().color = Color_player;
 
+                    case Raw_place.Place_for.Enemy:
+                        {
                             //fire to place
                             if (
-                                placess.GetComponent<Mission_offline.Raw_Place_script>().Count >= 1
+                                placess.GetComponent<Raw_place>().Count >= 1
                                 && Setting.magezin >= 1
-                                && placess.GetComponent<Mission_offline.Raw_Place_script>().Setting_place.Type_place != Mission_offline.Raw_Place_script.Type_place.Enemy
-                               && placess.GetComponent<Mission_offline.Raw_Place_script>().Setting_place.Type_place != Mission_offline.Raw_Place_script.Type_place.Player
-                              && placess.GetComponent<Mission_offline.Raw_Place_script>().Setting_place.Place_for == Mission_offline.Raw_Place_script.Place_for.Enemy
+                                && placess.GetComponent<Raw_place>().Setting_place.Type_place != Raw_place.Type_place.Enemy
+                               && placess.GetComponent<Raw_place>().Setting_place.Type_place != Raw_place.Type_place.Player
+                              && placess.GetComponent<Raw_place>().Setting_place.Place_for == Raw_place.Place_for.Enemy
                               )
                             {
                                 Setting.magezin--;
-                                placess.GetComponent<Mission_offline.Raw_Place_script>().Count -= 1;
+                                placess.GetComponent<Raw_place>().Count -= 1;
                                 break;
                             }
                             else if (Setting.magezin <= 0)
                             {
                                 StopCoroutine(Active_turet());
-                                placess.GetComponent<Mission_offline.Raw_Place_script>().Type_Build = Mission_offline.Type_Build.Null;
-                                placess.GetComponent<Mission_offline.Raw_Place_script>().Setting_place.Place_for = Mission_offline.Raw_Place_script.Place_for.Empity;
                                 Anim_turet = 1;
                             }
-
                         }
                         break;
-                    case Mission_offline.Raw_Place_script.Place_for.Player:
+                    case Raw_place.Place_for.Player:
                         {
-                            //change color
-                            gameObject.GetComponent<SpriteRenderer>().color = Color_enemy;
-
                             //fire to place
                             if (
-                              placess.GetComponent<Mission_offline.Raw_Place_script>().Count >= 1
+                              placess.GetComponent<Raw_place>().Count >= 1
                               && Setting.magezin >= 1
-                              && placess.GetComponent<Mission_offline.Raw_Place_script>().Setting_place.Type_place != Mission_offline.Raw_Place_script.Type_place.Enemy
-                             && placess.GetComponent<Mission_offline.Raw_Place_script>().Setting_place.Type_place != Mission_offline.Raw_Place_script.Type_place.Player
-                            && placess.GetComponent<Mission_offline.Raw_Place_script>().Setting_place.Place_for == Mission_offline.Raw_Place_script.Place_for.Player
+                              && placess.GetComponent<Raw_place>().Setting_place.Type_place != Raw_place.Type_place.Enemy
+                             && placess.GetComponent<Raw_place>().Setting_place.Type_place != Raw_place.Type_place.Player
+                            && placess.GetComponent<Raw_place>().Setting_place.Place_for == Raw_place.Place_for.Player
                              )
                             {
                                 Setting.magezin--;
-                                placess.GetComponent<Mission_offline.Raw_Place_script>().Count -= 1;
+                                placess.GetComponent<Raw_place>().Count -= 1;
                                 break;
                             }
                             else if (Setting.magezin <= 0)
                             {
                                 StopCoroutine(Active_turet());
-                                placess.GetComponent<Mission_offline.Raw_Place_script>().Type_Build = Mission_offline.Type_Build.Null;
-                                placess.GetComponent<Mission_offline.Raw_Place_script>().Setting_place.Place_for = Mission_offline.Raw_Place_script.Place_for.Empity;
                                 Anim_turet = 1;
                             }
                         }
@@ -162,7 +198,7 @@ public class Turret : MonoBehaviour
         /// <summary>
         /// turret fire enemy or player
         /// </summary>
-        public Mission_offline.Raw_Place_script.Place_for Fire_to_;
+        public Raw_place.Place_for Fire_to_;
     }
 
 }
