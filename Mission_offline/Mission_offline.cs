@@ -1185,15 +1185,19 @@ public class Mission_offline : MonoBehaviour
         {
             while (true)
             {
-                //yield return new WaitForSeconds(1);
-                //if (Enemy_setting.place_enemy.GetComponent<Raw_Place_script>().Count >= 10)
-                //{
-                //    Builder(Type_Build.Bomb);
-                //    print("bomb");
-                //}
+                yield return new WaitForSeconds(1);
+                if (Enemy_setting.place_enemy.GetComponent<Raw_Place_script>().Count >= 10)
+                {
+                    Builder(Type_Build.Bomb);
+                    print("bomb");
+                }
 
                 yield return new WaitForSeconds(0.1f);
+                if (Enemy_setting.place_enemy.GetComponent<Raw_Place_script>().Count>=15)
+                {
                 Builder(Type_Build.Turret);
+                    print("turret");
+                }
             }
         }
 
