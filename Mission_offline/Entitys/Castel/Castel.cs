@@ -30,18 +30,18 @@ public class Castel : MonoBehaviour
         //change color && work 
         switch (castel_setting_local.Place_for)
         {
-            case Raw_Place_script.Place_for.Enemy:
+            case Place_for.Enemy:
                 {
                     GetComponent<SpriteRenderer>().color = Color_enemy;
-                    castel_place.GetComponent<Raw_Place_script>().Count += 2;
-                    castel_place.GetComponent<Raw_Place_script>().Setting_place.Place_for = Raw_Place_script.Place_for.Enemy;
+                    castel_place.GetComponent<Place>().Count += 2;
+                    castel_place.GetComponent<Place>().Setting_place.Place_for = Place_for.Enemy;
                 }
                 break;
-            case Raw_Place_script.Place_for.Player:
+            case Place_for.Player:
                 {
                     GetComponent<SpriteRenderer>().color = Color_Player;
-                    castel_place.GetComponent<Raw_Place_script>().Count += 2;
-                    castel_place.GetComponent<Raw_Place_script>().Setting_place.Place_for = Raw_Place_script.Place_for.Player;
+                    castel_place.GetComponent<Place>().Count += 2;
+                    castel_place.GetComponent<Place>().Setting_place.Place_for = Place_for.Player;
 
                 }
                 break;
@@ -54,16 +54,16 @@ public class Castel : MonoBehaviour
 
     private void Update()
     {
-        if (castel_place.GetComponent<Raw_Place_script>().Count == 0)
+        if (castel_place.GetComponent<Place>().Count == 0)
         {
             print("destroy");
         }
 
-        if (castel_setting_local.Place_for == Raw_Place_script.Place_for.Player && castel_place.GetComponent<Raw_Place_script>().Setting_place.Place_for == Raw_Place_script.Place_for.Enemy)
+        if (castel_setting_local.Place_for == Place_for.Player && castel_place.GetComponent<Place>().Setting_place.Place_for == Place_for.Enemy)
         {
             anim_castel = 1;
         }
-        else if (castel_setting_local.Place_for == Raw_Place_script.Place_for.Enemy && castel_place.GetComponent<Raw_Place_script>().Setting_place.Place_for == Raw_Place_script.Place_for.Player)
+        else if (castel_setting_local.Place_for == Place_for.Enemy && castel_place.GetComponent<Place>().Setting_place.Place_for == Place_for.Player)
         {
             anim_castel = 1;
         }
@@ -89,9 +89,9 @@ public class Castel : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(1f);
-            if (castel_place.GetComponent<Raw_Place_script>().Count >= 1)
+            if (castel_place.GetComponent<Place>().Count >= 1)
             {
-                castel_place.GetComponent<Raw_Place_script>().Count++;
+                castel_place.GetComponent<Place>().Count++;
             }
         }
 
@@ -108,6 +108,6 @@ public class Castel : MonoBehaviour
     public struct Castel_setting
     {
         public GameObject[,] All_place;
-        public Raw_Place_script.Place_for Place_for;
+        public Place_for Place_for;
     }
 }

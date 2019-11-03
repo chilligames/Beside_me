@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Raw_place = Mission_offline.Raw_Place_script;
+using Raw_place = Mission_offline;
 
 public class Turret : MonoBehaviour
 {
@@ -74,24 +74,24 @@ public class Turret : MonoBehaviour
     {
         switch (Setting.Fire_to_)
         {
-            case Raw_place.Place_for.Enemy:
+            case Place_for.Enemy:
                 {
                     //change color turret
                     gameObject.GetComponent<SpriteRenderer>().color = Color_player;
 
                     //give place for  enemy
-                    Place_turret.GetComponent<Raw_place>().Count += 1;
-                    Place_turret.GetComponent<Raw_place>().Setting_place.Place_for = Raw_place.Place_for.Player;
+                    Place_turret.GetComponent<Place>().Count += 1;
+                    Place_turret.GetComponent<Place>().Setting_place.Place_for = Place_for.Player;
                 }
                 break;
-            case Raw_place.Place_for.Player:
+            case Place_for.Player:
                 {
                     //change color
                     gameObject.GetComponent<SpriteRenderer>().color = Color_enemy;
 
                     //give place fro player
-                    Place_turret.GetComponent<Raw_place>().Count += 1;
-                    Place_turret.GetComponent<Raw_place>().Setting_place.Place_for = Raw_place.Place_for.Enemy;
+                    Place_turret.GetComponent<Place>().Count += 1;
+                    Place_turret.GetComponent<Place>().Setting_place.Place_for = Place_for.Enemy;
                 }
                 break;
         }
@@ -110,17 +110,17 @@ public class Turret : MonoBehaviour
             if (transform.localScale == Vector3.zero)
             {
                 Destroy(gameObject);
-                if (Place_turret.GetComponent<Raw_place>().Count >= 0)
+                if (Place_turret.GetComponent<Place>().Count >= 0)
                 {
-                    Place_turret.GetComponent<Raw_place>().Type_Build = Mission_offline.Type_Build.Null;
-                    Place_turret.GetComponent<Raw_place>().Setting_place.Place_for = Raw_place.Place_for.Empity;
-                    Place_turret.GetComponent<Raw_place>().Count = 0;
+                    Place_turret.GetComponent<Place>().Type_Build = Type_Build.Null;
+                    Place_turret.GetComponent<Place>().Setting_place.Place_for = Place_for.Empity;
+                    Place_turret.GetComponent<Place>().Count = 0;
                 }
 
             }
         }
 
-        if (Place_turret.GetComponent<Raw_place>().Count <= 0)
+        if (Place_turret.GetComponent<Place>().Count <= 0)
         {
             Anim_turet = 1;
         }
@@ -136,19 +136,19 @@ public class Turret : MonoBehaviour
                 switch (Setting.Fire_to_)
                 {
 
-                    case Raw_place.Place_for.Enemy:
+                    case Place_for.Enemy:
                         {
                             //fire to place
                             if (
-                                placess.GetComponent<Raw_place>().Count >= 1
+                                placess.GetComponent<Place>().Count >= 1
                                 && Setting.magezin >= 1
-                                && placess.GetComponent<Raw_place>().Setting_place.Type_place != Raw_place.Type_place.Enemy
-                               && placess.GetComponent<Raw_place>().Setting_place.Type_place != Raw_place.Type_place.Player
-                              && placess.GetComponent<Raw_place>().Setting_place.Place_for == Raw_place.Place_for.Enemy
+                                && placess.GetComponent<Place>().Setting_place.Type_place != Type_place.Enemy
+                               && placess.GetComponent<Place>().Setting_place.Type_place != Type_place.Player
+                              && placess.GetComponent<Place>().Setting_place.Place_for == Place_for.Enemy
                               )
                             {
                                 Setting.magezin--;
-                                placess.GetComponent<Raw_place>().Count -= 1;
+                                placess.GetComponent<Place>().Count -= 1;
                                 break;
                             }
                             else if (Setting.magezin <= 0)
@@ -158,19 +158,19 @@ public class Turret : MonoBehaviour
                             }
                         }
                         break;
-                    case Raw_place.Place_for.Player:
+                    case Place_for.Player:
                         {
                             //fire to place
                             if (
-                              placess.GetComponent<Raw_place>().Count >= 1
+                              placess.GetComponent<Place>().Count >= 1
                               && Setting.magezin >= 1
-                              && placess.GetComponent<Raw_place>().Setting_place.Type_place != Raw_place.Type_place.Enemy
-                             && placess.GetComponent<Raw_place>().Setting_place.Type_place != Raw_place.Type_place.Player
-                            && placess.GetComponent<Raw_place>().Setting_place.Place_for == Raw_place.Place_for.Player
+                              && placess.GetComponent<Place>().Setting_place.Type_place != Type_place.Enemy
+                             && placess.GetComponent<Place>().Setting_place.Type_place != Type_place.Player
+                            && placess.GetComponent<Place>().Setting_place.Place_for == Place_for.Player
                              )
                             {
                                 Setting.magezin--;
-                                placess.GetComponent<Raw_place>().Count -= 1;
+                                placess.GetComponent<Place>().Count -= 1;
                                 break;
                             }
                             else if (Setting.magezin <= 0)
@@ -198,7 +198,7 @@ public class Turret : MonoBehaviour
         /// <summary>
         /// turret fire enemy or player
         /// </summary>
-        public Raw_place.Place_for Fire_to_;
+        public Place_for Fire_to_;
     }
 
 }
