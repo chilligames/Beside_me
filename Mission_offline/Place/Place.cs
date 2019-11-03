@@ -12,7 +12,9 @@ public class Place : MonoBehaviour
     public RawImage Image_cron;
     public Color color_player;
     public Color Color_enemy;
+    public ParticleSystem Particle_place;
 
+    [HideInInspector()]
     public Type_Build Type_Build;
 
     GameObject[] Place_inside_place;
@@ -182,6 +184,22 @@ public class Place : MonoBehaviour
                 });
                 break;
         }
+
+        //contol_particle
+        if (Setting_place.Type_place == Type_place.Player)
+        {
+            Particle_place.transform.localScale = Vector3.MoveTowards(Particle_place.transform.localScale, Vector3.zero, 0.08f);
+        }
+
+        if (Setting_place.pointer_player.transform.position == transform.position)
+        {
+            Particle_place.transform.localScale = Vector3.MoveTowards(Particle_place.transform.localScale, Vector3.zero, 0.08f);
+        }
+        else
+        {
+            Particle_place.transform.localScale = Vector3.MoveTowards(Particle_place.transform.localScale, Vector3.one, 0.08f);
+        }
+
 
 
         //text place null if count 0 
@@ -366,7 +384,6 @@ public class Place : MonoBehaviour
 
 
         //anim controll
-
         //anim Bobms
         if (Setting_place.Type_place == Type_place.Block)
         {
