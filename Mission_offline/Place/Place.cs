@@ -188,17 +188,37 @@ public class Place : MonoBehaviour
         //contol_particle
         if (Setting_place.Type_place == Type_place.Player)
         {
-            Particle_place.transform.localScale = Vector3.MoveTowards(Particle_place.transform.localScale, Vector3.zero, 0.08f);
+            Particle_place.transform.localScale = Vector3.MoveTowards(Particle_place.transform.localScale, Vector3.zero, 0.3f);
         }
 
         if (Setting_place.pointer_player.transform.position == transform.position)
         {
-            Particle_place.transform.localScale = Vector3.MoveTowards(Particle_place.transform.localScale, Vector3.zero, 0.08f);
+            Particle_place.transform.localScale = Vector3.MoveTowards(Particle_place.transform.localScale, Vector3.zero, 0.3f);
         }
-        else
+
+        if (Setting_place.pointer_enemy.transform.position == transform.position)
         {
-            Particle_place.transform.localScale = Vector3.MoveTowards(Particle_place.transform.localScale, Vector3.one, 0.08f);
+            Particle_place.transform.localScale = Vector3.MoveTowards(Particle_place.transform.localScale, Vector3.one, 0.3f);
         }
+
+        if (Setting_place.Place_for == Place_for.Player)
+        {
+            foreach (var item in Place_inside_place)
+            {
+                var partical = item.GetComponent<Place>().Particle_place;
+                partical.transform.localScale = Vector3.MoveTowards(partical.transform.localScale, Vector3.zero, 0.3f);
+            }
+        }
+
+         if (Setting_place.Place_for == Place_for.Enemy)
+        {
+            foreach (var item in Place_inside_place)
+            {
+                var partical = item.GetComponent<Place>().Particle_place;
+                partical.transform.localScale = Vector3.MoveTowards(partical.transform.localScale, Vector3.one, 0.1f);
+            }
+        }
+
 
 
 
