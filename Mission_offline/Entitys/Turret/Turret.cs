@@ -4,14 +4,58 @@ using UnityEngine;
 
 public class Turret : MonoBehaviour
 {
+    public Color Color_player;
+    public Color Color_enemy;
 
     Setting_turet Setting;
+    GameObject[,] All_place;
+    GameObject[] Can_shot_to;
+
     int Anim_turet;
 
-
-    public void Change_valus(Setting_turet Turet_setting)
+    public void Change_valus_turret(Setting_turet Turet_setting)
     {
+        //frist change value
         Setting = Turet_setting;
+        this.All_place = Turet_setting.All_place;
+
+        //finde place for shot
+        Can_shot_to = new GameObject[9];
+        int count_place = 0;
+        foreach (var item in All_place)
+        {
+            if (Vector3.Distance(item.transform.position, gameObject.transform.position) <= 0.7f)
+            {
+                for (int i = 0; i < Can_shot_to.Length; i++)
+                {
+                    if (Can_shot_to[i] == null)
+                    {
+                        Can_shot_to[i] = item;
+                        count_place++;
+                        break;
+                    }
+                }
+            }
+        }
+
+        var new_place_shot = new GameObject[count_place];
+
+        foreach (var item in Can_shot_to)
+        {
+            if (item != null)
+            {
+                for (int i = 0; i < new_place_shot.Length; i++)
+                {
+                    if (new_place_shot[i] == null)
+                    {
+                        new_place_shot[i] = item;
+                        break;
+                    }
+                }
+            }
+        }
+
+        Can_shot_to = new_place_shot;
 
     }
     private void Start()
@@ -31,6 +75,7 @@ public class Turret : MonoBehaviour
             if (transform.localScale == Vector3.zero)
             {
                 Destroy(gameObject);
+                
             }
         }
     }
@@ -39,15 +84,15 @@ public class Turret : MonoBehaviour
     {
         while (true)
         {
-            Change_valus(Setting);
-            foreach (var placess in Setting.fire_on_placess)
+            Change_valus_turret(Setting);//cheack
+            foreach (var placess in Can_shot_to)
             {
                 switch (Setting.Fire_to_)
                 {
                     case Mission_offline.Raw_Place_script.Place_for.Enemy:
                         {
                             //change color turret
-                            gameObject.GetComponent<SpriteRenderer>().color = Setting.Color_Player;
+                            gameObject.GetComponent<SpriteRenderer>().color = Color_player;
 
                             //fire to place
                             if (
@@ -75,7 +120,7 @@ public class Turret : MonoBehaviour
                     case Mission_offline.Raw_Place_script.Place_for.Player:
                         {
                             //change color
-                            gameObject.GetComponent<SpriteRenderer>().color = Setting.Color_Enemy;
+                            gameObject.GetComponent<SpriteRenderer>().color = Color_enemy;
 
                             //fire to place
                             if (
@@ -110,23 +155,14 @@ public class Turret : MonoBehaviour
         public int magezin;
 
         /// <summary>
-        /// turret on place
-        /// </summary>
-        public GameObject Place;
-
-        /// <summary>
         /// Placess can fire
         /// </summary>
-        public GameObject[] fire_on_placess;
+        public GameObject[,] All_place;
 
         /// <summary>
         /// turret fire enemy or player
         /// </summary>
         public Mission_offline.Raw_Place_script.Place_for Fire_to_;
-
-
-        public Color Color_Player;
-        public Color Color_Enemy;
     }
 
 }

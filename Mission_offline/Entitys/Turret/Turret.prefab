@@ -54,6 +54,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f05cf2bde656c55448851b7519148fbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Color_player: {r: 0.5647059, g: 0.7176471, b: 0.83921576, a: 1}
+  Color_enemy: {r: 0.83921576, g: 0.5647059, b: 0.5647059, a: 1}
 --- !u!212 &5964362762723366820
 SpriteRenderer:
   m_ObjectHideFlags: 0
