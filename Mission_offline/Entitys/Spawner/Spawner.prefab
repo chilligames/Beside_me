@@ -10,10 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 9145541311941897961}
   - component: {fileID: 4562473560983936938}
-  - component: {fileID: 2350187342517115853}
   - component: {fileID: 5964362762723366820}
   m_Layer: 5
-  m_Name: Turret
+  m_Name: Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,20 +41,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3551140728731821503}
   m_CullTransparentMesh: 0
---- !u!114 &2350187342517115853
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3551140728731821503}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f05cf2bde656c55448851b7519148fbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Color_player: {r: 0.5647059, g: 0.7176471, b: 0.83921576, a: 1}
-  Color_enemy: {r: 0.83921576, g: 0.5647059, b: 0.5647059, a: 1}
 --- !u!212 &5964362762723366820
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -94,7 +79,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 13ebcac510fbbf748a1ced7bd28bffd6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ad5eb1ae9d1245e448bef6e816c85fa2, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -116,7 +101,7 @@ GameObject:
   - component: {fileID: 1501953799926396751}
   - component: {fileID: 7445285869590921651}
   m_Layer: 5
-  m_Name: Righ
+  m_Name: ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -131,7 +116,7 @@ Transform:
   m_GameObject: {fileID: 4849151676835733331}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 0}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children: []
   m_Father: {fileID: 9145541311941897961}
   m_RootOrder: 0

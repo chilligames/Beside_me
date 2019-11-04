@@ -17,15 +17,22 @@ public class Castel : MonoBehaviour
         //cahnge value
         castel_setting_local = castel_setting;
 
+
         //fide place
         foreach (var item in castel_setting_local.All_place)
         {
-
-            if (Vector3.Distance(item.transform.position, gameObject.transform.position) == 0)
+            if (item.transform.position == gameObject.transform.position)
             {
                 castel_place = item;
             }
         }
+
+        if (castel_place == null)
+        {
+            Destroy(gameObject);
+            print("destroy");
+        }
+
 
         //change color && work 
         switch (castel_setting_local.Place_for)
@@ -33,6 +40,7 @@ public class Castel : MonoBehaviour
             case Place_for.Enemy:
                 {
                     GetComponent<SpriteRenderer>().color = Color_enemy;
+                    print(castel_place.name);
                     castel_place.GetComponent<Place>().Count += 2;
                     castel_place.GetComponent<Place>().Setting_place.Place_for = Place_for.Enemy;
                 }
@@ -47,18 +55,20 @@ public class Castel : MonoBehaviour
                 break;
         }
 
+
         //active castel
         StartCoroutine(Acitve_castel());
-        StartCoroutine(Deactive_castel());
     }
 
     private void Update()
     {
         if (castel_place.GetComponent<Place>().Count == 0)
         {
+            Destroy(gameObject);
             print("destroy");
         }
 
+        //contorl dead 
         if (castel_setting_local.Place_for == Place_for.Player && castel_place.GetComponent<Place>().Setting_place.Place_for == Place_for.Enemy)
         {
             anim_castel = 1;
@@ -68,13 +78,14 @@ public class Castel : MonoBehaviour
             anim_castel = 1;
         }
 
+        ///contorl dead anim 
         if (anim_castel == 0)
         {
-            transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(0.02f, 0.02f, 0), 0.001f);
+            transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(0.1f, 0.1f, 0), 0.01f);
         }
         else if (anim_castel == 1)
         {
-            transform.localScale = Vector3.MoveTowards(transform.localScale, Vector3.zero, 0.001f);
+            transform.localScale = Vector3.MoveTowards(transform.localScale, Vector3.zero, 0.01f);
             if (transform.localScale == Vector3.zero)
             {
                 Destroy(gameObject);
@@ -88,21 +99,10 @@ public class Castel : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(1f);
-            if (castel_place.GetComponent<Place>().Count >= 1)
-            {
-                castel_place.GetComponent<Place>().Count++;
-            }
+            yield return new WaitForSeconds(1);
+            castel_place.GetComponent<Place>().Count++;
         }
 
-    }
-
-    IEnumerator Deactive_castel()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
     }
 
     public struct Castel_setting

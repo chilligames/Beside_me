@@ -8,21 +8,17 @@ public class Place : MonoBehaviour
 {
     //entity places
     public place_setting Setting_place;
-    public Object_attack_defance _Attack_Defance;
-    public RawImage Image_cron;
-    public Color color_player;
+    public SpriteRenderer Image_cron;
+    public Color Color_player;
     public Color Color_enemy;
-    public ParticleSystem Particle_place;
+    public Color Color_Block;
+    public SpriteRenderer Particle_place;
 
-    [HideInInspector()]
-    public Type_Build Type_Build;
+    [Header("Envorment")]
 
     GameObject[] Place_inside_place;
 
     public TextMeshProUGUI Text_place;
-
-
-    public Button BTN_place;
 
     //place setting
     public int Count;
@@ -30,16 +26,10 @@ public class Place : MonoBehaviour
     int Lock_block_enemy = 0;
 
 
-    //anim entity
-    public int Anim_boomb;
-    public int Anim_builds;
-
-
-    public void Change_Value_Place_sctipt(place_setting Setting, Object_attack_defance _Attack_Defance)
+    public void Change_Value_Place_sctipt(place_setting Setting)
     {
         //change values
         Setting_place = Setting;
-        this._Attack_Defance = _Attack_Defance;
 
         //finde place inside
         Place_inside_place = new GameObject[8];
@@ -77,6 +67,7 @@ public class Place : MonoBehaviour
         }
         Place_inside_place = fix_place;
 
+
     }
 
     private void Start()
@@ -100,139 +91,6 @@ public class Place : MonoBehaviour
 
     private void Update()
     {
-
-        //controller instance for build and defance in place
-        BTN_place.onClick.RemoveAllListeners();
-        switch (Setting_place.Type_place)
-        {
-            case Type_place.Place:
-                Image_cron.gameObject.SetActive(false);
-                BTN_place.onClick.AddListener(() =>
-                {
-                    switch (Type_Build)
-                    {
-                        case Type_Build.Turret:
-                            {
-                                foreach (var item in Setting_place.All_place)
-                                {
-                                    if (
-                                    item.GetComponent<Place>().Setting_place.Type_place == Type_place.Place
-                                    && GetComponentInParent<Mission_offline>().Place_player.GetComponent<Place>().Count >= 2
-                                    )
-                                    {
-                                        Instantiate(this._Attack_Defance.Raw_Turet, transform).GetComponent<Turret>().Change_valus_turret(
-                                            new Turret.Setting_turet
-                                            {
-                                                magezin = 10,
-                                                Fire_to_ = Place_for.Enemy,
-                                                All_place = Setting_place.All_place
-                                            }
-                                            );
-
-                                        //minuse from base
-                                        GetComponentInParent<Mission_offline>().Place_player.GetComponent<Place>().Count -= 2;
-
-                                        //cotrol place
-                                        Setting_place.Place_for = Place_for.Player;
-
-                                        break;
-                                    }
-                                    else if (item.GetComponent<Place>().Count <= 0)
-                                    {
-                                        print("code err no turen");
-                                    }
-                                }
-                            }
-                            break;
-                        case Type_Build.Castel:
-                            {
-                                Instantiate(_Attack_Defance.Raw_castel, transform).GetComponent<Castel>().Change_value_castel(new Castel.Castel_setting { All_place = Setting_place.All_place, Place_for = Place_for.Player });
-                            }
-                            break;
-                    }
-                });
-                break;
-            case Type_place.Enemy:
-                Image_cron.gameObject.SetActive(true);
-                GetComponent<SpriteRenderer>().color = Color_enemy;
-                break;
-            case Type_place.Player:
-                GetComponent<SpriteRenderer>().color = Setting_place.Color_player;
-                Image_cron.gameObject.SetActive(true);
-                break;
-            case Type_place.Block:
-                BTN_place.onClick.AddListener(() =>
-                {
-                    if (Anim_boomb == 1 || Anim_boomb == 2)
-                    {
-
-                        //disable all animation bomb
-                        foreach (var item in GetComponentInParent<Mission_offline>().All_place)
-                        {
-                            if (item.GetComponent<Place>().Setting_place.Type_place == Type_place.Block)
-                            {
-                                item.GetComponentInParent<Place>().Anim_boomb = 3;
-
-                            }
-                        }
-
-                        //work
-                        Setting_place.Place_for = Place_for.Empity;
-                        Setting_place.Type_place = Type_place.Place;
-                        Anim_boomb = 3;
-                    }
-                });
-                break;
-        }
-
-        //contol_particle
-        if (Setting_place.Type_place == Type_place.Player)
-        {
-            Particle_place.transform.localScale = Vector3.MoveTowards(Particle_place.transform.localScale, Vector3.zero, 0.3f);
-        }
-
-        if (Setting_place.pointer_player.transform.position == transform.position)
-        {
-            Particle_place.transform.localScale = Vector3.MoveTowards(Particle_place.transform.localScale, Vector3.zero, 0.3f);
-        }
-
-        if (Setting_place.pointer_enemy.transform.position == transform.position)
-        {
-            Particle_place.transform.localScale = Vector3.MoveTowards(Particle_place.transform.localScale, Vector3.one, 0.3f);
-        }
-
-        if (Setting_place.Place_for == Place_for.Player)
-        {
-            foreach (var item in Place_inside_place)
-            {
-                var partical = item.GetComponent<Place>().Particle_place;
-                partical.transform.localScale = Vector3.MoveTowards(partical.transform.localScale, Vector3.zero, 0.3f);
-            }
-        }
-
-         if (Setting_place.Place_for == Place_for.Enemy)
-        {
-            foreach (var item in Place_inside_place)
-            {
-                var partical = item.GetComponent<Place>().Particle_place;
-                partical.transform.localScale = Vector3.MoveTowards(partical.transform.localScale, Vector3.one, 0.1f);
-            }
-        }
-
-
-
-
-        //text place null if count 0 
-        if (Count > 0)
-        {
-            Text_place.text = Count.ToString();
-        }
-        else
-        {
-            Text_place.text = "";
-        }
-
-
         //color change with place for
         switch (Setting_place.Place_for)
         {
@@ -246,10 +104,44 @@ public class Place : MonoBehaviour
                 GetComponent<SpriteRenderer>().color = Setting_place.Color_player;
                 break;
             case Place_for.Block:
-                GetComponent<SpriteRenderer>().color = Color.black;
+                {
+                    GetComponent<SpriteRenderer>().color = Color_Block;
+                }
                 break;
         }
 
+        //controller instance for build and defance in place
+        switch (Setting_place.Type_place)
+        {
+            case Type_place.Place:
+                Image_cron.gameObject.SetActive(false);
+                break;
+            case Type_place.Enemy:
+                Image_cron.gameObject.SetActive(true);
+                GetComponent<SpriteRenderer>().color = Color_enemy;
+                break;
+            case Type_place.Player:
+                GetComponent<SpriteRenderer>().color = Setting_place.Color_player;
+                Image_cron.gameObject.SetActive(true);
+                break;
+            case Type_place.Block:
+                break;
+        }
+
+        //contol_particle
+
+
+
+
+        //text place null if count 0 
+        if (Count > 0)
+        {
+            Text_place.text = Count.ToString();
+        }
+        else
+        {
+            Text_place.text = "";
+        }
 
 
         //change place for with 0
@@ -401,90 +293,6 @@ public class Place : MonoBehaviour
                 print("losse");
             }
         }
-
-
-        //anim controll
-        //anim Bobms
-        if (Setting_place.Type_place == Type_place.Block)
-        {
-            if (Anim_boomb == 1)
-            {
-                if (gameObject.transform.localScale != new Vector3(3.5f, 3.5f, 0))
-                {
-                    gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3.5f, 3.5f, 0), 0.05f);
-                }
-                else
-                {
-                    Anim_boomb = 2;
-                }
-
-            }
-            else if (Anim_boomb == 2)
-            {
-                if (gameObject.transform.localScale != new Vector3(3, 3, 0))
-                {
-                    gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3, 3, 0), 0.05f);
-                }
-                else
-                {
-                    Anim_boomb = 1;
-                }
-            }
-            else if (Anim_boomb == 3)
-            {
-                if (gameObject.transform.localScale != new Vector3(3, 3, 0))
-                {
-
-                    gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3, 3, 0), 0.05f);
-                }
-                else
-                {
-                    Anim_boomb = 0;
-                    Type_Build = Type_Build.Null;
-                }
-            }
-        }
-
-        //anim_builds
-        if (Setting_place.Type_place == Type_place.Place)
-        {
-            if (Anim_builds == 1)
-            {
-                if (gameObject.transform.localScale != new Vector3(3.5f, 3.5f, 0))
-                {
-                    gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3.5f, 3.5f, 0), 0.01f);
-
-                }
-                else
-                {
-                    Anim_builds = 2;
-                }
-            }
-            else if (Anim_builds == 2)
-            {
-                if (gameObject.transform.localScale != new Vector3(3, 3, 0))
-                {
-                    gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3, 3, 0), 0.01f);
-                }
-                else
-                {
-                    Anim_builds = 1;
-
-                }
-            }
-            else if (Anim_builds == 3)
-            {
-                if (gameObject.transform.localScale != new Vector3(3, 3, 0))
-                {
-                    gameObject.transform.localScale = Vector3.MoveTowards(gameObject.transform.localScale, new Vector3(3, 3, 0), 0.01f);
-                }
-                else
-                {
-                    Anim_builds = 0;
-                    Type_Build = Type_Build.Null;
-                }
-            }
-        }
     }
 
 
@@ -538,17 +346,4 @@ public struct place_setting
     public GameObject pointer_player;
     public GameObject pointer_enemy;
     public GameObject[,] All_place;
-}
-
-
-public struct Object_attack_defance
-{
-    public GameObject Raw_Turet;
-    public GameObject Raw_castel;
-}
-
-public enum Type_Build
-{
-    Null, Bomb, Turret, Castel
-
 }

@@ -5,9 +5,12 @@ using TMPro;
 
 public class Pointer_enemy : MonoBehaviour
 {
+    public GameObject Raw_Bomb;
+    public GameObject Raw_turret;
+    public GameObject Raw_castle;
+
     //Entity enemy
     Setting_Enemy Enemy_setting;
-    Object_attack_defance Attack_Defance;
 
     GameObject[] Place_Can_move_bot;
 
@@ -23,11 +26,10 @@ public class Pointer_enemy : MonoBehaviour
     int count_last_postion;
     int lock_move;
 
-    public void Change_value_enemy_pointer(Setting_Enemy setting, Object_attack_defance attack_Defance)
+    public void Change_value_enemy_pointer(Setting_Enemy setting)
     {
         //cange values
         Enemy_setting = setting;
-        Attack_Defance = attack_Defance;
 
         //convert to arry place;
         Place_Can_move_bot = new GameObject[9];
@@ -110,116 +112,17 @@ public class Pointer_enemy : MonoBehaviour
         {
             case Type_Build.Bomb:
                 {
-                    foreach (var item in Enemy_setting.All_place)
-                    {
-                        if (item.GetComponent<Place>().Setting_place.Place_for == Place_for.Block && Vector3.Distance(item.transform.position, gameObject.transform.position) <= 1)
-                        {
-                            item.GetComponent<Place>().Setting_place.Type_place = Type_place.Place;
-                            item.GetComponent<Place>().Setting_place.Place_for = Place_for.Empity;
-                            Enemy_setting.place_enemy.GetComponent<Place>().Count -= 10;
-                            break;
-                        }
-                    }
+                    Instantiate(Raw_Bomb, transform.position, transform.rotation).GetComponent<Bomb>().Change_value_bomb(new Bomb.Bomb_setting { All_Place = Enemy_setting.All_place });
+                }
+                break;
+            case Type_Build.Castle:
+                {
+                    Instantiate(Raw_castle, transform.position, transform.rotation).GetComponent<Castel>().Change_value_castel(new Castel.Castel_setting { All_place = Enemy_setting.All_place, Place_for = Place_for.Enemy });
                 }
                 break;
             case Type_Build.Turret:
                 {
-                    var count_can_build = 0;
-                    var place_build = new GameObject[9];
-
-                    foreach (var item in Enemy_setting.All_place)
-                    {
-                        if (item.GetComponent<Place>().Type_Build == Type_Build.Null && item.GetComponent<Place>().Setting_place.Place_for != Place_for.Player && item.GetComponent<Place>().Setting_place.Place_for == Place_for.Empity && Vector3.Distance(item.transform.position, gameObject.transform.position) <= 1)
-                        {
-                            for (int i = 0; i < place_build.Length; i++)
-                            {
-                                if (place_build[i] == null)
-                                {
-                                    place_build[i] = item;
-                                    count_can_build++;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                    var new_place = new GameObject[count_can_build];
-                    for (int i = 0; i < place_build.Length; i++)
-                    {
-                        if (place_build[i] != null)
-                        {
-                            for (int a = 0; a < new_place.Length; a++)
-                            {
-                                if (new_place[a] == null)
-                                {
-                                    new_place[a] = place_build[i];
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                    place_build = new_place;
-
-                    var rand = Random.Range(0, place_build.Length);
-                    //if place build 0 bashe randm 0 bashe err mishe
-                    if (place_build.Length != 0)
-                    {
-                        Instantiate(Attack_Defance.Raw_Turet, place_build[rand].transform).GetComponent<Turret>().Change_valus_turret(
-                            new Turret.Setting_turet
-                            {
-                                All_place = Enemy_setting.All_place,
-                                Fire_to_ = Place_for.Player,
-                                magezin = 10,
-                            });
-                    }
-                }
-                break;
-            case Type_Build.Castel:
-                {
-                    var count_can_build = 0;
-                    var place_build = new GameObject[9];
-
-                    foreach (var item in Enemy_setting.All_place)
-                    {
-                        if (item.GetComponent<Place>().Type_Build == Type_Build.Null && item.GetComponent<Place>().Setting_place.Place_for != Place_for.Player && item.GetComponent<Place>().Setting_place.Place_for == Place_for.Empity && Vector3.Distance(item.transform.position, gameObject.transform.position) <= 1)
-                        {
-                            for (int i = 0; i < place_build.Length; i++)
-                            {
-                                if (place_build[i] == null)
-                                {
-                                    place_build[i] = item;
-                                    count_can_build++;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                    var new_place = new GameObject[count_can_build];
-                    for (int i = 0; i < place_build.Length; i++)
-                    {
-                        if (place_build[i] != null)
-                        {
-                            for (int a = 0; a < new_place.Length; a++)
-                            {
-                                if (new_place[a] == null)
-                                {
-                                    new_place[a] = place_build[i];
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                    place_build = new_place;
-
-                    var rand = Random.Range(0, place_build.Length);
-                    //if place build 0 bashe randm 0 bashe err mishe
-                    if (place_build.Length != 0)
-                    {
-                        Instantiate(Attack_Defance.Raw_castel, place_build[rand].transform).GetComponent<Castel>().Change_value_castel(new Castel.Castel_setting { All_place = Enemy_setting.All_place, Place_for = Place_for.Enemy });
-                    }
+                    Instantiate(Raw_turret, gameObject.transform.position, gameObject.transform.rotation).GetComponent<Turret>().Change_valus_turret(new Turret.Setting_turet { All_place = Enemy_setting.All_place, Fire_to_ = Place_for.Player, magezin = 10 });
                 }
                 break;
         }
@@ -227,11 +130,9 @@ public class Pointer_enemy : MonoBehaviour
 
     IEnumerator Start_bot()
     {
-
-
         while (true)
         {
-            yield return new WaitForSeconds(0.003f);
+            yield return new WaitForSeconds(1f);
 
             if (Count >= 1)
             {
@@ -294,7 +195,7 @@ public class Pointer_enemy : MonoBehaviour
                     }
                     else
                     {
-                        Change_value_enemy_pointer(Enemy_setting, Attack_Defance);
+                        Change_value_enemy_pointer(Enemy_setting);
                         lock_move = 1;
                         Atack_time++;
                         break;
@@ -346,7 +247,7 @@ public class Pointer_enemy : MonoBehaviour
                     }
                     else
                     {
-                        Change_value_enemy_pointer(Enemy_setting, Attack_Defance);
+                        Change_value_enemy_pointer(Enemy_setting);
                         lock_move = 1;
                         break;
                     }
@@ -364,21 +265,23 @@ public class Pointer_enemy : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(1);
-            if (Enemy_setting.place_enemy.GetComponent<Place>().Count >= 0)
+            if (Enemy_setting.place_enemy.GetComponent<Place>().Count >= 10)//10
             {
                 Builder(Type_Build.Bomb);
             }
 
             yield return new WaitForSeconds(0.1f);
-            if (Enemy_setting.place_enemy.GetComponent<Place>().Count >= 15)
+            if (Enemy_setting.place_enemy.GetComponent<Place>().Count >= 25)//25
+            {
+                Builder(Type_Build.Castle);
+            }
+
+            yield return new WaitForSeconds(0.1f);
+            if (Enemy_setting.place_enemy.GetComponent<Place>().Count >= 0)//20
             {
                 Builder(Type_Build.Turret);
             }
-            yield return new WaitForSeconds(0.1f);
-            if (Enemy_setting.place_enemy.GetComponent<Place>().Count >= 0)
-            {
-                Builder(Type_Build.Castel);
-            }
+
         }
     }
 

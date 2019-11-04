@@ -20,14 +20,14 @@ public class Turret : MonoBehaviour
     {
         //frist change value
         Setting = Turet_setting;
-        this.All_place = Turet_setting.All_place;
+        All_place = Turet_setting.All_place;
 
         //finde place for shot
         Can_shot_to = new GameObject[9];
         int count_place = 0;
         foreach (var item in All_place)
         {
-            if (Vector3.Distance(item.transform.position, gameObject.transform.position) <= 0.7f)
+            if (Vector3.Distance(item.transform.position, gameObject.transform.position) <= 0.8f)
             {
                 for (int i = 0; i < Can_shot_to.Length; i++)
                 {
@@ -69,7 +69,24 @@ public class Turret : MonoBehaviour
                 break;
             }
         }
+
+        //distroy turret if target
+        foreach (var item in Can_shot_to)
+        {
+            if (item == null)
+            {
+                Destroy(gameObject);
+            }
+
+        }
+
+        //destroy turret if place null  
+        if (Place_turret == null)
+        {
+            Destroy(gameObject);
+        }
     }
+
     private void Start()
     {
         switch (Setting.Fire_to_)
@@ -102,21 +119,14 @@ public class Turret : MonoBehaviour
     {
         if (Anim_turet == 0)
         {
-            transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(0.02f, 0.02f, 0), 0.001f);
+            transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(0.1f, 0.1f, 0), 0.01f);
         }
         else if (Anim_turet == 1)
         {
-            transform.localScale = Vector3.MoveTowards(transform.localScale, Vector3.zero, 0.001f);
+            transform.localScale = Vector3.MoveTowards(transform.localScale, Vector3.zero, 0.01f);
             if (transform.localScale == Vector3.zero)
             {
                 Destroy(gameObject);
-                if (Place_turret.GetComponent<Place>().Count >= 0)
-                {
-                    Place_turret.GetComponent<Place>().Type_Build = Type_Build.Null;
-                    Place_turret.GetComponent<Place>().Setting_place.Place_for = Place_for.Empity;
-                    Place_turret.GetComponent<Place>().Count = 0;
-                }
-
             }
         }
 

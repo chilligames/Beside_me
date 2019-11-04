@@ -8,18 +8,10 @@ public class Mission_offline : MonoBehaviour
     public Color Color_enemy;
     public GameObject Raw_Place;
     public Transform Place_fild;
+    [HideInInspector()]
     public GameObject pointer_player;
+    [HideInInspector()]
     public GameObject Pointer_enemy;
-
-
-
-    [Header("Defend Object")]
-
-    [Header("Attack Object")]
-    public GameObject Raw_turret;
-    public GameObject raw_Castel;
-
-
 
     [Header("Setting mission")]
     public int Y_size;//dfult 11
@@ -76,13 +68,7 @@ public class Mission_offline : MonoBehaviour
                             Color_player = Color_player,
                             pointer_enemy = Pointer_enemy,
                             pointer_player = pointer_player
-                        },
-                       new Object_attack_defance
-                       {
-                           Raw_Turet = Raw_turret,
-                           Raw_castel = raw_Castel
-                       }
-                       );
+                        });
 
 
                     count_block++;
@@ -170,13 +156,7 @@ public class Mission_offline : MonoBehaviour
                     Color_player = Color_player,
                     Place_for = Place_for.Empity,
                     Color_enemy = Color_enemy
-                },
-                new Object_attack_defance
-                {
-                    Raw_Turet = Raw_turret,
-                    Raw_castel = raw_Castel
-                }
-                );
+                });
         }
         Place_white = new GameObject[count_white - 2];
         Place_white = new_place_white;
@@ -190,13 +170,7 @@ public class Mission_offline : MonoBehaviour
                 All_place = All_place,
                 Place_player = Place_player,
                 place_enemy = Place_Enemy
-            },
-            new Object_attack_defance
-            {
-                Raw_Turet = Raw_turret,
-                Raw_castel = raw_Castel,
-            }
-            );
+            });
 
 
 
@@ -220,19 +194,9 @@ public class Mission_offline : MonoBehaviour
                         Color_player = Color_player,
                         pointer_enemy = Pointer_enemy,
                         pointer_player = pointer_player
-                    },
-                   new Object_attack_defance
-                   {
-                       Raw_Turet = Raw_turret,
-                       Raw_castel = raw_Castel
-                   }
-                    );
-                Place_Enemy.GetComponent<Place>().Change_Value_Place_sctipt(new place_setting { All_place = All_place, Type_place = Type_place.Enemy, Place_for = Place_for.Enemy, pointer_player = pointer_player, pointer_enemy = Pointer_enemy, Color_player = Color_player, Color_enemy = Color_enemy },
-                  new Object_attack_defance
-                  {
-                      Raw_Turet = Raw_turret,
-                      Raw_castel = raw_Castel
-                  }
+                    });
+                Place_Enemy.GetComponent<Place>().Change_Value_Place_sctipt(
+                    new place_setting { All_place = All_place, Type_place = Type_place.Enemy, Place_for = Place_for.Enemy, pointer_player = pointer_player, pointer_enemy = Pointer_enemy, Color_player = Color_player, Color_enemy = Color_enemy }
                     );
             }
             else
