@@ -89,7 +89,7 @@ public class Place : MonoBehaviour
     }
 
 
-    private void Update()
+    public void Up_from_pointers()
     {
         //color change with place for
         switch (Setting_place.Place_for)
@@ -127,10 +127,6 @@ public class Place : MonoBehaviour
             case Type_place.Block:
                 break;
         }
-
-        //contol_particle
-
-
 
 
         //text place null if count 0 

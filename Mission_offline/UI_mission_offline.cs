@@ -11,10 +11,13 @@ public class UI_mission_offline : MonoBehaviour
     public Button BTN_Bomb;
     public Button BTN_turret;
     public Button BTN_Castel;
+    public Button BTN_Spawner;
+
 
     public GameObject Raw_bomb;
     public GameObject Raw_Turret;
     public GameObject Raw_Castel;
+    public GameObject Raw_Spawner;
 
 
 
@@ -46,6 +49,11 @@ public class UI_mission_offline : MonoBehaviour
             Instantiate(Raw_Turret, Pointer_player.transform.position, transform.rotation).GetComponent<Turret>().Change_valus_turret(new Turret.Setting_turet { All_place = All_place, Fire_to_ = Place_for.Enemy, magezin = 10 });
         });
 
+        BTN_Spawner.onClick.AddListener(() =>
+        {
+            print("cost spawner here");
+            Instantiate(Raw_Spawner, Pointer_player.transform.position, transform.rotation).GetComponent<Spawner>().Change_values_spawner(new Spawner.Setting_spawner { All_place = All_place, place_For = Place_for.Player });
+        });
 
     }
 
@@ -53,5 +61,5 @@ public class UI_mission_offline : MonoBehaviour
 
 public enum Type_Build
 {
-    Bomb, Castle, Turret
+    Bomb, Castle, Turret,Spawner
 }

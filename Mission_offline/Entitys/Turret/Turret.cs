@@ -10,7 +10,6 @@ public class Turret : MonoBehaviour
     public Color Color_enemy;
 
     Setting_turet Setting;
-    GameObject[,] All_place;
     GameObject[] Can_shot_to;
     GameObject Place_turret;
 
@@ -20,12 +19,11 @@ public class Turret : MonoBehaviour
     {
         //frist change value
         Setting = Turet_setting;
-        All_place = Turet_setting.All_place;
 
         //finde place for shot
         Can_shot_to = new GameObject[9];
         int count_place = 0;
-        foreach (var item in All_place)
+        foreach (var item in Setting.All_place)
         {
             if (Vector3.Distance(item.transform.position, gameObject.transform.position) <= 0.8f)
             {
@@ -61,7 +59,7 @@ public class Turret : MonoBehaviour
         Can_shot_to = new_place_shot;
 
         //find_place turret
-        foreach (var item in All_place)
+        foreach (var item in Setting.All_place)
         {
             if (Vector3.Distance(transform.position, item.transform.position) == 0)
             {

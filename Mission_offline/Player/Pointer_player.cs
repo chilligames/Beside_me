@@ -6,12 +6,26 @@ using TMPro;
 
 public class Pointer_player : MonoBehaviour
 {
+
     public GameObject UI;
     public int Count;
     public TextMeshProUGUI Text_count;
 
+    public GameObject[,] All_place;
+    private void Start()
+    {
+        All_place = GetComponentInParent<Mission_offline>().All_place;
+    }
+
     private void Update()
     {
+        foreach (var item in All_place)
+        {
+            if (item.transform.position == gameObject.transform.position)
+            {
+                item.GetComponent<Place>().Up_from_pointers();
+            }
+        }
         if (Count > 0)
         {
             Text_count.text = Count.ToString();
@@ -20,6 +34,9 @@ public class Pointer_player : MonoBehaviour
         {
             Text_count.text = "";
         }
+
+
+
         //Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(transform.position.x, transform.position.y, -10), 0.1f);
     }
 

@@ -86,6 +86,7 @@ public class Pointer_enemy : MonoBehaviour
 
     }
 
+
     private void Start()
     {
         StartCoroutine(Start_bot());
@@ -102,6 +103,14 @@ public class Pointer_enemy : MonoBehaviour
         else
         {
             Text_Turn.text = "";
+        }
+
+        foreach (var item in Enemy_setting.All_place)
+        {
+            if (item.transform.position == item.transform.position)
+            {
+                item.GetComponent<Place>().Up_from_pointers();
+            }
         }
     }
 
