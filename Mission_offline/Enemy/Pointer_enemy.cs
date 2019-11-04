@@ -8,6 +8,8 @@ public class Pointer_enemy : MonoBehaviour
     public GameObject Raw_Bomb;
     public GameObject Raw_turret;
     public GameObject Raw_castle;
+    public GameObject Raw_spawner;
+
 
     //Entity enemy
     Setting_Enemy Enemy_setting;
@@ -132,6 +134,11 @@ public class Pointer_enemy : MonoBehaviour
             case Type_Build.Turret:
                 {
                     Instantiate(Raw_turret, gameObject.transform.position, gameObject.transform.rotation).GetComponent<Turret>().Change_valus_turret(new Turret.Setting_turet { All_place = Enemy_setting.All_place, Fire_to_ = Place_for.Player, magezin = 10 });
+                }
+                break;
+            case Type_Build.Spawner:
+                {
+                    Instantiate(Raw_spawner, gameObject.transform.position, gameObject.transform.rotation).GetComponent<Spawner>().Change_values_spawner(new Spawner.Setting_spawner { All_place = Enemy_setting.All_place, Count_farm = 50, place_For = Place_for.Enemy }); ;
                 }
                 break;
         }
@@ -286,9 +293,14 @@ public class Pointer_enemy : MonoBehaviour
             }
 
             yield return new WaitForSeconds(0.1f);
-            if (Enemy_setting.place_enemy.GetComponent<Place>().Count >= 0)//20
+            if (Enemy_setting.place_enemy.GetComponent<Place>().Count >= 20)//20
             {
                 Builder(Type_Build.Turret);
+            }
+            yield return new WaitForSeconds(0.1f);
+            if (Enemy_setting.place_enemy.GetComponent<Place>().Count >= 0)
+            {
+                Builder(Type_Build.Spawner);
             }
 
         }

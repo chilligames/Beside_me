@@ -52,14 +52,12 @@ public class UI_mission_offline : MonoBehaviour
         BTN_Spawner.onClick.AddListener(() =>
         {
             print("cost spawner here");
-            Instantiate(Raw_Spawner, Pointer_player.transform.position, transform.rotation).GetComponent<Spawner>().Change_values_spawner(new Spawner.Setting_spawner { All_place = All_place, place_For = Place_for.Player });
+            Instantiate(Raw_Spawner, Pointer_player.transform.position, transform.rotation).GetComponent<Spawner>().Change_values_spawner(new Spawner.Setting_spawner { place_For = Place_for.Player, All_place = All_place, Count_farm = 50 });
         });
-
     }
-
 }
 
 public enum Type_Build
 {
-    Bomb, Castle, Turret,Spawner
+    Bomb, Castle, Turret, Spawner
 }

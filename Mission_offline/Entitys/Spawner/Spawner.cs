@@ -8,6 +8,10 @@ public class Spawner : MonoBehaviour
 
     public GameObject[] Place_farms;
 
+    public LineRenderer[] Line;
+
+
+
     public void Change_values_spawner(Setting_spawner Setting_spawner)
     {
         //change value
@@ -20,21 +24,29 @@ public class Spawner : MonoBehaviour
 
         foreach (var item in Setting.All_place)
         {
-            if (Vector3.Distance(item.transform.position, gameObject.transform.position) <= 0.7)
+            if (Vector3.Distance(item.transform.position, gameObject.transform.position) <= 0.7f)
             {
-                for (int i = 0; i < Place_farms.Length; i++)
+                if (
+                    item.GetComponent<Place>().Setting_place.Place_for != Place_for.Block
+                    && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Block
+                    && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Enemy
+                    && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Player
+                    )
                 {
-                    if (Place_farms[i] == null)
+                    for (int i = 0; i < Place_farms.Length; i++)
                     {
-                        Place_farms[i] = item;
-                        Count_place++;
-                        break;
+                        if (Place_farms[i] == null)
+                        {
+                            Place_farms[i] = item;
+                            Count_place++;
+                            break;
+                        }
                     }
                 }
             }
         }
 
-        var New_place_farm = new GameObject[Count_place - 1];
+        var New_place_farm = new GameObject[Count_place];
 
         foreach (var item in Place_farms)
         {
@@ -42,7 +54,7 @@ public class Spawner : MonoBehaviour
             {
                 for (int i = 0; i < New_place_farm.Length; i++)
                 {
-                    if (New_place_farm == null)
+                    if (New_place_farm[i] == null)
                     {
                         New_place_farm[i] = item;
                         break;
@@ -52,18 +64,101 @@ public class Spawner : MonoBehaviour
         }
 
         Place_farms = New_place_farm;
-        foreach (var item in Place_farms)
-        {
-            print(item);
-        }
+
+
+        //work
+        StartCoroutine(Spawn_turn());
+
     }
 
+
+    IEnumerator Spawn_turn()
+    {
+        //anim creat    
+        while (true)
+        {
+            yield return new WaitForSeconds(0.01f);
+            //anim_spawener
+            transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(0.1f, 0.1f, 0), 0.01f);
+            if (transform.localScale == new Vector3(0.1f, 0.1f, 0))
+            {
+                break;
+            }
+        }
+
+        //work
+        while (true)
+        {
+            yield return new WaitForSeconds(1);
+
+            switch (Setting.place_For)
+            {
+                case Place_for.Enemy:
+                    {
+                        foreach (var item in Place_farms)
+                        {
+                            if (
+                                item.GetComponent<Place>().Setting_place.Place_for != Place_for.Player
+                                && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Block
+                                && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Enemy
+                                && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Player)
+                            {
+                                item.GetComponent<Place>().Count += 1;
+                                item.GetComponent<Place>().Setting_place.Place_for = Place_for.Enemy;
+                                item.GetComponent<Place>().Up_from_pointers();
+                                Setting.Count_farm--;
+                            }
+                        }
+                    }
+                    break;
+                case Place_for.Player:
+                    {
+                        foreach (var item in Place_farms)
+                        {
+                            if (
+                                item.GetComponent<Place>().Setting_place.Place_for != Place_for.Enemy
+                                && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Block
+                                && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Enemy
+                                && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Player)
+                            {
+                                item.GetComponent<Place>().Count += 1;
+                                item.GetComponent<Place>().Setting_place.Place_for = Place_for.Player;
+                                item.GetComponent<Place>().Up_from_pointers();
+                                Setting.Count_farm--;
+                            }
+                        }
+                    }
+                    break;
+            }
+
+            if (Setting.Count_farm <= 0)
+            {
+                break;
+            }
+        }
+
+
+        //anim destroy;
+        while (true)
+        {
+            yield return new WaitForSeconds(0.01f);
+
+            transform.localScale = Vector3.MoveTowards(transform.localScale, Vector3.zero, 0.01f);
+            if (transform.localScale == Vector3.zero)
+            {
+                Destroy(gameObject);
+
+                break;
+            }
+
+        }
+    }
 
     public struct Setting_spawner
     {
         public GameObject[,] All_place;
         public Place_for place_For;
-
+        public int Count_farm;
     }
 
 }

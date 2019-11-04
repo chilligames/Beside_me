@@ -8,7 +8,7 @@ public class Mission_offline : MonoBehaviour
     public Color Color_enemy;
     public GameObject Raw_Place;
     public Transform Place_fild;
-    [HideInInspector()]
+    [HideInInspector]
     public GameObject pointer_player;
     [HideInInspector()]
     public GameObject Pointer_enemy;
@@ -24,7 +24,9 @@ public class Mission_offline : MonoBehaviour
     public GameObject[,] All_place;
     public GameObject[] Place_blocks;
     public GameObject[] Place_white;
+    [HideInInspector]
     public GameObject Place_player;
+    [HideInInspector]
     public GameObject Place_Enemy;
 
 
