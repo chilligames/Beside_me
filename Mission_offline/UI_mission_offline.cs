@@ -60,4 +60,4 @@ public class UI_mission_offline : MonoBehaviour
 public enum Type_Build
 {
     Bomb, Castle, Turret, Spawner
-}
+} 
