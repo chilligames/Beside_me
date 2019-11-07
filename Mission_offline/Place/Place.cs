@@ -66,8 +66,6 @@ public class Place : MonoBehaviour
             }
         }
         Place_inside_place = fix_place;
-
-
     }
 
     private void Start()
@@ -265,13 +263,6 @@ public class Place : MonoBehaviour
             Setting_place.pointer_player.GetComponent<Pointer_player>().Count += Count;
             Count = 0;
         }
-
-        //pointer in one place
-        if (Setting_place.pointer_player.transform.position == Setting_place.pointer_enemy.transform.position)
-        {
-            print("minuse pointers");
-        }
-
 
         //win losse Controll
         if (Setting_place.Type_place == Type_place.Enemy && Setting_place.pointer_player.transform.position == gameObject.transform.position)

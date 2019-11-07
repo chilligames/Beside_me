@@ -42,7 +42,7 @@ public class Cannon : MonoBehaviour
         var count_place = 0;
         foreach (var item in Setting.All_place)
         {
-            if (Vector3.Distance(item.transform.position, transform.position) <= 4)
+            if (Vector3.Distance(item.transform.position, transform.position) <= 3)
             {
                 for (int i = 0; i < place_for_shot.Length; i++)
                 {

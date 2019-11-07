@@ -10,6 +10,10 @@ public class Pointer_enemy : MonoBehaviour
     public GameObject Raw_castle;
     public GameObject Raw_spawner;
     public GameObject Raw_Sniper;
+    public GameObject Raw_Cannon;
+    public GameObject Raw_Trap;
+    public GameObject Pointer_player;
+
 
     //Entity enemy
     Setting_Enemy Enemy_setting;
@@ -114,6 +118,10 @@ public class Pointer_enemy : MonoBehaviour
                 item.GetComponent<Place>().Up_from_pointers();
             }
         }
+        if (Pointer_player.transform.position==transform.position)
+        {
+            print("minue insidepointer");
+        }
     }
 
 
@@ -144,6 +152,16 @@ public class Pointer_enemy : MonoBehaviour
             case Type_Build.Sniper:
                 {
                     Instantiate(Raw_Sniper, gameObject.transform.position, transform.rotation).GetComponent<Sniper>().Change_value_sniper(new Sniper.Setting_sniper { All_place = Enemy_setting.All_place, Magezin = 25, place_For = Place_for.Enemy });
+                }
+                break;
+            case Type_Build.Cannon:
+                {
+                    Instantiate(Raw_Cannon, gameObject.transform.position, transform.rotation).GetComponent<Cannon>().Change_value_cannon(new Cannon.Setting_Cannon { All_place = Enemy_setting.All_place, Magezin = 10, Place_for = Place_for.Enemy });
+                }
+                break;
+            case Type_Build.Trap:
+                {
+                    Instantiate(Raw_Trap, gameObject.transform.position, transform.rotation).GetComponent<Trap>().Change_value(new Trap.Setting_Trap { All_place = Enemy_setting.All_place, Place_for = Place_for.Enemy, Pointer_enemy = gameObject, Pointer_player = Pointer_player });
                 }
                 break;
         }
@@ -302,15 +320,29 @@ public class Pointer_enemy : MonoBehaviour
             {
                 Builder(Type_Build.Turret);
             }
+        
             yield return new WaitForSeconds(0.1f);
             if (Enemy_setting.place_enemy.GetComponent<Place>().Count >= 35)//35
             {
                 Builder(Type_Build.Spawner);
             }
+           
             yield return new WaitForSeconds(0.1f);
             if (Enemy_setting.place_enemy.GetComponent<Place>().Count >= 40)
             {
                 Builder(Type_Build.Sniper);
+            }
+           
+            yield return new WaitForSeconds(0.1f);
+            if (Enemy_setting.place_enemy.GetComponent<Place>().Count >= 50)
+            {
+                Builder(Type_Build.Cannon);
+            }
+           
+            yield return new WaitForSeconds(0.1f);
+            if (Enemy_setting.place_enemy.GetComponent<Place>().Count >= 60)
+            {
+                Builder(Type_Build.Trap);
             }
 
         }

@@ -7,6 +7,7 @@ public class UI_mission_offline : MonoBehaviour
     public GameObject[,] All_place;
 
     public GameObject Pointer_player;
+    public GameObject Pointer_enemy;
 
     public Button BTN_Bomb;
     public Button BTN_turret;
@@ -14,6 +15,8 @@ public class UI_mission_offline : MonoBehaviour
     public Button BTN_Spawner;
     public Button BTN_sniper;
     public Button BTN_Cannon;
+    public Button BTN_Trap;
+
 
 
 
@@ -23,6 +26,7 @@ public class UI_mission_offline : MonoBehaviour
     public GameObject Raw_Spawner;
     public GameObject Raw_Sniper;
     public GameObject Raw_Cannon;
+    public GameObject Raw_trap;
 
 
     void Start()
@@ -70,6 +74,12 @@ public class UI_mission_offline : MonoBehaviour
             Instantiate(Raw_Cannon, Pointer_player.transform.position, transform.rotation).GetComponent<Cannon>().Change_value_cannon(new Cannon.Setting_Cannon { All_place = All_place, Magezin = 10, Place_for = Place_for.Player });
 
         });
+
+        BTN_Trap.onClick.AddListener(() =>
+        {
+            print("cost trap");
+            Instantiate(Raw_trap, Pointer_player.transform.position, transform.rotation).GetComponent<Trap>().Change_value(new Trap.Setting_Trap { Place_for = Place_for.Player, Pointer_enemy = Pointer_enemy, Pointer_player = Pointer_player, All_place = All_place });
+        });
     }
 }
 
@@ -79,5 +89,8 @@ public enum Type_Build
     Castle,
     Turret,
     Spawner,
-    Sniper
+    Sniper,
+    Cannon,
+    Trap
+
 }

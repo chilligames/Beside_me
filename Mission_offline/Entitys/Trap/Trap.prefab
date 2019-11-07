@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 9145541311941897961}
   - component: {fileID: 4562473560983936938}
   - component: {fileID: 5964362762723366820}
-  - component: {fileID: 3861272962093083967}
+  - component: {fileID: 2450553160280813244}
   m_Layer: 5
-  m_Name: Cannon
+  m_Name: Trap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: ddf9790456187574c86efadceada8044, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f6710d38d8903e2419fa1ed05a16ed6f, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -91,7 +91,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3861272962093083967
+--- !u!114 &2450553160280813244
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -100,11 +100,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3551140728731821503}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 176b3b65c448623428a5919f76bc1365, type: 3}
+  m_Script: {fileID: 11500000, guid: 1915a86293fe1884eae9bcf36f9eedb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Raw_bullet: {fileID: 3551140728731821503, guid: 5d113d71cab7b0744ac2d38568b81128,
-    type: 3}
 --- !u!1 &4849151676835733331
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,7 +129,7 @@ Transform:
   m_GameObject: {fileID: 4849151676835733331}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 13, y: 13, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 9145541311941897961}
   m_RootOrder: 0
