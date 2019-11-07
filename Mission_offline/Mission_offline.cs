@@ -222,7 +222,7 @@ public class Mission_offline : MonoBehaviour
             {
                 if (Pos_up == item.transform.position && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Block)
                 {
-                    StartCoroutine(Move_pointer(Pos_up, pointer_player, item));
+                    StartCoroutine(Move_pointer(Pos_up, pointer_player));
                 }
             }
 
@@ -235,7 +235,7 @@ public class Mission_offline : MonoBehaviour
             {
                 if (pos_down == item.transform.position && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Block)
                 {
-                    StartCoroutine(Move_pointer(pos_down, pointer_player, item));
+                    StartCoroutine(Move_pointer(pos_down, pointer_player));
                 }
             }
         }
@@ -247,7 +247,7 @@ public class Mission_offline : MonoBehaviour
             {
                 if (item.transform.position == pos_right && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Block)
                 {
-                    StartCoroutine(Move_pointer(pos_right, pointer_player, item));
+                    StartCoroutine(Move_pointer(pos_right, pointer_player));
                 }
             }
         }
@@ -259,7 +259,7 @@ public class Mission_offline : MonoBehaviour
             {
                 if (item.transform.position == pos_left && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Block)
                 {
-                    StartCoroutine(Move_pointer(pos_left, pointer_player, item));
+                    StartCoroutine(Move_pointer(pos_left, pointer_player));
                 }
             }
         }
@@ -312,10 +312,16 @@ public class Mission_offline : MonoBehaviour
     }
 
 
+    public void Reset_pointer_player()
+    {
+        StopAllCoroutines();
+        lock_move = 0;
 
+        pointer_player.transform.position = Place_player.transform.position;
+    }
 
     //move pointer to postion
-    IEnumerator Move_pointer(Vector3 postion, GameObject pointer, GameObject place)
+    public IEnumerator Move_pointer(Vector3 postion, GameObject pointer)
     {
         if (lock_move == 0)
         {

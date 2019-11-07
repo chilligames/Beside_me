@@ -34,10 +34,6 @@ public class Pointer_player : MonoBehaviour
         {
             Text_count.text = "";
         }
-
-
-
-        //Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(transform.position.x, transform.position.y, -10), 0.1f);
     }
 
 
