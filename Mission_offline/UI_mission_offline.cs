@@ -13,12 +13,16 @@ public class UI_mission_offline : MonoBehaviour
     public Button BTN_Castel;
     public Button BTN_Spawner;
     public Button BTN_sniper;
+    public Button BTN_Cannon;
+
+
 
     public GameObject Raw_bomb;
     public GameObject Raw_Turret;
     public GameObject Raw_Castel;
     public GameObject Raw_Spawner;
     public GameObject Raw_Sniper;
+    public GameObject Raw_Cannon;
 
 
     void Start()
@@ -60,12 +64,18 @@ public class UI_mission_offline : MonoBehaviour
             print("cost sniper");
             Instantiate(Raw_Sniper, Pointer_player.transform.position, transform.rotation).GetComponent<Sniper>().Change_value_sniper(new Sniper.Setting_sniper { All_place = All_place, Magezin = 25, place_For = Place_for.Player });
         });
+        BTN_Cannon.onClick.AddListener(() =>
+        {
+            print("cost cannoc");
+            Instantiate(Raw_Cannon, Pointer_player.transform.position, transform.rotation).GetComponent<Cannon>().Change_value_cannon(new Cannon.Setting_Cannon { All_place = All_place, Magezin = 10, Place_for = Place_for.Player });
+
+        });
     }
 }
 
 public enum Type_Build
 {
-    Bomb, 
+    Bomb,
     Castle,
     Turret,
     Spawner,
