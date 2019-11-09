@@ -119,7 +119,7 @@ public class Pointer_enemy : MonoBehaviour
         {
             if (item.transform.position == item.transform.position)
             {
-                item.GetComponent<Place>().Up_from_pointers();
+                item.GetComponent<Place>().Update_place_from_pointers();
             }
         }
         if (Pointer_player.transform.position == transform.position)
@@ -363,7 +363,7 @@ public class Pointer_enemy : MonoBehaviour
 
 
             yield return new WaitForSeconds(0.1f);
-            if (Enemy_setting.place_enemy.GetComponent<Place>().Count >= 0)
+            if (Enemy_setting.place_enemy.GetComponent<Place>().Count >= 70)
             {
                 Builder(Type_Build.Teleport);
             }

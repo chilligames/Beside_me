@@ -12,10 +12,15 @@ public class Pointer_player : MonoBehaviour
     public TextMeshProUGUI Text_count;
 
     public GameObject[,] All_place;
+
+
+
     private void Start()
     {
         All_place = GetComponentInParent<Mission_offline>().All_place;
     }
+
+
 
     private void Update()
     {
@@ -23,9 +28,11 @@ public class Pointer_player : MonoBehaviour
         {
             if (item.transform.position == gameObject.transform.position)
             {
-                item.GetComponent<Place>().Up_from_pointers();
+                item.GetComponent<Place>().Update_place_from_pointers();
+                break;
             }
         }
+
         if (Count > 0)
         {
             Text_count.text = Count.ToString();
@@ -34,6 +41,8 @@ public class Pointer_player : MonoBehaviour
         {
             Text_count.text = "";
         }
+
+
     }
 
 

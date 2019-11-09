@@ -29,9 +29,6 @@ public class Mission_offline : MonoBehaviour
     [HideInInspector]
     public GameObject Place_Enemy;
 
-
-    int lock_move = 0;
-
     void Start()
     {
         //place creator
@@ -176,6 +173,7 @@ public class Mission_offline : MonoBehaviour
 
 
 
+
         //local methods
         void Place_player_enemy()
         {
@@ -207,142 +205,19 @@ public class Mission_offline : MonoBehaviour
             }
 
         }
+
     }
 
 
-    private void Update()
-    {
 
-        //key control player 
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            Vector3 Pos_up = new Vector3(pointer_player.transform.position.x, pointer_player.transform.position.y + 0.5f);
-
-            foreach (var item in Places_side_pointer_player)
-            {
-                if (Pos_up == item.transform.position && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Block)
-                {
-                    StartCoroutine(Move_pointer(Pos_up, pointer_player));
-                }
-            }
-
-        }
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            Vector3 pos_down = new Vector3(pointer_player.transform.position.x, pointer_player.transform.position.y - 0.5f);
-            foreach (var item in Places_side_pointer_player)
-            {
-                if (pos_down == item.transform.position && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Block)
-                {
-                    StartCoroutine(Move_pointer(pos_down, pointer_player));
-                }
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Vector3 pos_right = new Vector3(pointer_player.transform.position.x - 0.5f, pointer_player.transform.position.y);
-            foreach (var item in Places_side_pointer_player)
-            {
-                if (item.transform.position == pos_right && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Block)
-                {
-                    StartCoroutine(Move_pointer(pos_right, pointer_player));
-                }
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            Vector3 pos_left = new Vector3(pointer_player.transform.position.x + 0.5f, pointer_player.transform.position.y);
-            foreach (var item in Places_side_pointer_player)
-            {
-                if (item.transform.position == pos_left && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Block)
-                {
-                    StartCoroutine(Move_pointer(pos_left, pointer_player));
-                }
-            }
-        }
-    }
-
-
-    /// <summary>
-    /// place inside player pointer
-    /// </summary>
-    GameObject[] Places_side_pointer_player
-    {
-        get
-        {
-            GameObject[] placess = new GameObject[5];
-            int count = 0;
-            foreach (var item in All_place)
-            {
-                if (Vector2.Distance(item.transform.position, pointer_player.transform.position) <= 0.5f)
-                {
-                    for (int i = 0; i < placess.Length; i++)
-                    {
-                        if (placess[i] == null)
-                        {
-                            placess[i] = item;
-                            count++;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            var new_pos_place = new GameObject[count];
-
-            for (int i = 0; i < placess.Length; i++)
-            {
-                if (placess[i] != null)
-                {
-                    for (int a = 0; a < new_pos_place.Length; a++)
-                    {
-                        if (new_pos_place[a] == null)
-                        {
-                            new_pos_place[a] = placess[i];
-                            break;
-                        }
-                    }
-                }
-            }
-            return new_pos_place;
-        }
-    }
-
-
+   
     public void Reset_pointer_player()
     {
         StopAllCoroutines();
-        lock_move = 0;
 
         pointer_player.transform.position = Place_player.transform.position;
     }
 
-    //move pointer to postion
-    public IEnumerator Move_pointer(Vector3 postion, GameObject pointer)
-    {
-        if (lock_move == 0)
-        {
-            lock_move = 1;
-            while (true)
-            {
-                yield return new WaitForSeconds(0.01f);
-                if (pointer.transform.position != postion)
-                {
-                    pointer.transform.position = Vector3.MoveTowards(pointer.transform.position, postion, 0.07f);
-
-                }
-                else
-                {
-                    pointer.transform.position = postion;
-                    lock_move = 0;
-                    break;
-                }
-
-            }
-        }
-    }
 
 }
+

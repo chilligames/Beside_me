@@ -105,7 +105,7 @@ public class Spawner : MonoBehaviour
                             {
                                 item.GetComponent<Place>().Count += 1;
                                 item.GetComponent<Place>().Setting_place.Place_for = Place_for.Enemy;
-                                item.GetComponent<Place>().Up_from_pointers();
+                                item.GetComponent<Place>().Update_place_from_pointers();
                                 Setting.Count_farm--;
                             }
                         }
@@ -123,7 +123,7 @@ public class Spawner : MonoBehaviour
                             {
                                 item.GetComponent<Place>().Count += 1;
                                 item.GetComponent<Place>().Setting_place.Place_for = Place_for.Player;
-                                item.GetComponent<Place>().Up_from_pointers();
+                                item.GetComponent<Place>().Update_place_from_pointers();
                                 Setting.Count_farm--;
                             }
                         }

@@ -1,14 +1,18 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 using static Mission_offline;
 
 public class UI_mission_offline : MonoBehaviour
 {
+    [Header("entity game")]
     public GameObject[,] All_place;
 
     public GameObject Pointer_player;
     public GameObject Pointer_enemy;
 
+    [Header("BTNS")]
     public Button BTN_Bomb;
     public Button BTN_turret;
     public Button BTN_Castel;
@@ -18,9 +22,16 @@ public class UI_mission_offline : MonoBehaviour
     public Button BTN_Trap;
     public Button BTN_teleport;
 
+    [Header("Entity_touch")]
+    public Button BTN_Up_right;
+    public Button BTN_Up_left;
+    public Button BTN_right;
+    public Button BTN_down_left;
+    public Button BTN_down_right;
+    public Button BTN_left;
 
 
-
+    [Header("Raw_trap")]
     public GameObject Raw_bomb;
     public GameObject Raw_Turret;
     public GameObject Raw_Castel;
@@ -29,6 +40,8 @@ public class UI_mission_offline : MonoBehaviour
     public GameObject Raw_Cannon;
     public GameObject Raw_trap;
     public GameObject Raw_teleport;
+
+    int lock_move = 0;
 
     void Start()
     {
@@ -69,6 +82,7 @@ public class UI_mission_offline : MonoBehaviour
             print("cost sniper");
             Instantiate(Raw_Sniper, Pointer_player.transform.position, transform.rotation).GetComponent<Sniper>().Change_value_sniper(new Sniper.Setting_sniper { All_place = All_place, Magezin = 25, place_For = Place_for.Player });
         });
+
         BTN_Cannon.onClick.AddListener(() =>
         {
             print("cost cannoc");
@@ -88,6 +102,142 @@ public class UI_mission_offline : MonoBehaviour
             Instantiate(Raw_teleport, Pointer_player.transform.position, transform.rotation).GetComponent<Teleport>().Chnage_value_teleport(new Teleport.Setting_teleport { All_place = All_place, Place_for = Place_for.Player, Pointer_enemy = Pointer_enemy, Pointer_player = Pointer_player }); ;
 
         });
+
+        //btn_touch
+        BTN_Up_left.onClick.AddListener(Up);
+        BTN_Up_right.onClick.AddListener(Up);
+
+        BTN_down_left.onClick.AddListener(Down);
+        BTN_down_right.onClick.AddListener(Down);
+
+        BTN_left.onClick.AddListener(Left);
+        BTN_right.onClick.AddListener(Right);
+
+
+
+        void Up()
+        {
+            Vector3 Pos_up = new Vector3(Pointer_player.transform.position.x, Pointer_player.transform.position.y + 0.5f);
+
+            foreach (var item in Places_side_pointer_player)
+            {
+                if (Pos_up == item.transform.position && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Block)
+                {
+                    StartCoroutine(Move_pointer(Pos_up, Pointer_player));
+                }
+            }
+
+
+        }
+        void Down()
+        {
+            Vector3 pos_down = new Vector3(Pointer_player.transform.position.x, Pointer_player.transform.position.y - 0.5f);
+            foreach (var item in Places_side_pointer_player)
+            {
+                if (pos_down == item.transform.position && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Block)
+                {
+                    StartCoroutine(Move_pointer(pos_down, Pointer_player));
+                }
+            }
+
+        }
+
+        void Left()
+        {
+            Vector3 pos_left = new Vector3(Pointer_player.transform.position.x - 0.5f, Pointer_player.transform.position.y);
+            foreach (var item in Places_side_pointer_player)
+            {
+                if (item.transform.position == pos_left && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Block)
+                {
+                    StartCoroutine(Move_pointer(pos_left, Pointer_player));
+                }
+            }
+        }
+        void Right()
+        {
+            Vector3 pos_right = new Vector3(Pointer_player.transform.position.x + 0.5f, Pointer_player.transform.position.y);
+            foreach (var item in Places_side_pointer_player)
+            {
+                if (item.transform.position == pos_right && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Block)
+                {
+                    StartCoroutine(Move_pointer(pos_right, Pointer_player));
+                }
+            }
+
+        }
+    }
+
+
+    /// <summary>
+    /// place inside player pointer
+    /// </summary>
+    GameObject[] Places_side_pointer_player
+    {
+        get
+        {
+            GameObject[] placess = new GameObject[5];
+            int count = 0;
+            foreach (var item in All_place)
+            {
+                if (Vector2.Distance(item.transform.position, Pointer_player.transform.position) <= 0.5f)
+                {
+                    for (int i = 0; i < placess.Length; i++)
+                    {
+                        if (placess[i] == null)
+                        {
+                            placess[i] = item;
+                            count++;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            var new_pos_place = new GameObject[count];
+
+            for (int i = 0; i < placess.Length; i++)
+            {
+                if (placess[i] != null)
+                {
+                    for (int a = 0; a < new_pos_place.Length; a++)
+                    {
+                        if (new_pos_place[a] == null)
+                        {
+                            new_pos_place[a] = placess[i];
+                            break;
+                        }
+                    }
+                }
+            }
+            return new_pos_place;
+        }
+    }
+
+
+
+    //move pointer to postion
+    public IEnumerator Move_pointer(Vector3 postion, GameObject pointer)
+    {
+        if (lock_move == 0)
+        {
+            lock_move = 1;
+            while (true)
+            {
+                yield return new WaitForSeconds(0.01f);
+                if (pointer.transform.position != postion)
+                {
+                    pointer.transform.position = Vector3.MoveTowards(pointer.transform.position, postion, 0.1f);
+
+                }
+                else
+                {
+                    pointer.transform.position = postion;
+                    lock_move = 0;
+                    break;
+                }
+
+            }
+        }
     }
 }
 

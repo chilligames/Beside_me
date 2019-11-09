@@ -87,7 +87,7 @@ public class Place : MonoBehaviour
     }
 
 
-    public void Up_from_pointers()
+    public void Update_place_from_pointers()
     {
         //color change with place for
         switch (Setting_place.Place_for)
