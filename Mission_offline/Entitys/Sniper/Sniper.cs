@@ -1,9 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Sniper : MonoBehaviour
 {
+
+    public GameObject Ring;
+    public Button BTN_sniper;
+
+
     Setting_sniper Setting;
 
 
@@ -17,6 +23,19 @@ public class Sniper : MonoBehaviour
     {
         //chagne value
         Setting = setting_Sniper;
+
+        BTN_sniper.onClick.AddListener(() =>
+        {
+            if (Ring.activeInHierarchy)
+            {
+                Ring.SetActive(false);
+            }
+            else
+            {
+                Ring.SetActive(true);
+            }
+        });
+
 
         //finde place sniper
         foreach (var item in Setting.All_place)

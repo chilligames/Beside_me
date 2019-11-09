@@ -1,10 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Teleport : MonoBehaviour
 {
-    public Setting_teleport Setting;
+    public GameObject Ring;
+    public Button BTN_spawner;
+
+
+    Setting_teleport Setting;
 
     GameObject place_teleport;
     GameObject place_enemy;
@@ -14,7 +19,20 @@ public class Teleport : MonoBehaviour
 
     public void Chnage_value_teleport(Setting_teleport Setting_Teleport)
     {
+        //change values
         Setting = Setting_Teleport;
+        BTN_spawner.onClick.AddListener(() =>
+        {
+            if (Ring.activeInHierarchy)
+            {
+                Ring.SetActive(false);
+            }
+            else
+            {
+                Ring.SetActive(true);
+            }
+        });
+
 
         //finde place player enemy
         foreach (var item in Setting.All_place)

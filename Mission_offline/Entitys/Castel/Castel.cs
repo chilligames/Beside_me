@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using static Mission_offline;
 public class Castel : MonoBehaviour
 {
     public Color Color_Player;
     public Color Color_enemy;
+    public GameObject Ring;
+    public Button BTN_castle;
 
     Castel_setting castel_setting_local;
     GameObject castel_place;
@@ -16,6 +19,19 @@ public class Castel : MonoBehaviour
     {
         //cahnge value
         castel_setting_local = castel_setting;
+        BTN_castle.onClick.AddListener(() =>
+        {
+            if (Ring.activeInHierarchy)
+            {
+                Ring.SetActive(false);
+            }
+            else
+            {
+                Ring.SetActive(true);
+            }
+
+        });
+
 
 
         //fide place
@@ -62,6 +78,7 @@ public class Castel : MonoBehaviour
 
     private void Update()
     {
+
         if (castel_place.GetComponent<Place>().Count == 0)
         {
             Destroy(gameObject);

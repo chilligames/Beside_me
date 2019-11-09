@@ -1,21 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Spawner : MonoBehaviour
 {
-    public Setting_spawner Setting;
+    public Button BTN_spawner;
+    public GameObject Ring;
 
-    public GameObject[] Place_farms;
 
-    public LineRenderer[] Line;
+    Setting_spawner Setting;
 
+    GameObject[] Place_farms;
 
 
     public void Change_values_spawner(Setting_spawner Setting_spawner)
     {
         //change value
         Setting = Setting_spawner;
+        BTN_spawner.onClick.AddListener(() =>
+        {
+            if (Ring.activeInHierarchy)
+            {
+                Ring.SetActive(false);
+            }
+            else
+            {
+                Ring.SetActive(true);
+            }
+
+        });
 
 
         //finde place farm

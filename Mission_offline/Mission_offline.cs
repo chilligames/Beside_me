@@ -20,7 +20,7 @@ public class Mission_offline : MonoBehaviour
     public int Deficullty;//defult 5
 
 
-    Vector2 Start_pos_fild = new Vector2(-2, 2.5f);
+    public Vector2 Start_pos_fild;
     public GameObject[,] All_place;
     public GameObject[] Place_blocks;
     public GameObject[] Place_white;
@@ -210,7 +210,7 @@ public class Mission_offline : MonoBehaviour
 
 
 
-   
+
     public void Reset_pointer_player()
     {
         StopAllCoroutines();

@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Cannon : MonoBehaviour
 {
     public GameObject Raw_bullet;
+    public Button BTN_Cannon;
+    public GameObject Ring;
 
     Setting_Cannon Setting;
 
@@ -15,6 +18,20 @@ public class Cannon : MonoBehaviour
     {
         //change value
         Setting = setting_Cannon;
+
+        //btn_cannon
+        BTN_Cannon.onClick.AddListener(() =>
+        {
+            if (Ring.activeInHierarchy)
+            {
+                Ring.SetActive(false);
+            }
+            else
+            {
+                Ring.SetActive(true);
+            }
+        });
+
 
         //finde place canon
         foreach (var item in Setting.All_place)

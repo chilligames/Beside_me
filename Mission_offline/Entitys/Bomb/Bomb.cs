@@ -1,15 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Bomb : MonoBehaviour
 {
     Bomb_setting Setting;
     public GameObject Ring;
+    public Button BTN_show_ring;
 
     public void Change_value_bomb(Bomb_setting Bomb_setting)
     {
         Setting = Bomb_setting;
+
+        BTN_show_ring.onClick.AddListener(() =>
+        {
+            if (Ring.activeInHierarchy)
+            {
+                Ring.SetActive(false);
+            }
+            else
+            {
+                Ring.SetActive(true);
+            }
+        });
+
     }
 
     private void Update()

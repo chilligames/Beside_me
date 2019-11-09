@@ -33,7 +33,8 @@ public class UI_mission_offline : MonoBehaviour
 
 
     [Header("Turn_object")]
-    public TextMeshProUGUI Text_turn_number;
+    public TextMeshProUGUI Text_build_your_number;
+    public TextMeshProUGUI Text_build_enemy_number;
 
 
 
@@ -121,8 +122,6 @@ public class UI_mission_offline : MonoBehaviour
         BTN_left.onClick.AddListener(Left);
         BTN_right.onClick.AddListener(Right);
 
-        //start auto method
-        StartCoroutine(Turn_number());
 
 
         void Up()
@@ -180,20 +179,22 @@ public class UI_mission_offline : MonoBehaviour
 
     private void Update()
     {
-        var Count_Build_Player=0;
-        var Count_build_enemy=0;
+        var Count_Build_Player = 0;
+        var Count_build_enemy = 0;
         foreach (var item in All_place)
         {
-            if (item.GetComponent<Place>().Setting_place.Place_for== Place_for.Enemy)
+            if (item.GetComponent<Place>().Setting_place.Place_for == Place_for.Enemy)
             {
                 Count_build_enemy += 1;
             }
-            else if(item.GetComponent<Place>().Setting_place.Place_for==Place_for.Player)
+            else if (item.GetComponent<Place>().Setting_place.Place_for == Place_for.Player)
             {
                 Count_Build_Player += 1;
             }
         }
 
+        Text_build_enemy_number.text = Count_build_enemy.ToString();
+        Text_build_your_number.text = Count_Build_Player.ToString();
     }
     /// <summary>
     /// place inside player pointer
@@ -266,17 +267,6 @@ public class UI_mission_offline : MonoBehaviour
             }
         }
     }
-
-
-    public IEnumerator Turn_number()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(5);
-            Text_turn_number.text = Total_turn++.ToString();
-        }
-    }
-
 }
 
 public enum Type_Build

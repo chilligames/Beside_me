@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Raw_place = Mission_offline;
 
 public class Turret : MonoBehaviour
 {
+    public GameObject Ring;
+    public Button BTN_turret;
 
     public Color Color_player;
     public Color Color_enemy;
@@ -19,6 +22,19 @@ public class Turret : MonoBehaviour
     {
         //frist change value
         Setting = Turet_setting;
+        BTN_turret.onClick.AddListener(() =>
+        {
+            if (Ring.activeInHierarchy)
+            {
+                Ring.SetActive(false);
+            }
+            else
+            {
+                Ring.SetActive(true);
+            }
+
+        });
+
 
         //finde place for shot
         Can_shot_to = new GameObject[9];

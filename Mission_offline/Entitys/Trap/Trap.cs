@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Trap : MonoBehaviour
 {
+    public GameObject Ring;
+    public Button BTN_spawner;
 
     Setting_Trap Setting;
     GameObject Place_trap;
@@ -14,7 +17,17 @@ public class Trap : MonoBehaviour
     {
         //change vvalue;
         Setting = Setting_trap;
-
+        BTN_spawner.onClick.AddListener(() =>
+        {
+            if (Ring.activeInHierarchy)
+            {
+                Ring.SetActive(false);
+            }
+            else
+            {
+                Ring.SetActive(true);
+            }
+        });
 
 
         //finde place trap
