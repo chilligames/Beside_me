@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static Mission_offline;
@@ -31,6 +32,11 @@ public class UI_mission_offline : MonoBehaviour
     public Button BTN_left;
 
 
+    [Header("Turn_object")]
+    public TextMeshProUGUI Text_turn_number;
+
+
+
     [Header("Raw_trap")]
     public GameObject Raw_bomb;
     public GameObject Raw_Turret;
@@ -42,6 +48,8 @@ public class UI_mission_offline : MonoBehaviour
     public GameObject Raw_teleport;
 
     int lock_move = 0;
+
+    int Total_turn;
 
     void Start()
     {
@@ -113,6 +121,8 @@ public class UI_mission_offline : MonoBehaviour
         BTN_left.onClick.AddListener(Left);
         BTN_right.onClick.AddListener(Right);
 
+        //start auto method
+        StartCoroutine(Turn_number());
 
 
         void Up()
@@ -165,9 +175,26 @@ public class UI_mission_offline : MonoBehaviour
             }
 
         }
+
     }
 
+    private void Update()
+    {
+        var Count_Build_Player=0;
+        var Count_build_enemy=0;
+        foreach (var item in All_place)
+        {
+            if (item.GetComponent<Place>().Setting_place.Place_for== Place_for.Enemy)
+            {
+                Count_build_enemy += 1;
+            }
+            else if(item.GetComponent<Place>().Setting_place.Place_for==Place_for.Player)
+            {
+                Count_Build_Player += 1;
+            }
+        }
 
+    }
     /// <summary>
     /// place inside player pointer
     /// </summary>
@@ -239,6 +266,17 @@ public class UI_mission_offline : MonoBehaviour
             }
         }
     }
+
+
+    public IEnumerator Turn_number()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(5);
+            Text_turn_number.text = Total_turn++.ToString();
+        }
+    }
+
 }
 
 public enum Type_Build

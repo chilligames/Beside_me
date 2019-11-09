@@ -29,7 +29,15 @@ public class Pointer_player : MonoBehaviour
             if (item.transform.position == gameObject.transform.position)
             {
                 item.GetComponent<Place>().Update_place_from_pointers();
+                if (Count >= 1)
+                {
+                    item.GetComponent<Place>().Text_place.gameObject.SetActive(false);
+                }
                 break;
+            }
+            else
+            {
+                item.GetComponent<Place>().Text_place.gameObject.SetActive(true);
             }
         }
 
