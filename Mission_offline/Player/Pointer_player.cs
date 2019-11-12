@@ -11,13 +11,14 @@ public class Pointer_player : MonoBehaviour
     public int Count;
     public TextMeshProUGUI Text_count;
 
-    public GameObject[,] All_place;
+     GameObject[,] All_place;
 
 
 
     private void Start()
     {
         All_place = GetComponentInParent<Mission_offline>().All_place;
+        print(All_place.Length);
     }
 
 

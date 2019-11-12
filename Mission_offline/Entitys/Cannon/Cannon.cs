@@ -114,6 +114,7 @@ public class Cannon : MonoBehaviour
         //job
         while (true)
         {
+            yield return new WaitForSeconds(10);
             if (Setting.Magezin >= 1)
             {
                 Instantiate(Raw_bullet, place_cannon.transform.position, transform.rotation).AddComponent<Bullet>().Chnage_value(new Bullet.Setting_bullet { All_place = Setting.All_place, place_cannon = place_cannon, Target_place_Postion = Finde_target(), place_For = Setting.Place_for });//change value palce pos
@@ -123,7 +124,6 @@ public class Cannon : MonoBehaviour
             {
                 break;
             }
-            yield return new WaitForSeconds(10);
         }
 
         //anim destory;

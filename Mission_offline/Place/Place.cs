@@ -12,7 +12,9 @@ public class Place : MonoBehaviour
     public Color Color_player;
     public Color Color_enemy;
     public Color Color_Block;
-    public SpriteRenderer Particle_place;
+    public Color Color_Empity;
+
+
 
     [Header("Envorment")]
 
@@ -66,10 +68,14 @@ public class Place : MonoBehaviour
             }
         }
         Place_inside_place = fix_place;
+
+
+
     }
 
     private void Start()
     {
+
         //spaw turns
         StartCoroutine(Spawn_turn_tobase());
         StartCoroutine(Spawn_turn_forall_turn());
@@ -93,7 +99,7 @@ public class Place : MonoBehaviour
         switch (Setting_place.Place_for)
         {
             case Place_for.Empity:
-                GetComponent<SpriteRenderer>().color = Color.white;
+                GetComponent<SpriteRenderer>().color = Color_Empity;
                 break;
             case Place_for.Enemy:
                 GetComponent<SpriteRenderer>().color = Setting_place.Color_enemy;

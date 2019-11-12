@@ -27,6 +27,7 @@ public class Turret : MonoBehaviour
             if (Ring.activeInHierarchy)
             {
                 Ring.SetActive(false);
+                print('h');
             }
             else
             {

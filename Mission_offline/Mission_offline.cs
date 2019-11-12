@@ -21,9 +21,11 @@ public class Mission_offline : MonoBehaviour
 
 
     public Vector2 Start_pos_fild;
+    float? Collom_pos;//defult -2
     public GameObject[,] All_place;
     public GameObject[] Place_blocks;
     public GameObject[] Place_white;
+
     [HideInInspector]
     public GameObject Place_player;
     [HideInInspector]
@@ -31,6 +33,13 @@ public class Mission_offline : MonoBehaviour
 
     void Start()
     {
+        //finde place x
+        if (Collom_pos == null)
+        {
+            Collom_pos = Start_pos_fild.x;
+        }
+
+
         //place creator
         All_place = new GameObject[Y_size, X_size];
         for (int i = 0; i < Y_size; i++)
@@ -42,7 +51,7 @@ public class Mission_offline : MonoBehaviour
                 All_place[i, a].transform.position = Start_pos_fild;
                 Start_pos_fild = new Vector2(Start_pos_fild.x + 0.5f, Start_pos_fild.y);
             }
-            Start_pos_fild = new Vector2(-2, Start_pos_fild.y - 0.5f);
+            Start_pos_fild = new Vector2((float)Collom_pos, Start_pos_fild.y - 0.5f);
         }
 
 
@@ -95,7 +104,6 @@ public class Mission_offline : MonoBehaviour
             }
 
         }
-
 
         //pick place null white
         int count_white = All_place.Length - count_block;
@@ -160,6 +168,7 @@ public class Mission_offline : MonoBehaviour
         Place_white = new GameObject[count_white - 2];
         Place_white = new_place_white;
 
+
         //pointer setting
         pointer_player.transform.position = Place_player.transform.position;
         Pointer_enemy.transform.position = Place_Enemy.transform.position;
@@ -170,7 +179,6 @@ public class Mission_offline : MonoBehaviour
                 Place_player = Place_player,
                 place_enemy = Place_Enemy
             });
-
 
 
 

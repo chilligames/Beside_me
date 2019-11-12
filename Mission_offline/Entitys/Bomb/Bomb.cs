@@ -29,9 +29,9 @@ public class Bomb : MonoBehaviour
 
     private void Update()
     {
-        if (Ring.transform.localScale != Vector3.zero)
+        if (transform.localScale != Vector3.zero)
         {
-            Ring.transform.localScale = Vector3.MoveTowards(Ring.transform.localScale, Vector3.zero, 0.01f);
+           transform.localScale = Vector3.MoveTowards(transform.localScale, Vector3.zero, 0.001f);
         }
         else
         {
@@ -44,6 +44,7 @@ public class Bomb : MonoBehaviour
                     item.GetComponent<Place>().Setting_place.Type_place = Type_place.Place;
                 }
             }
+
             Destroy(gameObject);
         }
     }

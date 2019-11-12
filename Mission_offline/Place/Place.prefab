@@ -353,14 +353,10 @@ MonoBehaviour:
   Image_cron: {fileID: 6657914841297616129}
   Color_player: {r: 0.67058825, g: 0.7960785, b: 0.9294118, a: 1}
   Color_enemy: {r: 0.83921576, g: 0.5647059, b: 0.5647059, a: 1}
-  Color_Block: {r: 0.26666668, g: 0.26666668, b: 0.26666668, a: 1}
-  Particle_place: {fileID: 0}
-  Type_Build: 0
+  Color_Block: {r: 0.14150941, g: 0.14150941, b: 0.14150941, a: 1}
+  Color_Empity: {r: 0, g: 0, b: 0, a: 0.101960786}
   Text_place: {fileID: 3171671094247491064}
-  BTN_place: {fileID: 2343883325769956662}
   Count: 0
-  Anim_boomb: 0
-  Anim_builds: 0
 --- !u!1 &7672028312710381303
 GameObject:
   m_ObjectHideFlags: 0
