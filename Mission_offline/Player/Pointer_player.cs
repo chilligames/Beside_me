@@ -11,6 +11,9 @@ public class Pointer_player : MonoBehaviour
     public int Count;
     public TextMeshProUGUI Text_count;
 
+    public GameObject Pointer_enemy;
+
+
      GameObject[,] All_place;
 
 
@@ -25,6 +28,7 @@ public class Pointer_player : MonoBehaviour
 
     private void Update()
     {
+        //control place player for text
         foreach (var item in All_place)
         {
             if (item.transform.position == gameObject.transform.position)
@@ -41,7 +45,7 @@ public class Pointer_player : MonoBehaviour
                 item.GetComponent<Place>().Text_place.gameObject.SetActive(true);
             }
         }
-
+        //control count text
         if (Count > 0)
         {
             Text_count.text = Count.ToString();
@@ -50,7 +54,6 @@ public class Pointer_player : MonoBehaviour
         {
             Text_count.text = "";
         }
-
 
     }
 

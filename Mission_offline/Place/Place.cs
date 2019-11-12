@@ -14,6 +14,7 @@ public class Place : MonoBehaviour
     public Color Color_Block;
     public Color Color_Empity;
 
+    public Color Color_Active;
 
 
     [Header("Envorment")]
@@ -99,13 +100,13 @@ public class Place : MonoBehaviour
         switch (Setting_place.Place_for)
         {
             case Place_for.Empity:
-                GetComponent<SpriteRenderer>().color = Color_Empity;
-                break;
-            case Place_for.Enemy:
-                GetComponent<SpriteRenderer>().color = Setting_place.Color_enemy;
+                //GetComponent<SpriteRenderer>().color = Color_Empity;
                 break;
             case Place_for.Player:
-                GetComponent<SpriteRenderer>().color = Setting_place.Color_player;
+                {
+                    GetComponent<SpriteRenderer>().color = Setting_place.Color_player;
+
+                }
                 break;
             case Place_for.Block:
                 {
@@ -113,6 +114,7 @@ public class Place : MonoBehaviour
                 }
                 break;
         }
+
 
         //controller instance for build and defance in place
         switch (Setting_place.Type_place)
@@ -286,6 +288,75 @@ public class Place : MonoBehaviour
                 print("losse");
             }
         }
+
+
+        //control show for player
+        switch (Setting_place.Place_for)
+        {
+            case Place_for.Enemy:
+                {
+                    foreach (var item in Setting_place.All_place)
+                    {
+                        if (Vector3.Distance(item.transform.position,transform.position)<=0.8f&&item.GetComponent<Place>().Setting_place.Place_for!=Place_for.Block&&item.GetComponent<Place>().Setting_place.Type_place!=Type_place.Block)
+                        {
+                            switch (item.GetComponent<Place>().Setting_place.Place_for)
+                            {
+                                case Place_for.Empity:
+                                    {
+                                        item.GetComponent<SpriteRenderer>().color = Color_Empity;
+                                    }
+                                    break;
+                                case Place_for.Enemy:
+                                    {
+                                        item.GetComponent<SpriteRenderer>().color = Color_Empity;
+                                        item.GetComponent<Place>().Text_place.gameObject.SetActive(false);
+                                    }
+                                    break;
+                                case Place_for.Player:
+                                    {
+                                        item.GetComponent<SpriteRenderer>().color = Color_player;
+                                        item.GetComponent<Place>().Text_place.gameObject.SetActive(true);
+                                    }
+                                    break;
+                            }
+
+                        }
+                    }
+
+                }
+                break;
+            case Place_for.Player:
+                {
+                    foreach (var item in Setting_place.All_place)
+                    {
+                        if (Vector3.Distance(item.transform.position, transform.position) <= 0.8f && item.GetComponent<Place>().Setting_place.Place_for != Place_for.Block && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Block)
+                        {
+                            switch (item.GetComponent<Place>().Setting_place.Place_for)
+                            {
+                                case Place_for.Empity:
+                                    {
+                                        item.GetComponent<SpriteRenderer>().color = Color_Active;
+                                    }
+                                    break;
+                                case Place_for.Enemy:
+                                    {
+                                        item.GetComponent<SpriteRenderer>().color = Color_enemy;
+                                        item.GetComponent<Place>().Text_place.gameObject.SetActive(true);
+                                    }
+                                    break;
+                                case Place_for.Player:
+                                    {
+                                        item.GetComponent<SpriteRenderer>().color = Color_player;
+                                        item.GetComponent<Place>().Text_place.gameObject.SetActive(true);
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                }
+                break;
+        }
+
     }
 
 

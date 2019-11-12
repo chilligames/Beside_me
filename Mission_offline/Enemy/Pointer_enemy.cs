@@ -106,6 +106,7 @@ public class Pointer_enemy : MonoBehaviour
 
     private void Update()
     {
+        //control text
         if (Count >= 1)
         {
             Text_Turn.text = Count.ToString();
@@ -115,6 +116,8 @@ public class Pointer_enemy : MonoBehaviour
             Text_Turn.text = "";
         }
 
+
+        //update place
         foreach (var item in Enemy_setting.All_place)
         {
             if (item.transform.position == item.transform.position)
@@ -122,10 +125,19 @@ public class Pointer_enemy : MonoBehaviour
                 item.GetComponent<Place>().Update_place_from_pointers();
             }
         }
-        if (Pointer_player.transform.position == transform.position)
+
+        //show pointer to player
+        if (Vector3.Distance(Pointer_player.transform.position, gameObject.transform.position) < 0.8f)
         {
-            print("minue insidepointer");
+            Text_Turn.gameObject.SetActive(true);
+            GetComponent<SpriteRenderer>().color = Color.black;
         }
+        else
+        {
+            Text_Turn.gameObject.SetActive(false);
+            GetComponent<SpriteRenderer>().color = Color.clear;
+        }
+
     }
 
 
