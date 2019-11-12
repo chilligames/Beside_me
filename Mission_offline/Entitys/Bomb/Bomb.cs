@@ -42,6 +42,7 @@ public class Bomb : MonoBehaviour
                     item.GetComponent<Place>().Count = 0;
                     item.GetComponent<Place>().Setting_place.Place_for = Place_for.Empity;
                     item.GetComponent<Place>().Setting_place.Type_place = Type_place.Place;
+                    item.GetComponent<Place>().Update_place_from_pointers();
                 }
             }
 

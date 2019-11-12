@@ -126,6 +126,7 @@ public class Pointer_enemy : MonoBehaviour
             }
         }
 
+
         //show pointer to player
         if (Vector3.Distance(Pointer_player.transform.position, gameObject.transform.position) < 0.8f)
         {
