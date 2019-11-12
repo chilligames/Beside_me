@@ -181,6 +181,9 @@ public class Mission_offline : MonoBehaviour
             });
 
 
+        //feed to all place
+        StartCoroutine(Spawn_turn_for_all_place());
+        StartCoroutine(Spawn_turn_to_base());
 
         //local methods
         void Place_player_enemy()
@@ -218,6 +221,34 @@ public class Mission_offline : MonoBehaviour
 
 
 
+    IEnumerator Spawn_turn_for_all_place()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(20);
+
+            foreach (var item in All_place)
+            {
+
+                if (item.GetComponent<Place>().Setting_place.Place_for == Place_for.Player || item.GetComponent<Place>().Setting_place.Place_for == Place_for.Enemy)
+                {
+                    item.GetComponent<Place>().Count++;
+                }
+            }
+        }
+    }
+
+    IEnumerator Spawn_turn_to_base()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(15);
+            Place_player.GetComponent<Place>().Count++;
+            Place_Enemy.GetComponent<Place>().Count++;
+
+
+        }
+    }
 
     public void Reset_pointer_player()
     {

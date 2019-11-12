@@ -76,12 +76,6 @@ public class Place : MonoBehaviour
 
     private void Start()
     {
-
-        //spaw turns
-        StartCoroutine(Spawn_turn_tobase());
-        StartCoroutine(Spawn_turn_forall_turn());
-
-
         if (Count > 0)
         {
             Text_place.text = Count.ToString();
@@ -96,41 +90,9 @@ public class Place : MonoBehaviour
 
     public void Update_place_from_pointers()
     {
-
         //control show for player
         switch (Setting_place.Place_for)
         {
-            case Place_for.Enemy:
-                {
-                    foreach (var item in Setting_place.All_place)
-                    {
-                        if (Vector3.Distance(item.transform.position, transform.position) <= 1 && item.GetComponent<Place>().Setting_place.Place_for != Place_for.Block && item.GetComponent<Place>().Setting_place.Type_place != Type_place.Block)
-                        {
-                            switch (item.GetComponent<Place>().Setting_place.Place_for)
-                            {
-                                case Place_for.Empity:
-                                    {
-                                        item.GetComponent<SpriteRenderer>().color = Color_Empity;
-                                    }
-                                    break;
-                                case Place_for.Enemy:
-                                    {
-                                        item.GetComponent<SpriteRenderer>().color = Color_Empity;
-                                        item.GetComponent<Place>().Text_place.gameObject.SetActive(false);
-                                    }
-                                    break;
-                                case Place_for.Player:
-                                    {
-                                        item.GetComponent<SpriteRenderer>().color = Color_player;
-                                        item.GetComponent<Place>().Text_place.gameObject.SetActive(true);
-                                    }
-                                    break;
-                            }
-                        }
-                    }
-
-                }
-                break;
             case Place_for.Player:
                 {
                     foreach (var item in Setting_place.All_place)
@@ -163,6 +125,7 @@ public class Place : MonoBehaviour
                 break;
         }
 
+
         //controller instance for build and defance in place
         switch (Setting_place.Type_place)
         {
@@ -182,21 +145,16 @@ public class Place : MonoBehaviour
         }
 
 
-        //text place null if count 0 
-        if (Count > 0)
-        {
-            Text_place.text = Count.ToString();
-        }
-        else
-        {
-            Text_place.text = "";
-        }
-
-
         //change place for with 0
         if (Count == 0 && Setting_place.Type_place != Type_place.Block && Setting_place.Type_place != Type_place.Enemy && Setting_place.Type_place != Type_place.Player) //change and cheack for player enemy
         {
             Setting_place.Place_for = Place_for.Empity;
+            Text_place.text = "";
+
+        }
+        else if (Count > 0)
+        {
+            Text_place.text = Count.ToString();
         }
 
 
@@ -337,33 +295,6 @@ public class Place : MonoBehaviour
         }
 
     }
-
-
-    IEnumerator Spawn_turn_tobase()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(20f);
-            if (Setting_place.Type_place == Type_place.Player || Setting_place.Type_place == Type_place.Enemy)
-            {
-                Count++;
-            }
-
-        }
-    }
-
-    IEnumerator Spawn_turn_forall_turn()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(10);
-            if (Setting_place.Place_for == Place_for.Enemy || Setting_place.Place_for == Place_for.Player)
-            {
-                Count++;
-            }
-        }
-    }
-
 }
 
 

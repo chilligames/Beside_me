@@ -110,7 +110,7 @@ public class Sniper : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(0.01f);
-            transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(0.1f, 0.1f, 0), 0.001f);
+            transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(0.1f, 0.1f, 0), 0.01f);
             if (transform.localScale == new Vector3(0.1f, 0.1f, 0))
             {
                 break;
@@ -164,7 +164,7 @@ public class Sniper : MonoBehaviour
         //anim end
         while (true)
         {
-            transform.localScale = Vector3.MoveTowards(transform.localScale, Vector3.zero, 0.001f);
+            transform.localScale = Vector3.MoveTowards(transform.localScale, Vector3.zero, 0.01f);
             if (transform.localScale == Vector3.zero)
             {
                 Destroy(gameObject);

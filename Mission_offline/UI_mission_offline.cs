@@ -254,7 +254,7 @@ public class UI_mission_offline : MonoBehaviour
                 yield return new WaitForSeconds(0.01f);
                 if (pointer.transform.position != postion)
                 {
-                    pointer.transform.position = Vector3.MoveTowards(pointer.transform.position, postion, 0.1f);
+                    pointer.transform.position = Vector3.MoveTowards(pointer.transform.position, postion, 0.2f);
 
                 }
                 else
