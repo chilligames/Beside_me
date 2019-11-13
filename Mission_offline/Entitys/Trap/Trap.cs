@@ -46,11 +46,26 @@ public class Trap : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+
+        //change color;
+        switch (Setting.Place_for)
+        {
+            case Place_for.Enemy:
+                GetComponent<SpriteRenderer>().color = Color.red;
+                Ring.GetComponent<SpriteRenderer>().color = Color.red;
+                break;
+            case Place_for.Player:
+                GetComponent<SpriteRenderer>().color = Color.green;
+                Ring.GetComponent<SpriteRenderer>().color = Color.green;
+                break;
+        }
     }
 
 
     private void Update()
     {
+        //work
         switch (Setting.Place_for)
         {
             case Place_for.Enemy:
@@ -75,7 +90,7 @@ public class Trap : MonoBehaviour
         }
 
 
-
+        //anim
         if (anim_trap == 0)
         {
             transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(0.1f, 0.1f, 0), 0.01f);

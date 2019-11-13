@@ -48,6 +48,23 @@ public class Cannon : MonoBehaviour
         }
         //start cannon shot
         StartCoroutine(Start_cannon_fire());
+
+        //color_switch
+        switch (Setting.Place_for)
+        {
+            case Place_for.Enemy:
+                {
+                    GetComponent<SpriteRenderer>().color = Color.red;
+                    Ring.GetComponent<SpriteRenderer>().color = Color.red;
+                }
+                break;
+            case Place_for.Player:
+                {
+                    GetComponent<SpriteRenderer>().color = Color.green;
+                    Ring.GetComponent<SpriteRenderer>().color = Color.green;
+                }
+                break;
+        }
     }
 
     /// <summary>
@@ -200,6 +217,17 @@ public class Cannon : MonoBehaviour
 
             //start job
             StartCoroutine(Start_bullet());
+
+            //change color_bullet
+            switch (Setting.place_For)
+            {
+                case Place_for.Enemy:
+                    GetComponent<SpriteRenderer>().color = Color.red;
+                    break;
+                case Place_for.Player:
+                    GetComponent<SpriteRenderer>().color = Color.green;
+                    break;
+            }
         }
 
         IEnumerator Start_bullet()

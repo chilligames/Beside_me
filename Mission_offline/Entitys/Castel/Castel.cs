@@ -46,7 +46,6 @@ public class Castel : MonoBehaviour
         if (castel_place == null)
         {
             Destroy(gameObject);
-            print("destroy");
         }
 
 
@@ -55,7 +54,8 @@ public class Castel : MonoBehaviour
         {
             case Place_for.Enemy:
                 {
-                    GetComponent<SpriteRenderer>().color = Color_enemy;
+                    GetComponent<SpriteRenderer>().color = Color.red;
+                    Ring.GetComponent<SpriteRenderer>().color = Color.red;
                     print(castel_place.name);
                     castel_place.GetComponent<Place>().Count += 2;
                     castel_place.GetComponent<Place>().Setting_place.Place_for = Place_for.Enemy;
@@ -63,7 +63,8 @@ public class Castel : MonoBehaviour
                 break;
             case Place_for.Player:
                 {
-                    GetComponent<SpriteRenderer>().color = Color_Player;
+                    GetComponent<SpriteRenderer>().color = Color.green;
+                    Ring.GetComponent<SpriteRenderer>().color = Color.green;
                     castel_place.GetComponent<Place>().Count += 2;
                     castel_place.GetComponent<Place>().Setting_place.Place_for = Place_for.Player;
 

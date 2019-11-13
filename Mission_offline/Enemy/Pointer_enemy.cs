@@ -145,7 +145,6 @@ public class Pointer_enemy : MonoBehaviour
                 Text_Turn.gameObject.SetActive(false);
             }
         }
-
     }
 
 

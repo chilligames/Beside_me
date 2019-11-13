@@ -65,6 +65,18 @@ public class Teleport : MonoBehaviour
             Destroy(gameObject);
         }
 
+        //change color
+        switch (Setting.Place_for)
+        {
+            case Place_for.Enemy:
+                GetComponent<SpriteRenderer>().color = Color.red;
+                Ring.GetComponent<SpriteRenderer>().color = Color.red;
+                break;
+            case Place_for.Player:
+                GetComponent<SpriteRenderer>().color = Color.green;
+                Ring.GetComponent<SpriteRenderer>().color = Color.green;
+                break;
+        }
     }
 
 

@@ -83,6 +83,19 @@ public class Spawner : MonoBehaviour
         //work
         StartCoroutine(Spawn_turn());
 
+
+        //change color
+        switch (Setting.place_For)
+        {
+            case Place_for.Enemy:
+                GetComponent<SpriteRenderer>().color = Color.red;
+                Ring.GetComponent<SpriteRenderer>().color = Color.red;
+                break;
+            case Place_for.Player:
+                GetComponent<SpriteRenderer>().color = Color.green;
+                Ring.GetComponent<SpriteRenderer>().color = Color.green;
+                break;
+        }
     }
 
 

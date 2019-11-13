@@ -100,6 +100,7 @@ public class Turret : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
     }
 
     private void Start()
@@ -109,7 +110,8 @@ public class Turret : MonoBehaviour
             case Place_for.Enemy:
                 {
                     //change color turret
-                    gameObject.GetComponent<SpriteRenderer>().color = Color_player;
+                    gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+                    Ring.GetComponent<SpriteRenderer>().color = Color.green;
 
                     //give place for  enemy
                     Place_turret.GetComponent<Place>().Count += 1;
@@ -119,7 +121,8 @@ public class Turret : MonoBehaviour
             case Place_for.Player:
                 {
                     //change color
-                    gameObject.GetComponent<SpriteRenderer>().color = Color_enemy;
+                    gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+                    Ring.GetComponent<SpriteRenderer>().color = Color.red;
 
                     //give place fro player
                     Place_turret.GetComponent<Place>().Count += 1;

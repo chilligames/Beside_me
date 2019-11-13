@@ -12,6 +12,9 @@ public class UI_mission_offline : MonoBehaviour
 
     public GameObject Pointer_player;
     public GameObject Pointer_enemy;
+    public Color Color_enemy;
+    public Color Color_player;
+
 
     [Header("BTNS")]
     public Button BTN_Bomb;
@@ -50,7 +53,8 @@ public class UI_mission_offline : MonoBehaviour
 
     [Header("Slider")]
     public Slider Slider_player;
-    public Slider Slider_enemy;
+    public Image Slider_background;
+    public Image Slider_fill;
 
 
     int lock_move = 0;
@@ -201,11 +205,10 @@ public class UI_mission_offline : MonoBehaviour
         Text_build_enemy_number.text = Count_build_enemy.ToString();
         Text_build_your_number.text = Count_Build_Player.ToString();
 
-        Slider_player.value = Count_Build_Player;
-        Slider_enemy.value = Count_build_enemy;
+        Slider_player.maxValue = Count_Build_Player;
 
-
-
+            Slider_player.value = Count_build_enemy;
+       
     }
     /// <summary>
     /// place inside player pointer
