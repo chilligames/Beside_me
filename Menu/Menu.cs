@@ -12,7 +12,7 @@ public class Menu : MonoBehaviour
 
     int Anim;
     int anim_dialog_multiplay;
-    public TMPro.TMP_FontAsset fonts; 
+    public TMPro.TMP_FontAsset fonts;
 
     void Start()
     {
@@ -32,8 +32,6 @@ public class Menu : MonoBehaviour
                 anim_dialog_multiplay = 2;
             }
         });
-
-
     }
 
     public void Update()
@@ -66,14 +64,14 @@ public class Menu : MonoBehaviour
         {
             if (item.GetComponent<Shadow>())
             {
-                item.GetComponent<Shadow>().effectDistance = new Vector2(Input.acceleration.x / 3, Input.acceleration.y / 3);
+                item.GetComponent<Shadow>().effectDistance = new Vector2(Input.acceleration.x / 5, Input.acceleration.y / 5);
             }
         }
         foreach (var item in GetComponentsInChildren<RawImage>())
         {
             if (item.GetComponent<Shadow>())
             {
-                item.GetComponent<Shadow>().effectDistance = new Vector2(Input.acceleration.x / 3, Input.acceleration.y / 3);
+                item.GetComponent<Shadow>().effectDistance = new Vector2(Input.acceleration.x / 5, Input.acceleration.y / 5);
             }
         }
     }
