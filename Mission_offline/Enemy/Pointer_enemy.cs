@@ -17,6 +17,7 @@ public class Pointer_enemy : MonoBehaviour
 
     [Header("Entitys")]
     public GameObject Pointer_player;
+    public Color Color_Enemy;
 
 
     //Entity enemy
@@ -102,6 +103,7 @@ public class Pointer_enemy : MonoBehaviour
         StartCoroutine(Start_bot());
         StartCoroutine(Control_build());
         StartCoroutine(Control_bug_go_to_distiny());
+
     }
 
     private void Update()
@@ -116,27 +118,32 @@ public class Pointer_enemy : MonoBehaviour
             Text_Turn.text = "";
         }
 
-
-        //update place
-        foreach (var item in Enemy_setting.All_place)
-        {
-            if (item.transform.position == item.transform.position)
-            {
-                item.GetComponent<Place>().Update_place_from_pointers();
-            }
-        }
-
-
         //show pointer to player
         if (Vector3.Distance(Pointer_player.transform.position, gameObject.transform.position) < 0.8f)
         {
             Text_Turn.gameObject.SetActive(true);
-            GetComponent<SpriteRenderer>().color = Color.black;
+            GetComponent<SpriteRenderer>().color = Color_Enemy;
         }
         else
         {
             Text_Turn.gameObject.SetActive(false);
             GetComponent<SpriteRenderer>().color = Color.clear;
+        }
+
+        //show pointer inside place player
+        foreach (var item in Enemy_setting.All_place)
+        {
+            if (Vector3.Distance(item.transform.position, transform.position) <= 1 && item.GetComponent<Place>().Setting_place.Place_for == Place_for.Player)
+            {
+                GetComponent<SpriteRenderer>().color = Color_Enemy;
+                Text_Turn.gameObject.SetActive(true);
+                break;
+            }
+            else
+            {
+                GetComponent<SpriteRenderer>().color = Color.clear;
+                Text_Turn.gameObject.SetActive(false);
+            }
         }
 
     }

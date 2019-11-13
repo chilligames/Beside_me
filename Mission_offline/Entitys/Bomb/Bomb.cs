@@ -48,6 +48,7 @@ public class Bomb : MonoBehaviour
 
             Destroy(gameObject);
         }
+
     }
 
     public struct Bomb_setting

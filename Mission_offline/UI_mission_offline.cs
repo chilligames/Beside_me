@@ -48,6 +48,11 @@ public class UI_mission_offline : MonoBehaviour
     public GameObject Raw_trap;
     public GameObject Raw_teleport;
 
+    [Header("Slider")]
+    public Slider Slider_player;
+    public Slider Slider_enemy;
+
+
     int lock_move = 0;
 
     int Total_turn;
@@ -195,6 +200,12 @@ public class UI_mission_offline : MonoBehaviour
 
         Text_build_enemy_number.text = Count_build_enemy.ToString();
         Text_build_your_number.text = Count_Build_Player.ToString();
+
+        Slider_player.value = Count_Build_Player;
+        Slider_enemy.value = Count_build_enemy;
+
+
+
     }
     /// <summary>
     /// place inside player pointer

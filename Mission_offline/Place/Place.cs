@@ -16,7 +16,6 @@ public class Place : MonoBehaviour
 
     public Color Color_Active;
 
-
     [Header("Envorment")]
 
     GameObject[] Place_inside_place;
@@ -69,9 +68,6 @@ public class Place : MonoBehaviour
             }
         }
         Place_inside_place = fix_place;
-
-
-
     }
 
     private void Start()
@@ -115,7 +111,9 @@ public class Place : MonoBehaviour
                                 case Place_for.Player:
                                     {
                                         item.GetComponent<SpriteRenderer>().color = Color_player;
+
                                         item.GetComponent<Place>().Text_place.gameObject.SetActive(true);
+
                                     }
                                     break;
                             }
@@ -125,6 +123,8 @@ public class Place : MonoBehaviour
                 break;
         }
 
+
+      
 
         //controller instance for build and defance in place
         switch (Setting_place.Type_place)

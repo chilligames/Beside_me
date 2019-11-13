@@ -220,7 +220,47 @@ public class Mission_offline : MonoBehaviour
     }
 
 
+    private void Update()
+    {
+        //update placess    
+        foreach (var item in All_place)
+        {
+            if (item.transform.position == pointer_player.transform.position)
+            {
+                item.GetComponent<Place>().Update_place_from_pointers();
+            }
+            else if (item.transform.position == Pointer_enemy.transform.position)
+            {
+                item.GetComponent<Place>().Update_place_from_pointers();
+            }
+            else if (item.GetComponent<Place>().Setting_place.Place_for == Place_for.Player)
+            {
+                item.GetComponent<Place>().Update_place_from_pointers();
+            }
+            else if (item.GetComponent<Place>().Setting_place.Place_for == Place_for.Enemy)
+            {
+                item.GetComponent<Place>().Update_place_from_pointers();
+            }
+        }
 
+        //show off number palces if pointer on place
+        foreach (var item in All_place)
+        {
+
+            if (item.transform.position == pointer_player.transform.position)
+            {
+                item.GetComponent<Place>().Text_place.gameObject.SetActive(false);
+                break;
+            }
+            else if (item.transform.position == Pointer_enemy.transform.position)
+            {
+                item.GetComponent<Place>().Text_place.gameObject.SetActive(false);
+
+            }
+
+        }
+
+    }
     IEnumerator Spawn_turn_for_all_place()
     {
         while (true)
