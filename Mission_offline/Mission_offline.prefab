@@ -554,9 +554,8 @@ MonoBehaviour:
   BTN_down_left: {fileID: 689564405326972879}
   BTN_down_right: {fileID: 689564403930032261}
   BTN_left: {fileID: 689564405279662244}
-  BTN_Zoom_in: {fileID: 0}
   Text_build_your_number: {fileID: 689564405552146481}
-  Text_build_enemy_number: {fileID: 0}
+  Text_build_enemy_number: {fileID: 689564404972746829}
   Raw_bomb: {fileID: 3551140728731821503, guid: 2550953942acab445bb72c14757fcc9a,
     type: 3}
   Raw_Turret: {fileID: 3551140728731821503, guid: 397971a32e4e1754983d06ff6a2c61c4,

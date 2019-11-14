@@ -33,7 +33,6 @@ public class UI_mission_offline : MonoBehaviour
     public Button BTN_down_left;
     public Button BTN_down_right;
     public Button BTN_left;
-    public Button BTN_Zoom_in;
 
 
 
@@ -61,7 +60,6 @@ public class UI_mission_offline : MonoBehaviour
 
     int lock_move = 0;
 
-    int Anim_zoom;
 
     void Start()
     {
@@ -132,14 +130,6 @@ public class UI_mission_offline : MonoBehaviour
 
         BTN_left.onClick.AddListener(Left);
         BTN_right.onClick.AddListener(Right);
-
-        BTN_Zoom_in.onClick.AddListener(() =>
-        {
-            Anim_zoom = 1;
-
-        });
-
-
 
         void Up()
         {
