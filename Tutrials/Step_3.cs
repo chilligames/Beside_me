@@ -10,6 +10,7 @@ public class Step_3 : MonoBehaviour
     public GameObject[] Placess;
     public GameObject Place_Base;
     public Color Color_player;
+    public GameObject Arrow_help;
 
     public Button BTN_Up;
     public Button BTN_Down;
@@ -66,9 +67,34 @@ public class Step_3 : MonoBehaviour
                 Placess[i].GetComponentInChildren<TextMeshProUGUI>().text = count_pos[i].ToString();
                 Placess[i].GetComponent<RawImage>().color = Color_player;
                 BTN_next.gameObject.SetActive(true);
+                Arrow_help.SetActive(true);
 
                 print("next");
+            }
+        }
 
+        //give value place
+        for (int i = 0; i < Placess.Length; i++)
+        {
+            if (Placess[i].transform.position == Pointer.transform.position && count_pos[i] >= 1)
+            {
+                Count_pointer += count_pos[i] - 1;
+                count_pos[i] = 1;
+                Placess[i].GetComponentInChildren<TextMeshProUGUI>().text = count_pos[i].ToString();
+                Pointer.GetComponentInChildren<TextMeshProUGUI>().text = Count_pointer.ToString();
+            }
+        }
+
+        //hide pace text
+        foreach (var item in Placess)
+        {
+            if (Pointer.transform.position == item.transform.position)
+            {
+                item.GetComponentInChildren<TextMeshProUGUI>().color = Color_player;
+            }
+            else
+            {
+                item.GetComponentInChildren<TextMeshProUGUI>().color = Color.white;
             }
         }
 
@@ -78,7 +104,7 @@ public class Step_3 : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(3);
             //turn to base
             Count_base++;
             Place_Base.GetComponentInChildren<TextMeshProUGUI>().text = Count_base.ToString();
