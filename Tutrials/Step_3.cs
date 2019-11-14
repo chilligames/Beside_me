@@ -40,22 +40,33 @@ public class Step_3 : MonoBehaviour
 
     void Update()
     {
-        //controll pointer y
+        //controll pointer y+ y-
         if (Placess[0].transform.position.y <= Pointer.transform.position.y)
         {
             Pointer.transform.position = Placess[0].transform.position;
+        }
+        else if (Place_Base.transform.position.y >= Pointer.transform.position.y)
+        {
+            Pointer.transform.position = Place_Base.transform.position;
         }
 
         //pointer text_count pointer
         Pointer.GetComponentInChildren<TextMeshProUGUI>().text = Count_pointer >= 1 ? Count_pointer.ToString() : "";
 
-        //equal pointer and base
+        //equal pointer and base and end
         if (Pointer.transform.position == Place_Base.transform.position)
         {
             Count_pointer += Count_base;
             Count_base = 0;
             Place_Base.GetComponentInChildren<TextMeshProUGUI>().text = Count_base.ToString();
+            Place_Base.GetComponentInChildren<TextMeshProUGUI>().color = Color_player;
+
         }
+        else
+        {
+            Place_Base.GetComponentInChildren<TextMeshProUGUI>().color = Color.black;
+        }
+
 
         //work
         for (int i = 0; i < Placess.Length; i++)
