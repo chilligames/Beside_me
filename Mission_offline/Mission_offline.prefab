@@ -554,8 +554,9 @@ MonoBehaviour:
   BTN_down_left: {fileID: 689564405326972879}
   BTN_down_right: {fileID: 689564403930032261}
   BTN_left: {fileID: 689564405279662244}
+  BTN_Zoom_in: {fileID: 0}
   Text_build_your_number: {fileID: 689564405552146481}
-  Text_build_enemy_number: {fileID: 689564404972746829}
+  Text_build_enemy_number: {fileID: 0}
   Raw_bomb: {fileID: 3551140728731821503, guid: 2550953942acab445bb72c14757fcc9a,
     type: 3}
   Raw_Turret: {fileID: 3551140728731821503, guid: 397971a32e4e1754983d06ff6a2c61c4,
@@ -2248,7 +2249,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000030517578, y: -0.000017010527}
+  m_AnchoredPosition: {x: 0.0008823193, y: -0.000017010527}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &689564404633420468
@@ -4727,8 +4728,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 689564404016315251}
   m_HandleRect: {fileID: 689564404016315250}
   m_Direction: 0
-  m_Value: -0.0004359198
-  m_Size: 0.99988604
+  m_Value: -0.0034904014
+  m_Size: 0.9998861
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
