@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Step_3 : MonoBehaviour
 {
+    public GameObject Step_4;
     public GameObject Pointer;
     public GameObject[] Placess;
     public GameObject Place_Base;
@@ -23,6 +24,7 @@ public class Step_3 : MonoBehaviour
 
     void Start()
     {
+        //value btnnext
         BTN_Up.onClick.AddListener(() =>
         {
             Pointer.transform.position = new Vector3(Pointer.transform.position.x, Pointer.transform.position.y + 1, 0);
@@ -32,6 +34,14 @@ public class Step_3 : MonoBehaviour
             Pointer.transform.position = new Vector3(Pointer.transform.position.x, Pointer.transform.position.y - 1, 0);
 
         });
+
+        BTN_next.onClick.AddListener(() =>
+        {
+
+            gameObject.SetActive(false);
+            Step_4.SetActive(true);
+        });
+
         StartCoroutine(Spawn_turn_to_base());
 
         //countpos

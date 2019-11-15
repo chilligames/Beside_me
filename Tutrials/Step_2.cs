@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class Step_2 : MonoBehaviour
 {
+    public GameObject Step_3;
+
     public GameObject Pointer;
     public TextMeshProUGUI Text_pointer_number;
 
@@ -32,6 +34,11 @@ public class Step_2 : MonoBehaviour
             Pointer.transform.position = new Vector3(Pointer.transform.position.x - 1, Pointer.transform.position.y, 0);
         });
 
+        BTN_next.onClick.AddListener(() =>
+        {
+            gameObject.SetActive(false) ;
+            Step_3.SetActive(true);
+        });
         StartCoroutine(Spawn_turn_tu_base());
     }
     void Update()

@@ -6,8 +6,10 @@ using UnityEngine.UI;
 
 public class Step_4 : MonoBehaviour
 {
-    public Color Color_enemy;
+    public GameObject Step_5;
+    public Button BTN_Next;
 
+    public Color Color_enemy;
     public GameObject Pointer_enemy;
     public GameObject[] Place_can_move_enemy;
     public GameObject[] Place_player;
@@ -27,6 +29,12 @@ public class Step_4 : MonoBehaviour
 
     private void Start()
     {
+        BTN_Next.onClick.AddListener(() =>
+        {
+            gameObject.SetActive(false);
+            Step_5.SetActive(true);
+        });
+
         //frist place nemey;
         Distiny_enemy = Pointer_enemy.transform.position;
 
