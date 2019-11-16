@@ -18,13 +18,6 @@ public class Step_1 : MonoBehaviour
             Step_2.SetActive(true);
 
         });
-
-        BTN_FA.onClick.AddListener(() =>
-        {
-            PlayerPrefs.SetInt("Language", 0);
-            gameObject.SetActive(false);
-            Step_2.SetActive(true);
-        });
     }
 
 }
